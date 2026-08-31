@@ -9,7 +9,7 @@ export const actions: Actions = {
 		const boardId = nanoid(12);
 		await adminDb
 			.doc(`boards/${boardId}`)
-			.set({ updatedAt: FieldValue.serverTimestamp(), flowOrder: [], flows: {} });
+			.set({ updatedAt: FieldValue.serverTimestamp(), name: '', flowOrder: [], flows: {} });
 		redirect(303, `/b/${boardId}`);
 	}
 };

@@ -11,6 +11,7 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	const data = snap.data()!;
 	const board: Board = {
+		name: data.name ?? '',
 		flowOrder: data.flowOrder ?? [],
 		flows: data.flows ?? {}
 	};

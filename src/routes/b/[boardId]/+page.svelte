@@ -6,8 +6,10 @@
 
 	let { data }: { data: PageData } = $props();
 
-	let board = $state<Board>({ flowOrder: [], flows: {} });
+	let board = $state<Board>({ name: '', flowOrder: [], flows: {} });
 	let live = $state(false);
+	let editingName = $state(false);
+	let nameDraft = $state('');
 
 	$effect(() => {
 		board = data.board;
@@ -16,12 +18,28 @@
 		const unsubscribe = onSnapshot(ref, (snap) => {
 			const snapData = snap.data();
 			if (snapData) {
-				board = { flowOrder: snapData.flowOrder ?? [], flows: snapData.flows ?? {} };
+				board = {
+					name: snapData.name ?? '',
+					flowOrder: snapData.flowOrder ?? [],
+					flows: snapData.flows ?? {}
+				};
 				live = true;
 			}
 		});
 		return unsubscribe;
 	});
+
+	function startEditingName() {
+		nameDraft = board.name;
+		editingName = true;
+	}
+
+	async function saveName(e: SubmitEvent) {
+		e.preventDefault();
+		const ref = doc(db, 'boards', data.boardId);
+		await updateDoc(ref, { updatedAt: serverTimestamp(), name: nameDraft });
+		editingName = false;
+	}
 
 	async function addTestFlow() {
 		const ref = doc(db, 'boards', data.boardId);
@@ -34,7 +52,16 @@
 	}
 </script>
 
-<h1>Board {data.boardId}</h1>
+{#if editingName}
+	<form onsubmit={saveName}>
+		<input bind:value={nameDraft} autofocus />
+	</form>
+{:else}
+	<h1>
+		<button type="button" onclick={startEditingName}>Board {board.name || data.boardId}</button>
+	</h1>
+{/if}
+
 <p>Realtime listener connected: {live}</p>
 
 <button onclick={addTestFlow}>Add test flow</button>

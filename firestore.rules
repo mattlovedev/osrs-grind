@@ -12,8 +12,9 @@ service cloud.firestore {
 }
 
 function isValidBoard(data) {
-  return data.keys().hasOnly(['updatedAt', 'flowOrder', 'flows'])
+  return data.keys().hasOnly(['updatedAt', 'name', 'flowOrder', 'flows'])
     && data.updatedAt is timestamp
+    && data.name is string
     && data.flowOrder is list
     && data.flows is map;
 }

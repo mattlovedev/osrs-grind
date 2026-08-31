@@ -22,6 +22,7 @@ export interface Flow {
 }
 
 export interface Board {
+	name: string;
 	flowOrder: string[];
 	flows: Record<string, Flow>;
 }

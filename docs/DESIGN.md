@@ -121,6 +121,8 @@ nodes, and entries directly:
 boards/{boardId}
 {
   updatedAt: Timestamp,
+  name: string,                    // blank by default; client falls back
+                                    // to showing the board ID when blank
   flowOrder: [flowId, ...],        // controls board-level drag-to-reorder
   flows: {
     [flowId]: {
@@ -158,9 +160,11 @@ Why this shape:
 - **No `position` field anywhere.** Layout is always derived from the graph
   structure (nodes + edges) at render time, never stored — matches "no free
   node dragging in v1."
-- **No board title/name.** Nothing reads it yet — no accounts, no
-  board-listing UI, just the direct capability URL. Trivial to add later
-  since Firestore is schemaless.
+- **Board `name` defaults blank, not to the ID.** The client displays
+  `name || boardId` as a fallback rather than writing the ID into the name
+  field at creation — keeps "no custom name set yet" distinguishable from
+  "named the same as its ID." Editable via a click-to-edit form on the
+  board page (click the heading, type, hit Enter).
 
 ## Backend architecture
 
