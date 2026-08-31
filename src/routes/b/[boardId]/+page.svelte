@@ -26,6 +26,7 @@
 	let addTarget = $state<AddTarget>(null);
 	let addOpen = $state(false);
 	let showSkillMenu = $state(false);
+	let showBossMenu = $state(false);
 	let editMode = $state(false);
 
 	const SKILLS = [
@@ -54,19 +55,64 @@
 		'Farming'
 	];
 
+	const BOSSES = [
+		{
+			name: 'Dagannoth Rex',
+			icon: 'https://oldschool.runescape.wiki/images/Dagannoth_Rex.png',
+			drops: [
+				{
+					name: 'Berserker ring',
+					icon: 'https://oldschool.runescape.wiki/images/Berserker_ring.png'
+				},
+				{ name: 'Warrior ring', icon: 'https://oldschool.runescape.wiki/images/Warrior_ring.png' },
+				{ name: 'Dragon axe', icon: 'https://oldschool.runescape.wiki/images/Dragon_axe.png' },
+				{
+					name: 'Pet Dagannoth Rex',
+					icon: 'https://oldschool.runescape.wiki/images/Pet_Dagannoth_Rex.png'
+				}
+			]
+		}
+	];
+
+	function findBossForNode(node: { entries: Record<string, { label: string }> }) {
+		const labels = Object.values(node.entries).map((e) => e.label);
+		for (const boss of BOSSES) {
+			if (labels.includes(boss.name) || boss.drops.some((d) => labels.includes(d.name))) {
+				return boss;
+			}
+		}
+		return null;
+	}
+
+	function findBossDirectlyInNode(node: { entries: Record<string, { label: string }> }) {
+		const labels = Object.values(node.entries).map((e) => e.label);
+		return BOSSES.find((boss) => labels.includes(boss.name)) ?? null;
+	}
+
 	function skillIconUrl(skill: string) {
 		return `https://oldschool.runescape.wiki/images/${skill}_icon.png`;
 	}
+
+	let dropsContext = $state<(typeof BOSSES)[number] | null>(null);
 
 	function openAddMenu(target: AddTarget) {
 		addTarget = target;
 		addOpen = true;
 		showSkillMenu = false;
+		showBossMenu = false;
+		if (!target) {
+			dropsContext = null;
+		} else {
+			const node = board.flows[target.flowId].nodes[target.nodeId];
+			dropsContext = target.mode === 'edge' ? findBossDirectlyInNode(node) : findBossForNode(node);
+		}
 	}
 
 	function closeAddFlow() {
 		addOpen = false;
 		showSkillMenu = false;
+		showBossMenu = false;
+		dropsContext = null;
 		addTarget = null;
 	}
 
@@ -238,7 +284,22 @@
 			}, 0);
 		}}
 	>
-		{#if showSkillMenu}
+		{#if dropsContext}
+			<div class="skill-menu">
+				{#each dropsContext.drops as drop, i (drop.name)}
+					<button
+						onclick={() => createGrind('item', drop.name, drop.icon)}
+						onkeydown={(e) => {
+							if (e.key === 'Escape') closeAddFlow();
+						}}
+						autofocus={i === 0}
+					>
+						<img src={drop.icon} alt="" />
+						{drop.name}
+					</button>
+				{/each}
+			</div>
+		{:else if showSkillMenu}
 			<div class="skill-menu">
 				{#each SKILLS as skill, i (skill)}
 					<button
@@ -257,6 +318,21 @@
 					</button>
 				{/each}
 			</div>
+		{:else if showBossMenu}
+			<div class="skill-menu">
+				{#each BOSSES as boss, i (boss.name)}
+					<button
+						onclick={() => createGrind('boss', boss.name, boss.icon)}
+						onkeydown={(e) => {
+							if (e.key === 'Escape') closeAddFlow();
+						}}
+						autofocus={i === 0}
+					>
+						<img src={boss.icon} alt="" />
+						{boss.name}
+					</button>
+				{/each}
+			</div>
 		{:else}
 			<div class="add-flow-menu">
 				<button
@@ -270,8 +346,7 @@
 					Skill
 				</button>
 				<button
-					onclick={() =>
-						createGrind('boss', '', 'https://oldschool.runescape.wiki/images/Combat_icon.png')}
+					onclick={() => (showBossMenu = true)}
 					onkeydown={(e) => {
 						if (e.key === 'Escape') closeAddFlow();
 					}}
