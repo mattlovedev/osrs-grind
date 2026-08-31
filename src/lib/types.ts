@@ -3,6 +3,7 @@ export type EntryType = 'skill' | 'boss' | 'item' | 'minigame';
 export interface Entry {
 	type: EntryType;
 	label: string;
+	icon: string;
 	done: boolean;
 }
 

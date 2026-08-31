@@ -151,6 +151,7 @@ boards/{boardId}
               type: "skill" | "boss" | "item" | "minigame",
               label: string,       // manual text for now; wikiRef reserved
                                     // for later once wiki scraping exists
+              icon: string,        // wiki-hotlinked image URL, "" if none
               done: boolean
             }
           }
