@@ -72,6 +72,22 @@
 					icon: 'https://oldschool.runescape.wiki/images/Pet_Dagannoth_Rex.png'
 				}
 			]
+		},
+		{
+			name: 'Dagannoth Prime',
+			icon: 'https://oldschool.runescape.wiki/images/Dagannoth_Prime.png',
+			drops: [
+				{
+					name: 'Mud battlestaff',
+					icon: 'https://oldschool.runescape.wiki/images/Mud_battlestaff.png'
+				},
+				{ name: 'Dragon axe', icon: 'https://oldschool.runescape.wiki/images/Dragon_axe.png' },
+				{ name: 'Seers ring', icon: 'https://oldschool.runescape.wiki/images/Seers_ring.png' },
+				{
+					name: 'Pet Dagannoth Prime',
+					icon: 'https://oldschool.runescape.wiki/images/Pet_Dagannoth_Prime.png'
+				}
+			]
 		}
 	];
 
@@ -79,26 +95,33 @@
 		{ name: 'Amulet of fury', icon: 'https://oldschool.runescape.wiki/images/Amulet_of_fury.png' }
 	];
 
-	function findBossForNode(node: { entries: Record<string, { label: string }> }) {
-		const labels = Object.values(node.entries).map((e) => e.label);
-		for (const boss of BOSSES) {
-			if (labels.includes(boss.name) || boss.drops.some((d) => labels.includes(d.name))) {
-				return boss;
+	function unionDrops(bosses: typeof BOSSES) {
+		const result: { name: string; icon: string }[] = [];
+		for (const boss of bosses) {
+			for (const drop of boss.drops) {
+				if (!result.some((d) => d.name === drop.name)) {
+					result.push(drop);
+				}
 			}
 		}
-		return null;
+		return result.length ? result : null;
 	}
 
-	function findBossDirectlyInNode(node: { entries: Record<string, { label: string }> }) {
+	function dropsForAppend(node: { entries: Record<string, { label: string }> }) {
 		const labels = Object.values(node.entries).map((e) => e.label);
-		return BOSSES.find((boss) => labels.includes(boss.name)) ?? null;
+		return unionDrops(BOSSES.filter((boss) => boss.drops.some((d) => labels.includes(d.name))));
+	}
+
+	function dropsForEdge(node: { entries: Record<string, { label: string }> }) {
+		const labels = Object.values(node.entries).map((e) => e.label);
+		return unionDrops(BOSSES.filter((boss) => labels.includes(boss.name)));
 	}
 
 	function skillIconUrl(skill: string) {
 		return `https://oldschool.runescape.wiki/images/${skill}_icon.png`;
 	}
 
-	let dropsContext = $state<(typeof BOSSES)[number] | null>(null);
+	let dropsContext = $state<{ name: string; icon: string }[] | null>(null);
 
 	function openAddMenu(target: AddTarget) {
 		addTarget = target;
@@ -110,7 +133,7 @@
 			dropsContext = null;
 		} else {
 			const node = board.flows[target.flowId].nodes[target.nodeId];
-			dropsContext = target.mode === 'edge' ? findBossDirectlyInNode(node) : findBossForNode(node);
+			dropsContext = target.mode === 'edge' ? dropsForEdge(node) : dropsForAppend(node);
 		}
 	}
 
@@ -293,7 +316,7 @@
 	>
 		{#if dropsContext}
 			<div class="skill-menu">
-				{#each dropsContext.drops as drop, i (drop.name)}
+				{#each dropsContext as drop, i (drop.name)}
 					<button
 						onclick={() => createGrind('item', drop.name, drop.icon)}
 						onkeydown={(e) => {
