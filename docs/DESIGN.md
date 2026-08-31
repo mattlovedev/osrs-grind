@@ -183,3 +183,13 @@ application-default login`) — no key files to manage or leak.
 
 - GCP project: `osrs-grind` (billing linked to "My Billing Account").
 - GitHub repo: `mattlovedev/osrs-grind` (private).
+- Firestore database: Native mode, region `us-central1` (permanent choice —
+  changing region later requires recreating the database).
+- Firebase registered on the project, with one Web App (`osrs-grind-web`,
+  App ID `1:549755295105:web:b5493d369c62ab49b0c480`). Its SDK config
+  (apiKey, authDomain, etc.) is safe to commit/embed client-side — it's not
+  a secret, access is controlled by Firestore Security Rules, not by hiding
+  this config. Not yet wired into the app.
+- Firestore Security Rules: not yet written (next step) — currently
+  whatever Firestore's default is, which should be treated as closed until
+  rules are deployed.
