@@ -1,0 +1,19 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /boards/{boardId} {
+      allow get: if true;
+      allow list: if false;
+      allow create, update: if isValidBoard(request.resource.data);
+      allow delete: if false;
+    }
+  }
+}
+
+function isValidBoard(data) {
+  return data.keys().hasOnly(['updatedAt', 'flowOrder', 'flows'])
+    && data.updatedAt is timestamp
+    && data.flowOrder is list
+    && data.flows is map;
+}

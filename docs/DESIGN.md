@@ -190,6 +190,8 @@ application-default login`) — no key files to manage or leak.
   (apiKey, authDomain, etc.) is safe to commit/embed client-side — it's not
   a secret, access is controlled by Firestore Security Rules, not by hiding
   this config. Not yet wired into the app.
-- Firestore Security Rules: not yet written (next step) — currently
-  whatever Firestore's default is, which should be treated as closed until
-  rules are deployed.
+- Firestore Security Rules: deployed (`firestore.rules`). `get` open to
+  anyone with a board's exact ID, `list` denied (load-bearing for the
+  capability-URL model — prevents enumerating all boards), `create`/`update`
+  require top-level shape validation, `delete` disabled for now (not a
+  feature yet, easy to open up later).
