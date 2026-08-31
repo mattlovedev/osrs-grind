@@ -6,7 +6,7 @@ service cloud.firestore {
       allow get: if true;
       allow list: if false;
       allow create, update: if isValidBoard(request.resource.data);
-      allow delete: if false;
+      allow delete: if true;
     }
   }
 }

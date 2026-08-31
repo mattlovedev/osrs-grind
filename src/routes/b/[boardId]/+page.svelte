@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { doc, onSnapshot, updateDoc, serverTimestamp } from 'firebase/firestore';
+	import { doc, onSnapshot, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { db } from '$lib/firebase';
 	import type { Board } from '$lib/types';
 	import type { PageData } from './$types';
@@ -41,6 +43,13 @@
 		editingName = false;
 	}
 
+	async function deleteBoard() {
+		if (!confirm('Delete this board? This cannot be undone.')) return;
+		const ref = doc(db, 'boards', data.boardId);
+		await deleteDoc(ref);
+		goto(resolve('/'));
+	}
+
 	async function addTestFlow() {
 		const ref = doc(db, 'boards', data.boardId);
 		const flowId = crypto.randomUUID().slice(0, 8);
@@ -65,5 +74,6 @@
 <p>Realtime listener connected: {live}</p>
 
 <button onclick={addTestFlow}>Add test flow</button>
+<button onclick={deleteBoard}>Delete board</button>
 
 <pre>{JSON.stringify(board, null, 2)}</pre>
