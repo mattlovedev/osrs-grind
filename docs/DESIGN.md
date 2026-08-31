@@ -25,16 +25,26 @@ small independent chains rather than one master path.
 - **Flow** — one independent grind chain/graph (e.g. "PvM Grind", "Blue Moons
   chain"). Flows on a board are unrelated to each other. No categories/
   grouping layer yet (may add later if useful — see Deferred).
-- **Node** — one atomic thing within a flow: a skill, a boss/monster, an
-  item, or a minigame. Never a bundle of multiple things.
-- **Edge** — a directed link between two nodes showing "this feeds into
-  that." A node can have multiple incoming edges (fan-in — e.g. two skills
-  required for one boss) and multiple outgoing edges (fan-out — e.g. one
-  boss dropping multiple tracked items).
-- **Node state** — a single boolean: done / not done. No enforcement logic —
-  edges are purely visual/organizational. You can toggle any node regardless
-  of the state of its neighbors, skip things, or mark something done out of
-  order. No AND/OR unlock rules.
+- **Node** — one cell in a flow's graph; what edges actually connect to/from.
+  A node holds one or more **entries** (see below). Whether to split
+  something into its own node or group it into an existing one is a
+  per-grind authoring choice, not a fixed rule — e.g. two skills required
+  for one boss can be modeled as two single-entry nodes with two converging
+  edges, or grouped into one node with one edge out, if you don't need to
+  distinguish them individually.
+- **Entry** — one atomic thing inside a node: a skill, a boss/monster, an
+  item, or a minigame. Has its own independent done/not-done state, even
+  when grouped with other entries in the same node (e.g. a 4-item node
+  where some entries are done and others aren't).
+- **Edge** — a directed link between two *nodes* (never between individual
+  entries) showing "this feeds into that." A node can have multiple
+  incoming edges (fan-in — e.g. two nodes required for one boss node) and
+  multiple outgoing edges (fan-out — e.g. one boss node leading to multiple
+  item nodes).
+- **Entry state** — a single boolean: done / not done. No enforcement logic —
+  edges are purely visual/organizational. You can toggle any entry
+  regardless of the state of its neighbors, skip things, or mark something
+  done out of order. No AND/OR unlock rules.
 
 ## Layout & interaction
 
@@ -75,6 +85,56 @@ small independent chains rather than one master path.
 - A third "skipped" node state (currently just done/not-done).
 - Free-text notes per node.
 - Templates / multi-user forking.
+
+## Data model (Firestore)
+
+One document per board — no subcollections. A board embeds all of its flows,
+nodes, and entries directly:
+
+```
+boards/{boardId}
+{
+  updatedAt: Timestamp,
+  flowOrder: [flowId, ...],        // controls board-level drag-to-reorder
+  flows: {
+    [flowId]: {
+      name: string,
+      nodes: {
+        [nodeId]: {
+          entries: {
+            [entryId]: {
+              type: "skill" | "boss" | "item" | "minigame",
+              label: string,       // manual text for now; wikiRef reserved
+                                    // for later once wiki scraping exists
+              done: boolean
+            }
+          }
+        }
+      },
+      edges: {
+        [edgeId]: { from: nodeId, to: nodeId }   // node-to-node only
+      }
+    }
+  }
+}
+```
+
+Why this shape:
+
+- **Single document, not subcollections.** One realtime listener gives the
+  whole board reactively, and it's cheaper (Firestore bills per document
+  read). Tradeoff: 1MiB document size cap — generous for a personal board,
+  worth revisiting if this goes multi-user/community-scale later.
+- **Maps keyed by ID, not arrays**, for flows/nodes/entries/edges. This
+  matters for realtime multi-device editing: a targeted field write like
+  `flows.<flowId>.nodes.<nodeId>.entries.<entryId>.done` can't clobber a
+  concurrent edit from another device the way rewriting a whole array could.
+- **No `position` field anywhere.** Layout is always derived from the graph
+  structure (nodes + edges) at render time, never stored — matches "no free
+  node dragging in v1."
+- **No board title/name.** Nothing reads it yet — no accounts, no
+  board-listing UI, just the direct capability URL. Trivial to add later
+  since Firestore is schemaless.
 
 ## Backend architecture
 
