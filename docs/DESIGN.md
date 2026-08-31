@@ -235,6 +235,14 @@ application-default login`) are still needed for one-off scripts that
   capability-URL model — prevents enumerating all boards), `create`/`update`
   require top-level shape validation, `delete` disabled for now (not a
   feature yet, easy to open up later).
+  - **⚠ TODO before deploying the app for real:** the rules file in the repo
+    has since gained the `name` field (board naming feature) but that
+    hasn't been redeployed to production — only the emulator picks up
+    `firestore.rules` automatically. Production is still running the
+    pre-`name` version. Redeploy with `firebase deploy --only
+firestore:rules --project osrs-grind` before/at actual deploy time, and
+    keep prod in sync with the repo from then on (or this note reappears
+    for every future rules change).
 - End-to-end plumbing wired and verified: `/` has a `createBoard` form
   action (Admin SDK, generates a `nanoid` board ID, redirects to
   `/b/[boardId]`); `/b/[boardId]` SSRs the board via Admin SDK (404s if
