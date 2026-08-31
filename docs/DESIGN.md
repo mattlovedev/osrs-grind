@@ -36,7 +36,7 @@ small independent chains rather than one master path.
   item, or a minigame. Has its own independent done/not-done state, even
   when grouped with other entries in the same node (e.g. a 4-item node
   where some entries are done and others aren't).
-- **Edge** — a directed link between two *nodes* (never between individual
+- **Edge** — a directed link between two _nodes_ (never between individual
   entries) showing "this feeds into that." A node can have multiple
   incoming edges (fan-in — e.g. two nodes required for one boss node) and
   multiple outgoing edges (fan-out — e.g. one boss node leading to multiple
@@ -195,3 +195,10 @@ application-default login`) — no key files to manage or leak.
   capability-URL model — prevents enumerating all boards), `create`/`update`
   require top-level shape validation, `delete` disabled for now (not a
   feature yet, easy to open up later).
+- End-to-end plumbing wired and verified: `/` has a `createBoard` form
+  action (Admin SDK, generates a `nanoid` board ID, redirects to
+  `/b/[boardId]`); `/b/[boardId]` SSRs the board via Admin SDK (404s if
+  missing) then hands off to the Firebase Web SDK client-side for realtime
+  `onSnapshot` sync, with a test "add flow" button proving writes go through
+  the deployed security rules. No graph UI yet — this only proves the data
+  layer works.
