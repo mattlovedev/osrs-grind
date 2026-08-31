@@ -12,7 +12,7 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { db } from '$lib/firebase';
-	import type { Board, EntryType } from '$lib/types';
+	import type { Board, EntryType, Flow } from '$lib/types';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -107,14 +107,36 @@
 		return result.length ? result : null;
 	}
 
-	function dropsForAppend(node: { entries: Record<string, { label: string }> }) {
+	function bossesDirectlyInNode(node: { entries: Record<string, { label: string }> }) {
+		const labels = Object.values(node.entries).map((e) => e.label);
+		return BOSSES.filter((boss) => labels.includes(boss.name));
+	}
+
+	function dropsForAppend(flow: Flow, nodeId: string) {
+		const node = flow.nodes[nodeId];
+
+		// A node containing a boss itself is always unrestricted, regardless of
+		// how it was reached - takes priority over everything below.
+		if (bossesDirectlyInNode(node).length) return null;
+
+		// Prefer inheriting the full boss context from whatever created this
+		// node (its incoming edge's source), rather than re-matching just this
+		// node's own label - a node holding one drop shared by multiple bosses
+		// (e.g. Dragon axe) would otherwise only find the subset of bosses that
+		// happen to share that specific item, losing the rest of the union.
+		const incomingEdge = Object.values(flow.edges ?? {}).find((e) => e.to === nodeId);
+		const sourceNode = incomingEdge ? flow.nodes[incomingEdge.from] : null;
+		const sourceBosses = sourceNode ? bossesDirectlyInNode(sourceNode) : [];
+		if (sourceBosses.length) return unionDrops(sourceBosses);
+
+		// No usable source context (no incoming edge, or the source isn't a
+		// recognized boss) - fall back to matching this node's own entries.
 		const labels = Object.values(node.entries).map((e) => e.label);
 		return unionDrops(BOSSES.filter((boss) => boss.drops.some((d) => labels.includes(d.name))));
 	}
 
 	function dropsForEdge(node: { entries: Record<string, { label: string }> }) {
-		const labels = Object.values(node.entries).map((e) => e.label);
-		return unionDrops(BOSSES.filter((boss) => labels.includes(boss.name)));
+		return unionDrops(bossesDirectlyInNode(node));
 	}
 
 	function skillIconUrl(skill: string) {
@@ -132,8 +154,11 @@
 		if (!target) {
 			dropsContext = null;
 		} else {
-			const node = board.flows[target.flowId].nodes[target.nodeId];
-			dropsContext = target.mode === 'edge' ? dropsForEdge(node) : dropsForAppend(node);
+			const flow = board.flows[target.flowId];
+			dropsContext =
+				target.mode === 'edge'
+					? dropsForEdge(flow.nodes[target.nodeId])
+					: dropsForAppend(flow, target.nodeId);
 		}
 	}
 
@@ -219,11 +244,19 @@
 		}
 		if (!confirm('Delete this node and everything in it? This cannot be undone.')) return;
 		const ref = doc(db, 'boards', data.boardId);
-		await updateDoc(ref, {
+		const edges = board.flows[flowId]?.edges ?? {};
+		const orphanedEdgeIds = Object.entries(edges)
+			.filter(([, edge]) => edge.from === nodeId || edge.to === nodeId)
+			.map(([edgeId]) => edgeId);
+		const updates: Record<string, unknown> = {
 			updatedAt: serverTimestamp(),
 			[`flows.${flowId}.nodeOrder`]: arrayRemove(nodeId),
 			[`flows.${flowId}.nodes.${nodeId}`]: deleteField()
-		});
+		};
+		for (const edgeId of orphanedEdgeIds) {
+			updates[`flows.${flowId}.edges.${edgeId}`] = deleteField();
+		}
+		await updateDoc(ref, updates);
 	}
 
 	async function deleteEntry(flowId: string, nodeId: string, entryId: string) {
