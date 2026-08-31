@@ -1,5 +1,12 @@
 <script lang="ts">
-	import { doc, onSnapshot, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+	import {
+		doc,
+		onSnapshot,
+		updateDoc,
+		deleteDoc,
+		serverTimestamp,
+		arrayUnion
+	} from 'firebase/firestore';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { db } from '$lib/firebase';
@@ -12,7 +19,10 @@
 	let board = $derived(liveBoard ?? data.board);
 	let editingName = $state(false);
 	let nameDraft = $state('');
-	let showAddMenu = $state(false);
+
+	type AddTarget = { flowId: string; nodeId: string } | null;
+	let addTarget = $state<AddTarget>(null);
+	let addOpen = $state(false);
 	let showSkillMenu = $state(false);
 
 	const SKILLS = [
@@ -45,9 +55,16 @@
 		return `https://oldschool.runescape.wiki/images/${skill}_icon.png`;
 	}
 
-	function closeAddFlow() {
-		showAddMenu = false;
+	function openAddMenu(target: AddTarget) {
+		addTarget = target;
+		addOpen = true;
 		showSkillMenu = false;
+	}
+
+	function closeAddFlow() {
+		addOpen = false;
+		showSkillMenu = false;
+		addTarget = null;
 	}
 
 	$effect(() => {
@@ -89,20 +106,39 @@
 		goto(resolve('/'));
 	}
 
-	async function createFirstEntry(type: EntryType, label: string, icon: string) {
+	async function createGrind(type: EntryType, label: string, icon: string) {
 		const ref = doc(db, 'boards', data.boardId);
-		const flowId = crypto.randomUUID().slice(0, 8);
-		const nodeId = crypto.randomUUID().slice(0, 8);
 		const entryId = crypto.randomUUID().slice(0, 8);
-		await updateDoc(ref, {
-			updatedAt: serverTimestamp(),
-			flowOrder: [...board.flowOrder, flowId],
-			[`flows.${flowId}`]: {
-				name: '',
-				nodes: { [nodeId]: { entries: { [entryId]: { type, label, icon, done: false } } } },
-				edges: {}
-			}
-		});
+		if (addTarget) {
+			const { flowId, nodeId } = addTarget;
+			await updateDoc(ref, {
+				updatedAt: serverTimestamp(),
+				[`flows.${flowId}.nodes.${nodeId}.entries.${entryId}`]: {
+					type,
+					label,
+					icon,
+					done: false
+				},
+				[`flows.${flowId}.nodes.${nodeId}.entryOrder`]: arrayUnion(entryId)
+			});
+		} else {
+			const flowId = crypto.randomUUID().slice(0, 8);
+			const nodeId = crypto.randomUUID().slice(0, 8);
+			await updateDoc(ref, {
+				updatedAt: serverTimestamp(),
+				flowOrder: [...board.flowOrder, flowId],
+				[`flows.${flowId}`]: {
+					name: '',
+					nodes: {
+						[nodeId]: {
+							entries: { [entryId]: { type, label, icon, done: false } },
+							entryOrder: [entryId]
+						}
+					},
+					edges: {}
+				}
+			});
+		}
 		closeAddFlow();
 	}
 
@@ -110,6 +146,62 @@
 		return label.match(/^\d+/)?.[0] ?? null;
 	}
 </script>
+
+{#snippet addMenu()}
+	<div
+		class="add-flow-container"
+		onfocusout={(e) => {
+			const container = e.currentTarget;
+			setTimeout(() => {
+				if (!container.contains(document.activeElement)) closeAddFlow();
+			}, 0);
+		}}
+	>
+		{#if showSkillMenu}
+			<div class="skill-menu">
+				{#each SKILLS as skill, i (skill)}
+					<button
+						onclick={() => {
+							const level = prompt(`Target level for ${skill}?`);
+							if (!level) return;
+							createGrind('skill', `${level} ${skill}`, skillIconUrl(skill));
+						}}
+						onkeydown={(e) => {
+							if (e.key === 'Escape') closeAddFlow();
+						}}
+						autofocus={i === 0}
+					>
+						<img src={skillIconUrl(skill)} alt="" />
+						{skill}
+					</button>
+				{/each}
+			</div>
+		{:else}
+			<div class="add-flow-menu">
+				<button
+					onclick={() => (showSkillMenu = true)}
+					onkeydown={(e) => {
+						if (e.key === 'Escape') closeAddFlow();
+					}}
+					autofocus
+				>
+					<img src="https://oldschool.runescape.wiki/images/Stats_icon.png?1b467" alt="" />
+					Skill
+				</button>
+				<button
+					onclick={() =>
+						createGrind('boss', '', 'https://oldschool.runescape.wiki/images/Combat_icon.png')}
+					onkeydown={(e) => {
+						if (e.key === 'Escape') closeAddFlow();
+					}}
+				>
+					<img src="https://oldschool.runescape.wiki/images/Combat_icon.png" alt="" />
+					Kill
+				</button>
+			</div>
+		{/if}
+	</div>
+{/snippet}
 
 <h1>
 	{#if editingName}
@@ -139,79 +231,41 @@
 
 <button class="delete-board" onclick={deleteBoard}>Delete board</button>
 
-{#if board.flowOrder.length === 0}
-	<div
-		class="add-flow-container"
-		onfocusout={(e) => {
-			const container = e.currentTarget;
-			setTimeout(() => {
-				if (!container.contains(document.activeElement)) closeAddFlow();
-			}, 0);
-		}}
-	>
-		{#if showSkillMenu}
-			<div class="skill-menu">
-				{#each SKILLS as skill, i (skill)}
-					<button
-						onclick={() => {
-							const level = prompt(`Target level for ${skill}?`);
-							if (!level) return;
-							createFirstEntry('skill', `${level} ${skill}`, skillIconUrl(skill));
-						}}
-						onkeydown={(e) => {
-							if (e.key === 'Escape') closeAddFlow();
-						}}
-						autofocus={i === 0}
-					>
-						<img src={skillIconUrl(skill)} alt="" />
-						{skill}
-					</button>
+{#each board.flowOrder as flowId (flowId)}
+	{#each Object.entries(board.flows[flowId]?.nodes ?? {}) as [nodeId, node] (nodeId)}
+		<div class="node">
+			<div class="node-entries">
+				{#each node.entryOrder ?? Object.keys(node.entries) as entryId (entryId)}
+					{@const entry = node.entries[entryId]}
+					<div class="entry-cell">
+						{#if entry.icon}
+							<img src={entry.icon} alt={entry.label} />
+						{/if}
+						{#if levelFromLabel(entry.label)}
+							<span class="level-badge">{levelFromLabel(entry.label)}</span>
+						{/if}
+					</div>
 				{/each}
 			</div>
-		{:else if showAddMenu}
-			<div class="add-flow-menu">
+			{#if addOpen && addTarget?.flowId === flowId && addTarget?.nodeId === nodeId}
+				{@render addMenu()}
+			{:else}
 				<button
-					onclick={() => (showSkillMenu = true)}
-					onkeydown={(e) => {
-						if (e.key === 'Escape') closeAddFlow();
-					}}
-					autofocus
+					class="node-add-button"
+					title="Add to this node"
+					onclick={() => openAddMenu({ flowId, nodeId })}
 				>
-					<img src="https://oldschool.runescape.wiki/images/Stats_icon.png?1b467" alt="" />
-					Skill
+					+
 				</button>
-				<button
-					onclick={() =>
-						createFirstEntry('boss', '', 'https://oldschool.runescape.wiki/images/Combat_icon.png')}
-					onkeydown={(e) => {
-						if (e.key === 'Escape') closeAddFlow();
-					}}
-				>
-					<img src="https://oldschool.runescape.wiki/images/Combat_icon.png" alt="" />
-					Kill
-				</button>
-			</div>
-		{:else}
-			<button class="add-flow-button" title="Add grind" onclick={() => (showAddMenu = true)}
-				>+</button
-			>
-		{/if}
-	</div>
-{:else}
-	{#each board.flowOrder as flowId (flowId)}
-		{#each Object.entries(board.flows[flowId]?.nodes ?? {}) as [nodeId, node] (nodeId)}
-			{#each Object.entries(node.entries) as [entryId, entry] (entryId)}
-				<div class="entry-cell">
-					{#if entry.icon}
-						<img src={entry.icon} alt={entry.label} />
-					{/if}
-					{#if levelFromLabel(entry.label)}
-						<span class="level-badge">{levelFromLabel(entry.label)}</span>
-					{/if}
-				</div>
-			{/each}
-		{/each}
+			{/if}
+		</div>
 	{/each}
+{/each}
+
+{#if addOpen && addTarget === null}
+	{@render addMenu()}
+{:else if addTarget === null}
+	<button class="add-flow-button" title="Add grind" onclick={() => openAddMenu(null)}>+</button>
 {/if}
 
 <style>
@@ -266,7 +320,7 @@
 		display: flex;
 		flex-direction: column;
 		margin: 2rem auto;
-		width: 12rem;
+		width: 16rem;
 		max-height: 20rem;
 		overflow-y: auto;
 	}
@@ -274,6 +328,7 @@
 	.skill-menu button {
 		font-size: 1.5rem;
 		text-align: left;
+		white-space: nowrap;
 	}
 
 	.skill-menu img {
@@ -289,35 +344,54 @@
 		width: 100%;
 	}
 
+	.node {
+		display: flex;
+		align-items: center;
+		width: fit-content;
+		margin: 2rem auto;
+	}
+
+	.node-entries {
+		display: grid;
+		grid-template-rows: repeat(2, auto);
+		grid-auto-flow: column;
+	}
+
 	.entry-cell {
 		position: relative;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 4rem;
-		height: 4rem;
-		margin: 2rem auto;
+		width: 2.75rem;
+		height: 2.75rem;
 		border: 1px solid #999;
 	}
 
 	.entry-cell img {
-		max-width: 70%;
-		max-height: 70%;
+		max-width: 85%;
+		max-height: 85%;
 	}
 
 	.level-badge {
 		position: absolute;
-		bottom: -0.5rem;
-		left: 50%;
-		transform: translateX(-50%);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 1.5rem;
-		height: 1.5rem;
-		border-radius: 50%;
-		background: white;
-		border: 1px solid #999;
-		font-size: 0.75rem;
+		bottom: 0.1rem;
+		left: 0.1rem;
+		font-size: 0.65rem;
+		line-height: 1;
+		padding: 0.05rem 0.2rem;
+		background: rgba(255, 255, 255, 0.85);
+		border-radius: 0.2rem;
+	}
+
+	.node-add-button {
+		width: 2.75rem;
+		height: 2.75rem;
+		font-size: 1.5rem;
+		opacity: 0;
+	}
+
+	.node:hover .node-add-button,
+	.node:focus-within .node-add-button {
+		opacity: 1;
 	}
 </style>

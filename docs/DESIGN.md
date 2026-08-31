@@ -154,7 +154,12 @@ boards/{boardId}
               icon: string,        // wiki-hotlinked image URL, "" if none
               done: boolean
             }
-          }
+          },
+          entryOrder: [entryId, ...]   // explicit render order within the
+                                        // node - object key order isn't
+                                        // reliable for our random string IDs
+                                        // (an ID that happens to look fully
+                                        // numeric would sort first in JS)
         }
       },
       edges: {
@@ -175,6 +180,10 @@ Why this shape:
   matters for realtime multi-device editing: a targeted field write like
   `flows.<flowId>.nodes.<nodeId>.entries.<entryId>.done` can't clobber a
   concurrent edit from another device the way rewriting a whole array could.
+  Render order within a map is tracked separately via an explicit `*Order`
+  array (`flowOrder` at the board level, `entryOrder` per node) rather than
+  relying on object key iteration order, which isn't reliable for our
+  random string IDs.
 - **No `position` field anywhere.** Layout is always derived from the graph
   structure (nodes + edges) at render time, never stored — matches "no free
   node dragging in v1."

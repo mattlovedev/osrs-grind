@@ -9,6 +9,7 @@ export interface Entry {
 
 export interface Node {
 	entries: Record<string, Entry>;
+	entryOrder: string[];
 }
 
 export interface Edge {
