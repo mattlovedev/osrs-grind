@@ -1,5 +1,6 @@
+import { dev } from '$app/environment';
 import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import {
 	PUBLIC_FIREBASE_API_KEY,
 	PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -21,3 +22,15 @@ const firebaseConfig = {
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
+
+// Point local dev at the Firestore emulator instead of live data. Guarded
+// against Vite HMR re-running this module and calling connect twice, which
+// throws.
+declare global {
+	var __firestoreEmulatorConnected: boolean | undefined;
+}
+
+if (dev && !globalThis.__firestoreEmulatorConnected) {
+	connectFirestoreEmulator(db, '127.0.0.1', 8080);
+	globalThis.__firestoreEmulatorConnected = true;
+}

@@ -187,11 +187,21 @@ No traditional backend API/service. Instead, a hybrid:
   plain, predictable Node server.
 - **Database**: Firestore, **Native mode** (not Datastore mode) — chosen for
   built-in realtime listeners, useful for near-live sync across devices.
+- **Local dev uses the Firestore Emulator, not live data.** Run `npm run
+emulator` alongside `npm run dev` — both the client Web SDK
+  (`connectFirestoreEmulator`) and server Admin SDK (`FIRESTORE_EMULATOR_HOST`)
+  auto-connect to it when SvelteKit's `dev` flag is true, so local testing
+  never touches real boards. Ports: Firestore 8080, emulator UI 4000 (see
+  `firebase.json`). Security rules load straight from `firestore.rules` on
+  emulator startup, so rule changes are testable locally without deploying.
 - **Auth to GCP**:
-  - Local dev: Application Default Credentials (`gcloud auth
-application-default login`) — no key files to manage or leak.
+  - Local dev: not required day-to-day anymore, since the emulator doesn't
+    check credentials. Application Default Credentials (`gcloud auth
+application-default login`) are still needed for one-off scripts that
+    touch real production data (e.g. the cleanup scripts used to verify the
+    plumbing during initial setup).
   - Production (Cloud Run): the Cloud Run service's attached service
-    account — also no key files.
+    account — no key files.
 - **Package manager**: npm.
 - **Lint/format**: ESLint + Prettier.
 - **Testing**: none yet. Revisit when the flow auto-layout algorithm is
