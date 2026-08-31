@@ -76,6 +76,15 @@ small independent chains rather than one master path.
   Wiki. Scraping approach TBD, not needed for early scaffolding.
 - The app never connects to or syncs with a player's actual live game
   account/data. All progress is manually toggled by the user.
+- **Icons are currently hotlinked directly from the wiki** (e.g.
+  `oldschool.runescape.wiki/images/Stats_icon.png`), not self-hosted. Fine
+  for now at tiny scale (2 icons), and the wiki sets aggressive caching
+  headers so repeat loads are already fast. Worth revisiting once real
+  traffic/scale shows up — mainly to avoid hammering a community-run wiki's
+  bandwidth, and for resilience against their uptime/hotlink policy — by
+  downloading and self-hosting icons as part of whatever wiki-scraping
+  pipeline eventually gets built (same problem as pulling item/monster
+  text data, just for images).
 
 ## Deferred (explicitly not v1)
 
@@ -85,10 +94,18 @@ small independent chains rather than one master path.
 - A third "skipped" node state (currently just done/not-done).
 - Free-text notes per node.
 - Templates / multi-user forking.
-- **Visual styling entirely.** Building for functionality only right now —
-  unstyled/minimally-styled markup is fine. Styling for both desktop and
-  mobile web is a deliberate later pass, not an ongoing concern during
-  feature build-out.
+- **Visual styling, except the board detail page.** The home page (`/`)
+  stays unstyled/functionality-only for now. The board detail page
+  (`/b/[boardId]`) styling is active work as of 2026-08-31 — scoped to that
+  page only (no shared/global stylesheet yet), light theme, not
+  mobile-responsive for this pass. Component look-and-feel is user-directed
+  rather than proposed. Update this note again if/when scope changes
+  further (e.g. once the home page or a global stylesheet gets its own
+  pass).
+- Mobile-responsive styling — deferred even though the underlying
+  interaction model (auto-layout, no free dragging) was already chosen to
+  make mobile support straightforward later. Styling itself hasn't been
+  made responsive yet.
 
 ## Roadmap — graph UI (not started)
 
