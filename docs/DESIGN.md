@@ -76,6 +76,26 @@ small independent chains rather than one master path.
 - Free-text notes per node.
 - Templates / multi-user forking.
 
+## Backend architecture
+
+No traditional backend API/service. Instead, a hybrid:
+
+- **Initial page load (SSR)**: SvelteKit server (`+page.server.ts`, Firestore
+  Admin SDK) fetches the board doc server-side for a fast first paint with
+  no loading spinner — important for mobile.
+- **After load**: the browser switches to the **Firebase Web SDK**, talking
+  directly to Firestore for all reads/writes and realtime listening. This is
+  what gives cross-device sync (edit on desktop, see it update on phone)
+  without any server round-trip or custom API.
+- Access control is enforced by **Firestore Security Rules**, not
+  server-side auth — rules just check "does the request carry the right
+  board ID," matching the capability-URL model. No REST API to design; the
+  "backend" is effectively Firestore + its rules. Security rules are the one
+  piece here worth extra care, since a mistake there is the gap between
+  "unguessable URL" and "world-writable database."
+- All code (SSR server logic and client Firestore logic) stays TypeScript in
+  the single SvelteKit repo — no separate backend service/language.
+
 ## Stack
 
 - **Frontend/app**: SvelteKit, TypeScript, `adapter-node`.
