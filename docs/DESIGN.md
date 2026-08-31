@@ -85,6 +85,10 @@ small independent chains rather than one master path.
 - A third "skipped" node state (currently just done/not-done).
 - Free-text notes per node.
 - Templates / multi-user forking.
+- **Visual styling entirely.** Building for functionality only right now —
+  unstyled/minimally-styled markup is fine. Styling for both desktop and
+  mobile web is a deliberate later pass, not an ongoing concern during
+  feature build-out.
 
 ## Roadmap — graph UI (not started)
 
