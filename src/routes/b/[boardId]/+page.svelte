@@ -26,6 +26,7 @@
 	let addTarget = $state<AddTarget>(null);
 	let addOpen = $state(false);
 	let showSkillMenu = $state(false);
+	let editMode = $state(false);
 
 	const SKILLS = [
 		'Attack',
@@ -67,6 +68,11 @@
 		addOpen = false;
 		showSkillMenu = false;
 		addTarget = null;
+	}
+
+	function toggleEditMode() {
+		editMode = !editMode;
+		if (!editMode) closeAddFlow();
 	}
 
 	$effect(() => {
@@ -296,11 +302,16 @@
 	{/if}
 </h1>
 
-<button class="delete-board" onclick={deleteBoard}>Delete board</button>
+<div class="top-right-actions">
+	<button class="edit-board" onclick={toggleEditMode}
+		>{editMode ? 'Exit edit' : 'Edit board'}</button
+	>
+	<button class="delete-board" onclick={deleteBoard}>Delete board</button>
+</div>
 
 {#each board.flowOrder as flowId (flowId)}
 	{@const flow = board.flows[flowId]}
-	<div class="flow">
+	<div class="flow" class:editing={editMode}>
 		<button class="flow-delete-button" title="Delete grind" onclick={() => deleteFlow(flowId)}>
 			&times;
 		</button>
@@ -309,11 +320,11 @@
 			{#if i > 0}
 				<span class="edge-arrow">&rarr;</span>
 			{/if}
-			<div class="node">
+			<div class="node" class:editing={editMode}>
 				<div class="node-entries">
 					{#each node.entryOrder ?? Object.keys(node.entries) as entryId (entryId)}
 						{@const entry = node.entries[entryId]}
-						<div class="entry-cell">
+						<div class="entry-cell" class:editing={editMode}>
 							{#if entry.icon}
 								<img src={entry.icon} alt={entry.label} />
 							{/if}
@@ -360,10 +371,12 @@
 	</div>
 {/each}
 
-{#if addOpen && addTarget === null}
-	{@render addMenu()}
-{:else if addTarget === null}
-	<button class="add-flow-button" title="Add grind" onclick={() => openAddMenu(null)}>+</button>
+{#if editMode}
+	{#if addOpen && addTarget === null}
+		{@render addMenu()}
+	{:else if addTarget === null}
+		<button class="add-flow-button" title="Add grind" onclick={() => openAddMenu(null)}>+</button>
+	{/if}
 {/if}
 
 <style>
@@ -380,10 +393,12 @@
 		text-decoration: underline;
 	}
 
-	.delete-board {
+	.top-right-actions {
 		position: fixed;
 		top: 1rem;
 		right: 1rem;
+		display: flex;
+		gap: 0.5rem;
 	}
 
 	.add-flow-button {
@@ -450,6 +465,9 @@
 		justify-content: center;
 		width: fit-content;
 		margin: 2rem auto;
+	}
+
+	.flow.editing {
 		padding: 0.75rem;
 		border: 1px solid #999;
 	}
@@ -467,8 +485,8 @@
 		pointer-events: none;
 	}
 
-	.flow:hover .flow-delete-button,
-	.flow:focus-within .flow-delete-button {
+	.flow.editing:hover .flow-delete-button,
+	.flow.editing:focus-within .flow-delete-button {
 		opacity: 1;
 		pointer-events: auto;
 	}
@@ -529,8 +547,8 @@
 		pointer-events: none;
 	}
 
-	.entry-cell:hover .entry-delete-button,
-	.entry-cell:focus-within .entry-delete-button {
+	.entry-cell.editing:hover .entry-delete-button,
+	.entry-cell.editing:focus-within .entry-delete-button {
 		opacity: 1;
 		pointer-events: auto;
 	}
@@ -568,12 +586,12 @@
 		font-size: 1rem;
 	}
 
-	.node:hover .node-add-button,
-	.node:hover .node-edge-button,
-	.node:hover .node-delete-button,
-	.node:focus-within .node-add-button,
-	.node:focus-within .node-edge-button,
-	.node:focus-within .node-delete-button {
+	.node.editing:hover .node-add-button,
+	.node.editing:hover .node-edge-button,
+	.node.editing:hover .node-delete-button,
+	.node.editing:focus-within .node-add-button,
+	.node.editing:focus-within .node-edge-button,
+	.node.editing:focus-within .node-delete-button {
 		opacity: 1;
 		pointer-events: auto;
 	}
