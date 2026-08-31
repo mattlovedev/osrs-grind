@@ -326,6 +326,7 @@
 		</button>
 		{#each flow?.nodeOrder ?? Object.keys(flow?.nodes ?? {}) as nodeId, i (nodeId)}
 			{@const node = flow.nodes[nodeId]}
+			{@const isTailNode = !Object.values(flow.edges ?? {}).some((e) => e.from === nodeId)}
 			{#if i > 0}
 				<span class="edge-arrow">&rarr;</span>
 			{/if}
@@ -374,13 +375,15 @@
 					>
 						+
 					</button>
-					<button
-						class="node-edge-button"
-						title="Add connected grind"
-						onclick={() => openAddMenu({ flowId, nodeId, mode: 'edge' })}
-					>
-						&rarr;
-					</button>
+					{#if isTailNode}
+						<button
+							class="node-edge-button"
+							title="Add connected grind"
+							onclick={() => openAddMenu({ flowId, nodeId, mode: 'edge' })}
+						>
+							&rarr;
+						</button>
+					{/if}
 					<button
 						class="node-delete-button"
 						title="Delete node"

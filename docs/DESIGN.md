@@ -37,10 +37,17 @@ small independent chains rather than one master path.
   when grouped with other entries in the same node (e.g. a 4-item node
   where some entries are done and others aren't).
 - **Edge** — a directed link between two _nodes_ (never between individual
-  entries) showing "this feeds into that." A node can have multiple
-  incoming edges (fan-in — e.g. two nodes required for one boss node) and
-  multiple outgoing edges (fan-out — e.g. one boss node leading to multiple
-  item nodes).
+  entries) showing "this feeds into that." The data model supports a node
+  having multiple incoming edges (fan-in) and multiple outgoing edges
+  (fan-out — e.g. one boss node leading to multiple item nodes), matching
+  the original "two skills into one boss, one boss into two drops" vision.
+  **Current UI restriction (2026-08-31):** the connect-arrow button only
+  appears on tail nodes (nodes with no outgoing edge yet), so fan-out
+  can't actually be created right now — deliberately simplified since the
+  renderer only draws a straight nodeOrder-sequence line and would
+  misrepresent real branching. Fan-in was never blocked (a node can still
+  receive edges from elsewhere) but nothing in the current build creates
+  that either. Revisit both once real edge-based layout exists.
 - **Entry state** — a single boolean: done / not done. No enforcement logic —
   edges are purely visual/organizational. You can toggle any entry
   regardless of the state of its neighbors, skip things, or mark something
