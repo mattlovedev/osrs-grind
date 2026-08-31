@@ -164,6 +164,15 @@
 		});
 	}
 
+	async function toggleDone(flowId: string, nodeId: string, entryId: string, done: boolean) {
+		if (editMode) return;
+		const ref = doc(db, 'boards', data.boardId);
+		await updateDoc(ref, {
+			updatedAt: serverTimestamp(),
+			[`flows.${flowId}.nodes.${nodeId}.entries.${entryId}.done`]: !done
+		});
+	}
+
 	async function createGrind(type: EntryType, label: string, icon: string) {
 		const ref = doc(db, 'boards', data.boardId);
 		const entryId = crypto.randomUUID().slice(0, 8);
@@ -324,7 +333,18 @@
 				<div class="node-entries">
 					{#each node.entryOrder ?? Object.keys(node.entries) as entryId (entryId)}
 						{@const entry = node.entries[entryId]}
-						<div class="entry-cell" class:editing={editMode}>
+						<div
+							class="entry-cell"
+							class:editing={editMode}
+							class:done={entry.done}
+							role="button"
+							tabindex="0"
+							onclick={() => toggleDone(flowId, nodeId, entryId, entry.done)}
+							onkeydown={(e) => {
+								if (e.key === 'Enter' || e.key === ' ')
+									toggleDone(flowId, nodeId, entryId, entry.done);
+							}}
+						>
 							{#if entry.icon}
 								<img src={entry.icon} alt={entry.label} />
 							{/if}
@@ -334,7 +354,10 @@
 							<button
 								class="entry-delete-button"
 								title="Delete entry"
-								onclick={() => deleteEntry(flowId, nodeId, entryId)}
+								onclick={(e) => {
+									e.stopPropagation();
+									deleteEntry(flowId, nodeId, entryId);
+								}}
 							>
 								&times;
 							</button>
@@ -516,6 +539,14 @@
 		width: 2.75rem;
 		height: 2.75rem;
 		border: 1px solid #999;
+	}
+
+	.entry-cell:not(.editing) {
+		cursor: pointer;
+	}
+
+	.entry-cell.done {
+		background: #b9eab0;
 	}
 
 	.entry-cell img {
