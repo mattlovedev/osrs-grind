@@ -86,6 +86,28 @@ small independent chains rather than one master path.
 - Free-text notes per node.
 - Templates / multi-user forking.
 
+## Roadmap — graph UI (not started)
+
+Data layer is done and verified (see Infrastructure section below). The
+graph UI is the next major chunk of work, intentionally taken slowly and
+step by step rather than all at once. Planned order:
+
+1. **Auto-layout algorithm** — pure logic: given a flow's nodes/edges,
+   compute layered left-to-right positions. Worth actual Vitest unit tests
+   (see Stack section) since this is the fiddliest pure-logic piece.
+2. **Read-only rendering** — render one flow (nodes with their entries,
+   arrows between nodes) from the layout output, using seed data. Proves
+   the visual side before wiring up editing.
+3. **Entry toggle** — click an entry to flip done/not-done, written
+   straight to Firestore.
+4. **Editing** — add/remove nodes, entries, and edges. The actual authoring
+   UI; the biggest piece of this list.
+5. **Multiple flows per board** — render several flows on one board, plus
+   the board-level drag-to-reorder (see Layout & interaction section).
+
+Each step should get its own focused session rather than being rushed
+through — update this list's status as steps complete or the plan changes.
+
 ## Data model (Firestore)
 
 One document per board — no subcollections. A board embeds all of its flows,
