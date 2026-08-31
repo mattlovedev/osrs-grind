@@ -27,6 +27,7 @@
 	let addOpen = $state(false);
 	let showSkillMenu = $state(false);
 	let showBossMenu = $state(false);
+	let showItemMenu = $state(false);
 	let editMode = $state(false);
 
 	const SKILLS = [
@@ -74,6 +75,10 @@
 		}
 	];
 
+	const ITEMS = [
+		{ name: 'Amulet of fury', icon: 'https://oldschool.runescape.wiki/images/Amulet_of_fury.png' }
+	];
+
 	function findBossForNode(node: { entries: Record<string, { label: string }> }) {
 		const labels = Object.values(node.entries).map((e) => e.label);
 		for (const boss of BOSSES) {
@@ -100,6 +105,7 @@
 		addOpen = true;
 		showSkillMenu = false;
 		showBossMenu = false;
+		showItemMenu = false;
 		if (!target) {
 			dropsContext = null;
 		} else {
@@ -112,6 +118,7 @@
 		addOpen = false;
 		showSkillMenu = false;
 		showBossMenu = false;
+		showItemMenu = false;
 		dropsContext = null;
 		addTarget = null;
 	}
@@ -269,8 +276,8 @@
 		closeAddFlow();
 	}
 
-	function levelFromLabel(label: string): string | null {
-		return label.match(/^\d+/)?.[0] ?? null;
+	function badgeFromLabel(label: string): string | null {
+		return label.match(/^\d\S*/)?.[0] ?? null;
 	}
 </script>
 
@@ -333,6 +340,26 @@
 					</button>
 				{/each}
 			</div>
+		{:else if showItemMenu}
+			<div class="skill-menu">
+				{#each ITEMS as item, i (item.name)}
+					<button
+						onclick={() => {
+							const qty = prompt(`How many ${item.name}?`, '1');
+							if (!qty) return;
+							const label = qty === '1' ? item.name : `${qty} ${item.name}`;
+							createGrind('item', label, item.icon);
+						}}
+						onkeydown={(e) => {
+							if (e.key === 'Escape') closeAddFlow();
+						}}
+						autofocus={i === 0}
+					>
+						<img src={item.icon} alt="" />
+						{item.name}
+					</button>
+				{/each}
+			</div>
 		{:else}
 			<div class="add-flow-menu">
 				<button
@@ -353,6 +380,15 @@
 				>
 					<img src="https://oldschool.runescape.wiki/images/Combat_icon.png" alt="" />
 					Kill
+				</button>
+				<button
+					onclick={() => (showItemMenu = true)}
+					onkeydown={(e) => {
+						if (e.key === 'Escape') closeAddFlow();
+					}}
+				>
+					<img src="https://oldschool.runescape.wiki/images/Inventory.png" alt="" />
+					Item
 				</button>
 			</div>
 		{/if}
@@ -424,8 +460,8 @@
 							{#if entry.icon}
 								<img src={entry.icon} alt={entry.label} />
 							{/if}
-							{#if levelFromLabel(entry.label)}
-								<span class="level-badge">{levelFromLabel(entry.label)}</span>
+							{#if badgeFromLabel(entry.label)}
+								<span class="level-badge">{badgeFromLabel(entry.label)}</span>
 							{/if}
 							<button
 								class="entry-delete-button"
