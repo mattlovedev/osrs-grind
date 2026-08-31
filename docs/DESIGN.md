@@ -107,7 +107,7 @@ No traditional backend API/service. Instead, a hybrid:
   built-in realtime listeners, useful for near-live sync across devices.
 - **Auth to GCP**:
   - Local dev: Application Default Credentials (`gcloud auth
-    application-default login`) — no key files to manage or leak.
+application-default login`) — no key files to manage or leak.
   - Production (Cloud Run): the Cloud Run service's attached service
     account — also no key files.
 - **Package manager**: npm.
