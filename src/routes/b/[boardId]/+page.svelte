@@ -4,8 +4,10 @@
 		onSnapshot,
 		updateDoc,
 		deleteDoc,
+		deleteField,
 		serverTimestamp,
-		arrayUnion
+		arrayUnion,
+		arrayRemove
 	} from 'firebase/firestore';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
@@ -20,7 +22,7 @@
 	let editingName = $state(false);
 	let nameDraft = $state('');
 
-	type AddTarget = { flowId: string; nodeId: string } | null;
+	type AddTarget = { flowId: string; nodeId: string; mode: 'append' | 'edge' } | null;
 	let addTarget = $state<AddTarget>(null);
 	let addOpen = $state(false);
 	let showSkillMenu = $state(false);
@@ -84,7 +86,7 @@
 	});
 
 	function startEditingName() {
-		nameDraft = board.name;
+		nameDraft = board.name || `Board ${data.boardId}`;
 		editingName = true;
 	}
 
@@ -106,10 +108,60 @@
 		goto(resolve('/'));
 	}
 
+	async function deleteFlow(flowId: string) {
+		if (!confirm('Delete this grind? This cannot be undone.')) return;
+		const ref = doc(db, 'boards', data.boardId);
+		await updateDoc(ref, {
+			updatedAt: serverTimestamp(),
+			flowOrder: arrayRemove(flowId),
+			[`flows.${flowId}`]: deleteField()
+		});
+	}
+
+	async function deleteNode(flowId: string, nodeId: string) {
+		const isLastNode = (board.flows[flowId]?.nodeOrder ?? []).length <= 1;
+		if (isLastNode) {
+			if (
+				!confirm(
+					'This is the last node in this grind - deleting it removes the whole grind. Continue?'
+				)
+			)
+				return;
+			const ref = doc(db, 'boards', data.boardId);
+			await updateDoc(ref, {
+				updatedAt: serverTimestamp(),
+				flowOrder: arrayRemove(flowId),
+				[`flows.${flowId}`]: deleteField()
+			});
+			return;
+		}
+		if (!confirm('Delete this node and everything in it? This cannot be undone.')) return;
+		const ref = doc(db, 'boards', data.boardId);
+		await updateDoc(ref, {
+			updatedAt: serverTimestamp(),
+			[`flows.${flowId}.nodeOrder`]: arrayRemove(nodeId),
+			[`flows.${flowId}.nodes.${nodeId}`]: deleteField()
+		});
+	}
+
+	async function deleteEntry(flowId: string, nodeId: string, entryId: string) {
+		const isLastEntry = (board.flows[flowId]?.nodes[nodeId]?.entryOrder ?? []).length <= 1;
+		if (isLastEntry) {
+			await deleteNode(flowId, nodeId);
+			return;
+		}
+		const ref = doc(db, 'boards', data.boardId);
+		await updateDoc(ref, {
+			updatedAt: serverTimestamp(),
+			[`flows.${flowId}.nodes.${nodeId}.entryOrder`]: arrayRemove(entryId),
+			[`flows.${flowId}.nodes.${nodeId}.entries.${entryId}`]: deleteField()
+		});
+	}
+
 	async function createGrind(type: EntryType, label: string, icon: string) {
 		const ref = doc(db, 'boards', data.boardId);
 		const entryId = crypto.randomUUID().slice(0, 8);
-		if (addTarget) {
+		if (addTarget?.mode === 'append') {
 			const { flowId, nodeId } = addTarget;
 			await updateDoc(ref, {
 				updatedAt: serverTimestamp(),
@@ -120,6 +172,19 @@
 					done: false
 				},
 				[`flows.${flowId}.nodes.${nodeId}.entryOrder`]: arrayUnion(entryId)
+			});
+		} else if (addTarget?.mode === 'edge') {
+			const { flowId, nodeId: fromNodeId } = addTarget;
+			const newNodeId = crypto.randomUUID().slice(0, 8);
+			const edgeId = crypto.randomUUID().slice(0, 8);
+			await updateDoc(ref, {
+				updatedAt: serverTimestamp(),
+				[`flows.${flowId}.nodes.${newNodeId}`]: {
+					entries: { [entryId]: { type, label, icon, done: false } },
+					entryOrder: [entryId]
+				},
+				[`flows.${flowId}.nodeOrder`]: arrayUnion(newNodeId),
+				[`flows.${flowId}.edges.${edgeId}`]: { from: fromNodeId, to: newNodeId }
 			});
 		} else {
 			const flowId = crypto.randomUUID().slice(0, 8);
@@ -135,6 +200,7 @@
 							entryOrder: [entryId]
 						}
 					},
+					nodeOrder: [nodeId],
 					edges: {}
 				}
 			});
@@ -212,6 +278,7 @@
 				onkeydown={(e) => {
 					if (e.key === 'Escape') cancelEditingName();
 				}}
+				onfocus={(e) => e.currentTarget.select()}
 				autofocus
 			/>
 		</form>
@@ -232,34 +299,65 @@
 <button class="delete-board" onclick={deleteBoard}>Delete board</button>
 
 {#each board.flowOrder as flowId (flowId)}
-	{#each Object.entries(board.flows[flowId]?.nodes ?? {}) as [nodeId, node] (nodeId)}
-		<div class="node">
-			<div class="node-entries">
-				{#each node.entryOrder ?? Object.keys(node.entries) as entryId (entryId)}
-					{@const entry = node.entries[entryId]}
-					<div class="entry-cell">
-						{#if entry.icon}
-							<img src={entry.icon} alt={entry.label} />
-						{/if}
-						{#if levelFromLabel(entry.label)}
-							<span class="level-badge">{levelFromLabel(entry.label)}</span>
-						{/if}
-					</div>
-				{/each}
-			</div>
-			{#if addOpen && addTarget?.flowId === flowId && addTarget?.nodeId === nodeId}
-				{@render addMenu()}
-			{:else}
-				<button
-					class="node-add-button"
-					title="Add to this node"
-					onclick={() => openAddMenu({ flowId, nodeId })}
-				>
-					+
-				</button>
+	{@const flow = board.flows[flowId]}
+	<div class="flow">
+		<button class="flow-delete-button" title="Delete grind" onclick={() => deleteFlow(flowId)}>
+			&times;
+		</button>
+		{#each flow?.nodeOrder ?? Object.keys(flow?.nodes ?? {}) as nodeId, i (nodeId)}
+			{@const node = flow.nodes[nodeId]}
+			{#if i > 0}
+				<span class="edge-arrow">&rarr;</span>
 			{/if}
-		</div>
-	{/each}
+			<div class="node">
+				<div class="node-entries">
+					{#each node.entryOrder ?? Object.keys(node.entries) as entryId (entryId)}
+						{@const entry = node.entries[entryId]}
+						<div class="entry-cell">
+							{#if entry.icon}
+								<img src={entry.icon} alt={entry.label} />
+							{/if}
+							{#if levelFromLabel(entry.label)}
+								<span class="level-badge">{levelFromLabel(entry.label)}</span>
+							{/if}
+							<button
+								class="entry-delete-button"
+								title="Delete entry"
+								onclick={() => deleteEntry(flowId, nodeId, entryId)}
+							>
+								&times;
+							</button>
+						</div>
+					{/each}
+				</div>
+				{#if addOpen && addTarget?.flowId === flowId && addTarget?.nodeId === nodeId}
+					{@render addMenu()}
+				{:else}
+					<button
+						class="node-add-button"
+						title="Add to this node"
+						onclick={() => openAddMenu({ flowId, nodeId, mode: 'append' })}
+					>
+						+
+					</button>
+					<button
+						class="node-edge-button"
+						title="Add connected grind"
+						onclick={() => openAddMenu({ flowId, nodeId, mode: 'edge' })}
+					>
+						&rarr;
+					</button>
+					<button
+						class="node-delete-button"
+						title="Delete node"
+						onclick={() => deleteNode(flowId, nodeId)}
+					>
+						&times;
+					</button>
+				{/if}
+			</div>
+		{/each}
+	</div>
 {/each}
 
 {#if addOpen && addTarget === null}
@@ -344,11 +442,46 @@
 		width: 100%;
 	}
 
-	.node {
+	.flow {
+		position: relative;
 		display: flex;
 		align-items: center;
+		flex-wrap: wrap;
+		justify-content: center;
 		width: fit-content;
 		margin: 2rem auto;
+		padding: 0.75rem;
+		border: 1px solid #999;
+	}
+
+	.flow-delete-button {
+		position: absolute;
+		top: 50%;
+		left: -1rem;
+		transform: translateY(-50%);
+		z-index: 1;
+		width: 2rem;
+		height: 2rem;
+		font-size: 1.25rem;
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.flow:hover .flow-delete-button,
+	.flow:focus-within .flow-delete-button {
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.edge-arrow {
+		font-size: 1.5rem;
+		margin: 0 0.5rem;
+	}
+
+	.node {
+		position: relative;
+		display: flex;
+		align-items: center;
 	}
 
 	.node-entries {
@@ -383,15 +516,65 @@
 		border-radius: 0.2rem;
 	}
 
-	.node-add-button {
+	.entry-delete-button {
+		position: absolute;
+		top: -0.5rem;
+		right: -0.5rem;
+		z-index: 1;
+		width: 1.25rem;
+		height: 1.25rem;
+		font-size: 0.85rem;
+		line-height: 1;
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.entry-cell:hover .entry-delete-button,
+	.entry-cell:focus-within .entry-delete-button {
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.node-add-button,
+	.node-edge-button,
+	.node-delete-button {
+		position: absolute;
+		z-index: 1;
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.node-add-button,
+	.node-edge-button {
+		top: 0;
 		width: 2.75rem;
 		height: 2.75rem;
 		font-size: 1.5rem;
-		opacity: 0;
+	}
+
+	.node-add-button {
+		left: 100%;
+	}
+
+	.node-edge-button {
+		left: calc(100% + 2.75rem);
+	}
+
+	.node-delete-button {
+		top: -0.75rem;
+		left: -0.75rem;
+		width: 1.5rem;
+		height: 1.5rem;
+		font-size: 1rem;
 	}
 
 	.node:hover .node-add-button,
-	.node:focus-within .node-add-button {
+	.node:hover .node-edge-button,
+	.node:hover .node-delete-button,
+	.node:focus-within .node-add-button,
+	.node:focus-within .node-edge-button,
+	.node:focus-within .node-delete-button {
 		opacity: 1;
+		pointer-events: auto;
 	}
 </style>

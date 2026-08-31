@@ -162,6 +162,7 @@ boards/{boardId}
                                         // numeric would sort first in JS)
         }
       },
+      nodeOrder: [nodeId, ...],      // same reasoning as entryOrder above
       edges: {
         [edgeId]: { from: nodeId, to: nodeId }   // node-to-node only
       }

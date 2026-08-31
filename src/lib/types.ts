@@ -20,6 +20,7 @@ export interface Edge {
 export interface Flow {
 	name: string;
 	nodes: Record<string, Node>;
+	nodeOrder: string[];
 	edges: Record<string, Edge>;
 }
 
