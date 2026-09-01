@@ -113,9 +113,9 @@ tables including:
   rarity, quantity, drop value) as clean JSON. No wikitext template
   regex-parsing needed.
 - `Bucket:Collection_log_source` — ~1,712 entries mapping items to their
-  collection-log source. Likely the actual signal for "uniques" filtering
-  (see below) — it's Jagex's own in-game curation of notable per-activity
-  rewards, not a heuristic we'd be inventing.
+  collection-log source (Jagex's own in-game curation of notable
+  per-activity rewards). Used as a catalog _coverage_ source and a future
+  ranking signal, not a filter (see Notability below).
 - `Bucket:Infobox_monster` / `Bucket:Infobox_item` — structured
   monster/item data, including image references (item pages declare their
   icon explicitly via `|image = [[File:X.png]]` in their infobox — verified
@@ -123,9 +123,23 @@ tables including:
   filename instead of guessing a naming pattern, which already burned us
   once: `Inventory_tab.png` turned out to be a 204×275 screenshot of the
   whole panel, not the 25×27 backpack icon we wanted).
-- `Bucket:Recipe` — fallback source for skill-derivable items if the
-  per-skill level-up tables (the current lead) turn out not to be
-  structured — not yet investigated.
+- `Bucket:Recipe` — the source for skill-derivable items (spiked
+  2026-09-01). Its `production_json` blob per row carries
+  `output {name, image, cost}` + `skills [{name, level, experience}]` +
+  materials — so output item name, icon, and the gating skill/level all
+  come structured, no wikitext parsing. ~3,977 rows have a real output
+  item, ~2,808 with a numeric level. `.where("uses_skill","Crafting")`
+  chunks it by skill (794 rows for Crafting). Rows with `output: ""`
+  (agility courses, quest steps) filter out.
+
+**Bucket caps every query at 5,000 rows.** `bucket("recipe").limit(20000)`
+returns exactly 5,000. `.offset(N)` works, so paginate with limit+offset,
+or chunk by a `.where(...)` that stays under (per-skill for recipes,
+per-boss for drops). A bucket's schema is readable at its `Bucket:<Name>`
+page. There is **no** skill / level-up / unlock bucket — checked the full
+`Bucket:` namespace; the per-skill "X/Level up table" wiki pages are
+`{{Level up table}}` wikitext (item `{{plink}}`s mixed with prose), which
+is why `Bucket:Recipe` wins over parsing those.
 
 **Scope, phased:**
 
@@ -135,13 +149,13 @@ tables including:
    not the target). This is the de-risked phase: every mechanical piece
    (enumeration, drop data, icon resolution) has been verified to work.
 2. **Skill-derivable items second** — items you craft/smith/fletch/brew
-   rather than get as drops (e.g. Amulet of fury via Crafting). Lead is
-   now the per-skill **level-up tables** (each encodes level → unlock
-   directly, and includes both "make" rows like fury at 90 Crafting and
-   "wield" rows like Dragon axe at 61 Woodcutting); `Bucket:Recipe` is a
-   fallback. Not a distinct catalog phase anymore — it's just another item
-   source unioned into the flat list (roadmap stage 2b). Still needs a
-   research spike on whether the tables are structured or wikitext.
+   rather than get as drops (e.g. Amulet of fury via Crafting). Source is
+   `Bucket:Recipe` (see above; the level-up-table idea was dropped —
+   they're not in Bucket and the wikitext is prose-heavy). Not a distinct
+   catalog phase anymore — just another item source unioned into the flat
+   list (roadmap stage 2c). Recipe misses "wield-to-use" gates like Dragon
+   axe at 61 Woodcutting, but those are drops / collection-log items
+   already.
 3. **Manual entries remain a valid fallback throughout** — anything not yet
    covered by either scrape can still be hand-added the way Amulet of fury
    was. The catalog grows incrementally; it never needs to be "complete" to
@@ -162,18 +176,18 @@ The reframe: for a search-backed catalog, **recall beats precision**.
 Nobody types "Prayer potion(2)" into the entry search, so its presence
 costs nothing; a _missing_ Berserker ring is a real defect. The catalog
 includes every item it can enumerate, with no notability gate. The
-`Collection_log_source` and skill level-up-table signals don't disappear —
-they change role:
+`Collection_log_source` and `Recipe` signals don't disappear — they change
+role:
 
 - **Coverage.** Drop tables miss anything not dropped (crafted/smithed
-  items like Amulet of fury). Skill level-up tables catch those;
+  items like Amulet of fury). `Bucket:Recipe` catches those;
   collection-log-source catches notable untradeables and pets. Each is an
   additional _source_ feeding the same deduped item list, not a filter
   over it.
-- **Ranking (deferred).** Membership in a collection log or a level-up
-  table is a good "marquee item" signal for ordering search results so
-  Berserker ring sorts above Prayer potion. Not needed to ship — layer it
-  on once the catalog and search box exist.
+- **Ranking (deferred).** Membership in a collection log, or a recipe with
+  a high level requirement, is a good "marquee item" signal for ordering
+  search results so Berserker ring sorts above Prayer potion. Not needed to
+  ship — layer it on once the catalog and search box exist.
 
 **Boss→item association dropped (2026-09-01).** Earlier drafts stored drops
 nested under each boss with rarity/quantity/value. The app doesn't need to
@@ -201,7 +215,7 @@ data/catalog.json
 `skills` is a static hand-written list of all 24 (includes Sailing).
 `bosses` comes from `Category:Bosses` + `Infobox_monster`. `items` is the
 deduped union of every source (drop tables first; collection-log-source and
-skill level-up tables as they're added). `minigames` source is still TBD.
+`Bucket:Recipe` as they're added). `minigames` source is still TBD.
 Icon files are downloaded to the paths shown, filenames normalized to
 kebab-case (not the wiki's raw "Dagannoth Rex.png" with spaces/casing).
 
@@ -288,20 +302,26 @@ step is validated before the next depends on it.
      against Dagannoth Rex/Prime — Bucket's drop rows include the fully
      resolved Rare Drop Table contents per boss (flagged via
      `rareDropTable`), not just each page's literal drop lines.
-   - Stage 2 — flatten & enrich items (not yet built; an earlier per-boss
-     "process/filter" draft, `02-process.mjs`, was scrapped along with the
-     notability-gate idea — see Notability above). Reads all raw files,
-     flattens drop rows across every boss, dedupes by item name, discards
-     rarity/quantity/value, then enriches each unique item via
-     `Infobox_item` for its declared icon + wiki link. Output: a flat item
-     list.
-   - Stage 2b — extra item sources (not yet built). `Collection_log_source`
-     (one table fetch, ~1,712 rows) and the per-skill level-up tables —
-     each a small fetch script writing its own cache file, feeding the same
-     dedupe as stage 2. Open question: whether the level-up tables are a
-     Bucket table or need wikitext parsing — needs a research spike like
-     the one done for `Dropsline`. Keep each row's relationship verb
-     (make/brew/fletch vs. wield/use) for later ranking.
+   - ~~Stage 2 — flatten & enrich items~~ (`02-flatten-items.mjs`, done; an
+     earlier per-boss "process/filter" draft, `02-process.mjs`, was
+     scrapped along with the notability-gate idea — see Notability above).
+     Reads all raw files, flattens drop rows across every boss, dedupes by
+     item name, discards rarity/quantity/value, then enriches each unique
+     item via `Infobox_item` for its declared icon + wiki link. Output:
+     `scripts/.data/items.json`. Validated at 2-boss scale (105 items).
+     Does not yet union in the 2b/2c sources.
+   - ~~Stage 2b — collection-log source~~ (`02b-fetch-collection-log.mjs`,
+     done). One Bucket query for the whole `Collection_log_source` table
+     (~1,712 rows), variant `#anchor` rows collapsed, source links parsed
+     to page names, cached to `scripts/.data/collection-log-source.json`.
+     `sources` kept for later ranking.
+   - Stage 2c — recipe items (not yet built). `Bucket:Recipe` per skill
+     (`--only=`/`--limit=` like the boss scripts), dedupe by `output.name`,
+     cache `{name, iconUrl (from output.image), skill, level}` to
+     `scripts/.data/recipe-items.json`. Skip rows with empty `output`.
+   - Stage 2d — fold 2b + 2c into `items.json` (not yet built). Union the
+     cached names into `02-flatten-items.mjs`'s dedupe; recipe items carry
+     their own icon so they skip the `Infobox_item` call.
    - ~~Stage 3 — cross-boss indexes~~ — dropped 2026-09-01 with the
      boss→item association (see Notability above). Nothing consumes a
      monster→drops index now that entry creation is search-only.
