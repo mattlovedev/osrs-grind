@@ -206,15 +206,18 @@ if a feature ever needs them.
 repo, no runtime wiki dependency after generation:
 
 ```
-data/catalog.json
+src/lib/data/catalog.json          (imported as $lib/data/catalog.json)
 {
-  "generatedAt": "...", "source": "...",
+  "generatedAt": "...", "source": "...", "counts": { ... },
   "skills":    [{ "name": "Crafting",      "wikiLink": "...", "icon": "/icons/skills/crafting.png" }],
   "bosses":    [{ "name": "Dagannoth Rex",  "wikiLink": "...", "icon": "/icons/bosses/dagannoth-rex.png", "combatLevel": 303 }],
   "items":     [{ "name": "Berserker ring", "wikiLink": "...", "icon": "/icons/items/berserker-ring.png" }],
-  "minigames": [{ "name": "...",            "wikiLink": "...", "icon": "..." }]
+  "minigames": []
 }
 ```
+
+`icon` is the local `/icons/...` path, or `null` if that icon wasn't
+downloaded (frontend shows a placeholder — no wiki hotlinking at runtime).
 
 `skills` is a static hand-written list of all 24 (includes Sailing).
 `bosses` comes from `Category:Bosses` + `Infobox_monster`. `items` is the
@@ -296,7 +299,12 @@ step is validated before the next depends on it.
    just the 2 bosses already hand-curated (Dagannoth Rex, Dagannoth Prime)
    and confirm the scraper reproduces the same drops before scaling up.
    Staged as separate, independently re-runnable scripts so changing later
-   logic never requires re-fetching from the wiki:
+   logic never requires re-fetching from the wiki. `npm run scrape` chains
+   all stages in order (0 → 1 → 2a → 2b → 2c → 3 → 4). All `api.php` traffic
+   goes through one serialised queue in `lib/wiki.mjs` with a fixed gap +
+   429/503 retry (a full boss run hit the wiki's rate limit); stage 1 saves
+   its manifest per-boss and reclaims already-downloaded raw files, so an
+   interrupted run resumes cheaply.
    - ~~Stage 0 — discover & stale-check~~ (`00-discover.mjs`, done). Diffs
      category members' wiki revision timestamps against
      `scripts/.data/manifest.json`, writes `to-fetch.json`.
@@ -348,7 +356,12 @@ step is validated before the next depends on it.
      `scripts/.data/icons.json` — a name→`/icons/...` map per category,
      plus `failed` and `noIcon` lists — for stage 4. `static/` is
      committed, so the downloaded files get checked in.
-   - Stage 4 (was 5) — assemble `data/catalog.json` (not yet built).
+   - ~~Stage 4 — assemble the catalog~~ (`04-assemble-catalog.mjs`, done).
+     Combines the static skill list, boss name/combat-level from
+     `raw/*.json`, `items.json`, and the stage-3 icon manifest into
+     `src/lib/data/catalog.json` — `{generatedAt, source, counts, skills,
+bosses, items, minigames}`, each entry `{name, wikiLink, icon}` with
+     icon a local path or null. `minigames` empty (source TBD). Committed.
 2. **Pull real data** — not at full 341-boss scale yet; get the actual
    shape of the output (JSON catalog + downloaded/normalized icon files)
    proven out first, small scale, before committing to running it against

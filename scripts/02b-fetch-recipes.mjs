@@ -22,40 +22,14 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { bucketQuery, bucketStringLiteral, fileRefToImageUrl, wikiPageUrl } from './lib/wiki.mjs';
+import { SKILLS } from './lib/skills.mjs';
 
 const DATA_DIR = path.join(process.cwd(), 'scripts', '.data');
 const OUT_PATH = path.join(DATA_DIR, 'recipe-items.json');
 const ROW_LIMIT = 5000;
 
-// All 24 skills (incl. Sailing). Combat skills have no recipes and just
-// return zero rows - harmless, and cheaper than maintaining a "which skills
-// can produce items" list that drifts as the game adds content.
-const SKILLS = [
-	'Attack',
-	'Strength',
-	'Defence',
-	'Ranged',
-	'Prayer',
-	'Magic',
-	'Runecraft',
-	'Construction',
-	'Hitpoints',
-	'Agility',
-	'Herblore',
-	'Thieving',
-	'Crafting',
-	'Fletching',
-	'Slayer',
-	'Hunter',
-	'Mining',
-	'Smithing',
-	'Fishing',
-	'Cooking',
-	'Firemaking',
-	'Woodcutting',
-	'Farming',
-	'Sailing'
-];
+// Combat skills have no recipes and just return zero rows - harmless, and
+// cheaper than maintaining a "which skills can produce items" subset.
 
 function parseArgs(argv) {
 	const onlyArg = argv.find((a) => a.startsWith('--only='));

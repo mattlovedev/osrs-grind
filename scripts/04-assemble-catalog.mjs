@@ -1,0 +1,116 @@
+// Stage 4: assemble the final catalog.
+//
+// Combines the earlier stages' outputs into one flat file the app imports
+// directly (no runtime wiki dependency):
+//   - skills : the static 24-skill list
+//   - bosses : name + combat level from stage 1's raw files
+//   - items  : the merged list from stage 2c (scripts/.data/items.json)
+//   - minigames : empty for now (source TBD)
+//
+// Each entry gets { name, wikiLink, icon }, where `icon` is the local
+// /icons/... path from stage 3's manifest (scripts/.data/icons.json), or
+// null if that icon wasn't downloaded. Bosses also carry `combatLevel`.
+//
+// Output: src/lib/data/catalog.json (committed - this is what the search
+// endpoint will `import`).
+//
+// Usage: node scripts/04-assemble-catalog.mjs
+
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
+import { wikiPageUrl } from './lib/wiki.mjs';
+import { SKILLS } from './lib/skills.mjs';
+
+const CWD = process.cwd();
+const DATA_DIR = path.join(CWD, 'scripts', '.data');
+const RAW_DIR = path.join(DATA_DIR, 'raw');
+const ITEMS_PATH = path.join(DATA_DIR, 'items.json');
+const ICONS_MANIFEST = path.join(DATA_DIR, 'icons.json');
+const OUT_PATH = path.join(CWD, 'src', 'lib', 'data', 'catalog.json');
+
+const SOURCE = 'https://oldschool.runescape.wiki (Bucket API)';
+
+function readJson(p) {
+	return JSON.parse(readFileSync(p, 'utf8'));
+}
+
+function byName(a, b) {
+	return a.name.localeCompare(b.name);
+}
+
+function main() {
+	if (!existsSync(ITEMS_PATH)) {
+		console.error(`${ITEMS_PATH} not found - run stage 2c first.`);
+		process.exit(1);
+	}
+
+	const iconMap = existsSync(ICONS_MANIFEST)
+		? readJson(ICONS_MANIFEST).icons
+		: { skills: {}, bosses: {}, items: {} };
+	if (!existsSync(ICONS_MANIFEST)) {
+		console.warn(`  ${ICONS_MANIFEST} missing - every icon will be null (run stage 3).`);
+	}
+	const iconFor = (category, name) => iconMap[category]?.[name] ?? null;
+
+	const skills = SKILLS.map((name) => ({
+		name,
+		wikiLink: wikiPageUrl(name),
+		icon: iconFor('skills', name)
+	})).sort(byName);
+
+	const bosses = [];
+	if (existsSync(RAW_DIR)) {
+		for (const f of readdirSync(RAW_DIR).filter((f) => f.endsWith('.json'))) {
+			const raw = readJson(path.join(RAW_DIR, f));
+			const name = raw.name ?? raw.title;
+			bosses.push({
+				name,
+				wikiLink: wikiPageUrl(raw.title ?? name),
+				icon: iconFor('bosses', name),
+				combatLevel: raw.combatLevel ?? null
+			});
+		}
+		bosses.sort(byName);
+	} else {
+		console.warn(`  ${RAW_DIR} missing - no bosses in the catalog (run stages 0-1).`);
+	}
+
+	const items = readJson(ITEMS_PATH)
+		.items.map((it) => ({
+			name: it.name,
+			wikiLink: it.wikiLink ?? wikiPageUrl(it.name),
+			icon: iconFor('items', it.name)
+		}))
+		.sort(byName);
+
+	const minigames = [];
+
+	const catalog = {
+		generatedAt: new Date().toISOString(),
+		source: SOURCE,
+		counts: {
+			skills: skills.length,
+			bosses: bosses.length,
+			items: items.length,
+			minigames: minigames.length
+		},
+		skills,
+		bosses,
+		items,
+		minigames
+	};
+
+	mkdirSync(path.dirname(OUT_PATH), { recursive: true });
+	writeFileSync(OUT_PATH, JSON.stringify(catalog, null, 2) + '\n');
+
+	const nullIcons = (list) => list.filter((e) => !e.icon).length;
+	console.log(`Wrote ${OUT_PATH}`);
+	console.log(
+		`  skills: ${skills.length} (${nullIcons(skills)} no icon)\n` +
+			`  bosses: ${bosses.length} (${nullIcons(bosses)} no icon)\n` +
+			`  items:  ${items.length} (${nullIcons(items)} no icon)\n` +
+			`  minigames: ${minigames.length}`
+	);
+}
+
+main();

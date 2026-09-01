@@ -73,12 +73,37 @@ async function main() {
 	mkdirSync(RAW_DIR, { recursive: true });
 	const manifest = loadManifest();
 
-	for (const { title, wikiRevisionTimestamp } of toFetch.bosses) {
-		console.log(`Fetching "${title}"...`);
-		const [monster, drops] = await Promise.all([fetchMonsterInfo(title), fetchDrops(title)]);
+	const saveManifest = () => {
+		manifest.updatedAt = new Date().toISOString();
+		writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2));
+	};
 
+	let fetched = 0;
+	let skipped = 0;
+	for (const { title, wikiRevisionTimestamp } of toFetch.bosses) {
 		const slug = slugify(title);
 		const rawFile = path.join('scripts', '.data', 'raw', `${slug}.json`);
+		const rawPath = path.join(RAW_DIR, `${slug}.json`);
+
+		// Reclaim a boss already on disk at this revision - lets a run that
+		// died partway (e.g. a rate-limit) resume without re-fetching it, even
+		// though the crash meant its manifest entry was lost.
+		if (existsSync(rawPath)) {
+			try {
+				const prev = JSON.parse(readFileSync(rawPath, 'utf8'));
+				if (prev.wikiRevisionTimestamp === wikiRevisionTimestamp) {
+					manifest.bosses[title] = { wikiRevisionTimestamp, rawFile };
+					saveManifest();
+					skipped++;
+					continue;
+				}
+			} catch {
+				// unreadable/partial file - fall through and re-fetch
+			}
+		}
+
+		console.log(`Fetching "${title}"...`);
+		const [monster, drops] = await Promise.all([fetchMonsterInfo(title), fetchDrops(title)]);
 		const raw = {
 			fetchedAt: new Date().toISOString(),
 			wikiRevisionTimestamp,
@@ -86,15 +111,15 @@ async function main() {
 			...monster,
 			drops
 		};
-		writeFileSync(path.join(RAW_DIR, `${slug}.json`), JSON.stringify(raw, null, 2));
+		writeFileSync(rawPath, JSON.stringify(raw, null, 2));
 		console.log(`  -> ${drops.length} drop(s), icon: ${monster.iconUrl ? 'found' : 'MISSING'}`);
 
 		manifest.bosses[title] = { wikiRevisionTimestamp, rawFile };
+		saveManifest();
+		fetched++;
 	}
 
-	manifest.updatedAt = new Date().toISOString();
-	writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2));
-	console.log(`\nFetched ${toFetch.bosses.length} boss(es). Manifest updated.`);
+	console.log(`\nFetched ${fetched} boss(es), ${skipped} already on disk. Manifest updated.`);
 }
 
 main().catch((err) => {

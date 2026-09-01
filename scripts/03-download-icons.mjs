@@ -24,6 +24,7 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { apiGet, downloadBinary, slugify } from './lib/wiki.mjs';
+import { SKILLS } from './lib/skills.mjs';
 
 const CWD = process.cwd();
 const DATA_DIR = path.join(CWD, 'scripts', '.data');
@@ -33,34 +34,6 @@ const ICONS_MANIFEST = path.join(DATA_DIR, 'icons.json');
 const STATIC_ICONS = path.join(CWD, 'static', 'icons');
 
 const CONCURRENCY = 8;
-
-// Keep in sync with SKILLS in 02b-fetch-recipes.mjs.
-const SKILLS = [
-	'Attack',
-	'Strength',
-	'Defence',
-	'Ranged',
-	'Prayer',
-	'Magic',
-	'Runecraft',
-	'Construction',
-	'Hitpoints',
-	'Agility',
-	'Herblore',
-	'Thieving',
-	'Crafting',
-	'Fletching',
-	'Slayer',
-	'Hunter',
-	'Mining',
-	'Smithing',
-	'Fishing',
-	'Cooking',
-	'Firemaking',
-	'Woodcutting',
-	'Farming',
-	'Sailing'
-];
 
 function parseArgs(argv) {
 	const limitArg = argv.find((a) => a.startsWith('--limit='));
