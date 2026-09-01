@@ -257,6 +257,22 @@ step is validated before the next depends on it.
    one-shot), querying the wiki's Bucket API. Start small: validate against
    just the 2 bosses already hand-curated (Dagannoth Rex, Dagannoth Prime)
    and confirm the scraper reproduces the same drops before scaling up.
+   Staged as separate, independently re-runnable scripts so changing later
+   logic never requires re-fetching from the wiki:
+   - ~~Stage 0 — discover & stale-check~~ (`00-discover.mjs`, done). Diffs
+     category members' wiki revision timestamps against
+     `scripts/.data/manifest.json`, writes `to-fetch.json`.
+   - ~~Stage 1 — fetch raw~~ (`01-fetch-raw.mjs`, done). Per-boss Bucket
+     queries (`Infobox_monster` + `Dropsline`), writes
+     `scripts/.data/raw/<slug>.json`, updates the manifest. Validated
+     against Dagannoth Rex/Prime — Bucket's drop rows include the fully
+     resolved Rare Drop Table contents per boss (flagged via
+     `rareDropTable`), not just each page's literal drop lines.
+   - Stage 2 — process/filter (per-boss transform, not yet built).
+   - Stage 3 — build cross-boss indexes (monster→drops, drop→monsters,
+     not yet built).
+   - Stage 4 — download icons (not yet built).
+   - Stage 5 — assemble final catalog (not yet built).
 2. **Pull real data** — not at full 341-boss scale yet; get the actual
    shape of the output (JSON catalog + downloaded/normalized icon files)
    proven out first, small scale, before committing to running it against
