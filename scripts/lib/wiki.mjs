@@ -70,7 +70,10 @@ export async function fetchRevisionTimestamps(titles) {
 export async function bucketQuery(query) {
 	const data = await apiGet({ action: 'bucket', query, format: 'json' });
 	if (data.error) {
-		throw new Error(`Bucket query failed: ${data.error.info ?? data.error.code} (${query})`);
+		// data.error is sometimes a plain string, sometimes {info,code}.
+		const detail =
+			typeof data.error === 'string' ? data.error : (data.error.info ?? data.error.code);
+		throw new Error(`Bucket query failed: ${detail} (${query})`);
 	}
 	return data.bucket ?? [];
 }
