@@ -36,6 +36,24 @@ small independent chains rather than one master path.
   item, or a minigame. Has its own independent done/not-done state, even
   when grouped with other entries in the same node (e.g. a 4-item node
   where some entries are done and others aren't).
+  - **Planned (not yet implemented): catalog-backed creation with
+    per-entry overrides.** Once the searchable catalog (see Data sourcing)
+    exists, creating an entry becomes a two-step search: an **identity
+    search** (by wiki name/page) sets `label`, `wikiLink`, and `icon` all
+    from the chosen catalog entry; an optional second **image-override
+    search** (same catalog, triggered separately) overwrites only `icon`,
+    leaving `label`/`wikiLink` untouched. Example: a "Blue Moon armor set"
+    entry whose catalog image looks bad — pick the armor set for identity,
+    then separately pick "Blue Moon staff" just to borrow its icon. Once
+    created, an entry is fully self-contained data (already true today —
+    `label`/`icon` are copied onto the entry, not live references), so
+    overrides are per-entry only and never touch the shared catalog or
+    affect other boards/entries built from the same catalog item. This
+    needs a new `wikiLink` field on `Entry` (currently only
+    `type`/`label`/`icon`/`done`) and new editing UI for an _existing_
+    entry's label/icon/wikiLink, which doesn't exist yet (today entries
+    can only be created or deleted, never renamed/re-iconed after the
+    fact).
 - **Edge** — a directed link between two _nodes_ (never between individual
   entries) showing "this feeds into that." The data model supports a node
   having multiple incoming edges (fan-in) and multiple outgoing edges
@@ -77,21 +95,109 @@ small independent chains rather than one master path.
 - Future (not v1): shareable **templates** — a board can be published as a
   template that others fork into their own fresh random-ID board.
 
-## Data sourcing
+## Data sourcing & catalog (major direction decided 2026-09-01)
 
-- Node data (items, monsters, skills, icons) will be scraped from the OSRS
-  Wiki. Scraping approach TBD, not needed for early scaffolding.
-- The app never connects to or syncs with a player's actual live game
-  account/data. All progress is manually toggled by the user.
-- **Icons are currently hotlinked directly from the wiki** (e.g.
-  `oldschool.runescape.wiki/images/Stats_icon.png`), not self-hosted. Fine
-  for now at tiny scale (2 icons), and the wiki sets aggressive caching
-  headers so repeat loads are already fast. Worth revisiting once real
-  traffic/scale shows up — mainly to avoid hammering a community-run wiki's
-  bandwidth, and for resilience against their uptime/hotlink policy — by
-  downloading and self-hosting icons as part of whatever wiki-scraping
-  pipeline eventually gets built (same problem as pulling item/monster
-  text data, just for images).
+The app never connects to or syncs with a player's actual live game
+account/data — all progress is manually toggled by the user. Everything
+below is about _reference_ data (what skills/bosses/items exist, their
+names/icons/wiki links), not player data.
+
+**Where the data actually comes from.** Originally assumed the wiki ran on
+Cargo (a common MediaWiki structured-query extension) — wrong, verified via
+`Special:CargoTables` 404ing. What it actually runs is a Weird Gloop-built
+extension called **Bucket** (`action=bucket` in the API, query docs at
+`meta.weirdgloop.org/w/Extension:Bucket`), which exposes real structured
+tables including:
+
+- `Bucket:Dropsline` — fully structured drop data per monster (name,
+  rarity, quantity, drop value) as clean JSON. No wikitext template
+  regex-parsing needed.
+- `Bucket:Collection_log_source` — ~1,712 entries mapping items to their
+  collection-log source. Likely the actual signal for "uniques" filtering
+  (see below) — it's Jagex's own in-game curation of notable per-activity
+  rewards, not a heuristic we'd be inventing.
+- `Bucket:Infobox_monster` / `Bucket:Infobox_item` — structured
+  monster/item data, including image references (item pages declare their
+  icon explicitly via `|image = [[File:X.png]]` in their infobox — verified
+  for Amulet of fury — so icon resolution can read the wiki's own declared
+  filename instead of guessing a naming pattern, which already burned us
+  once: `Inventory_tab.png` turned out to be a 204×275 screenshot of the
+  whole panel, not the 25×27 backpack icon we wanted).
+- `Bucket:Recipe` — possible source for skill-derivable items (phase 2,
+  below) — not yet investigated.
+
+**Scope, phased:**
+
+1. **Bosses first.** `Category:Bosses` = 341 pages, a clean bounded scope
+   matching what people actually grind for (`Category:Monsters` blows past
+   several thousand once every low-level variant is counted — explicitly
+   not the target). This is the de-risked phase: every mechanical piece
+   (enumeration, drop data, icon resolution) has been verified to work.
+2. **Skill-derivable items second** — items you craft/smith/fletch/brew
+   rather than get as drops (e.g. items obtainable via Crafting). Only
+   applies to skills with a meaningful "things you make" output (not
+   Agility, Firemaking, etc.) — separate research phase, `Bucket:Recipe`
+   is the lead to chase but unverified.
+3. **Manual entries remain a valid fallback throughout** — anything not yet
+   covered by either scrape can still be hand-added the way Amulet of fury
+   was. The catalog grows incrementally; it never needs to be "complete" to
+   be useful.
+
+**Uniqueness filtering.** Raw drop-table scraping pulls in everything —
+coins, seaweed, big bones, generic clue scrolls — not just boss-specific
+"grind target" items. Two complementary signals, to be combined:
+`Bucket:Collection_log_source` (Jagex's own curation, likely the primary
+signal) and frequency analysis across our own scraped dataset (an item
+appearing in only 1-3 bosses' tables is probably boss-specific; appearing
+in dozens is obviously common loot) as a cross-check, plus outright
+excluding known-generic drop-table sections (`Tertiary`, `Rare and Gem drop
+table`, `100%`) regardless of frequency. Expect a manual review pass on the
+output either way — not treating this as fully hands-off.
+
+**Storage: everything scraped, filtering applied separately.** The scrape
+should store _all_ drops with rarity/metadata attached, not just the
+filtered "uniques" subset — so which drops count as notable stays a
+re-runnable filtering decision over already-fetched data, not something
+baked permanently into a scrape that would need re-running from the wiki
+to adjust.
+
+**Output shape** — two artifacts, both checked into the repo, no runtime
+wiki dependency after generation:
+
+```
+data/bosses.json
+{
+  "generatedAt": "...", "source": "...",
+  "bosses": [{
+    "name": "Dagannoth Rex",
+    "wikiLink": "https://oldschool.runescape.wiki/w/Dagannoth_Rex",
+    "icon": "/icons/monsters/dagannoth-rex.png",
+    "drops": [{
+      "name": "Berserker ring",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Berserker_ring",
+      "icon": "/icons/items/berserker-ring.png",
+      "rarity": "1/128"
+    }]
+  }]
+}
+```
+
+Plus the actual downloaded icon files at those paths, filenames normalized
+to kebab-case (not the wiki's raw "Dagannoth Rex.png" with spaces/casing).
+
+**Icons: bundled in `static/`, not GCS.** At OSRS icon scale (items ~200-700
+bytes each, monster portraits ~30-50KB), even a few thousand icons is only
+tens of MB — fine to commit and ship in the container image. Revisit only
+if this grows into thousands-of-monsters territory. Local serving was never
+actually a stack constraint — SvelteKit serves `static/` automatically in
+both `npm run dev` and the deployed Cloud Run container, no extra
+infrastructure needed either way.
+
+**Scraper tooling lives in `scripts/`**, meant to be re-run repeatedly as
+the catalog grows/changes (not a one-time throwaway) — distinct from the
+`scripts/tmp-*.mjs` pattern used elsewhere in this doc's history for
+one-off manual verification during feature testing, which get deleted
+after use.
 
 ## Deferred (explicitly not v1)
 
@@ -114,27 +220,60 @@ small independent chains rather than one master path.
   make mobile support straightforward later. Styling itself hasn't been
   made responsive yet.
 
-## Roadmap — graph UI (not started)
+## Roadmap — graph UI (superseded, kept for history)
 
-Data layer is done and verified (see Infrastructure section below). The
-graph UI is the next major chunk of work, intentionally taken slowly and
-step by step rather than all at once. Planned order:
+This was the original plan for building the graph UI, written before any of
+it existed. **What actually happened diverged from the planned order** — no
+separate auto-layout algorithm was ever built (layout is plain CSS grid/flex,
+not a computed algorithm); read-only rendering and editing were built
+together incrementally rather than as separate phases; entry toggle, editing
+(add/delete at entry/node/flow level), and multi-flow boards are all done,
+just not in this sequence or shape. Keeping the original list below for
+context on the original thinking, not as a live plan — see the **Roadmap —
+catalog & search** section for what's actually next.
 
-1. **Auto-layout algorithm** — pure logic: given a flow's nodes/edges,
-   compute layered left-to-right positions. Worth actual Vitest unit tests
-   (see Stack section) since this is the fiddliest pure-logic piece.
-2. **Read-only rendering** — render one flow (nodes with their entries,
-   arrows between nodes) from the layout output, using seed data. Proves
-   the visual side before wiring up editing.
-3. **Entry toggle** — click an entry to flip done/not-done, written
-   straight to Firestore.
-4. **Editing** — add/remove nodes, entries, and edges. The actual authoring
-   UI; the biggest piece of this list.
-5. **Multiple flows per board** — render several flows on one board, plus
-   the board-level drag-to-reorder (see Layout & interaction section).
+1. ~~Auto-layout algorithm~~ — never built as a separate thing; layout is
+   direct CSS (2-row column-major grid for entries within a node, flex row
+   for nodes within a flow), not a computed algorithm.
+2. ~~Read-only rendering~~ — done, but interleaved with editing rather than
+   built first in isolation.
+3. ~~Entry toggle~~ — done (click an entry outside edit mode to flip
+   done/not-done; light green fill when done).
+4. ~~Editing~~ — done: add entries to nodes, connect new nodes via edges,
+   delete at all three levels (entry/node/flow) with cascading rules, all
+   gated behind an explicit edit-mode toggle.
+5. ~~Multiple flows per board~~ — done (unrestricted number of flows,
+   board-level flow delete). Drag-to-reorder flows was never built — not
+   needed yet at the scale actually used.
 
-Each step should get its own focused session rather than being rushed
-through — update this list's status as steps complete or the plan changes.
+## Roadmap — catalog & search (current, active)
+
+The live plan as of 2026-09-01. Feature work on the board UI itself is
+paused for this — see Data sourcing & catalog and Backend architecture
+above for the full reasoning behind each step. Order matters here: each
+step is validated before the next depends on it.
+
+1. **Build the scraper(s) in `scripts/`** — re-runnable tools (not
+   one-shot), querying the wiki's Bucket API. Start small: validate against
+   just the 2 bosses already hand-curated (Dagannoth Rex, Dagannoth Prime)
+   and confirm the scraper reproduces the same drops before scaling up.
+2. **Pull real data** — not at full 341-boss scale yet; get the actual
+   shape of the output (JSON catalog + downloaded/normalized icon files)
+   proven out first, small scale, before committing to running it against
+   everything.
+3. **Build the search endpoint** — `+server.ts`, reads the generated
+   catalog JSON, returns matches for a query. Buildable and testable via
+   curl alone, no frontend or Firestore involvement (see Backend
+   architecture above for why this is a clean, isolated piece of work).
+4. **Rewire the frontend to the new backend** — replace the hand-typed
+   `SKILLS`/`BOSSES`/`ITEMS` arrays and the category-button menus
+   (Skill/Kill/Item) with a single searchable flat list hitting the new
+   endpoint. Also where the planned `wikiLink` field and per-entry
+   identity/icon-override search (see Domain model) actually get built.
+5. Further out, not yet scoped in detail: skill-derivable items (phase 2
+   of the catalog), editing UI for existing entries (rename/re-icon after
+   creation), actual Cloud Run deployment (see "Deployment status" above —
+   still hasn't happened at all).
 
 ## Data model (Firestore)
 
@@ -156,10 +295,11 @@ boards/{boardId}
           entries: {
             [entryId]: {
               type: "skill" | "boss" | "item" | "minigame",
-              label: string,       // manual text for now; wikiRef reserved
-                                    // for later once wiki scraping exists
+              label: string,       // catalog name by default, user-overwritable
               icon: string,        // wiki-hotlinked image URL, "" if none
               done: boolean
+              // wikiLink: string  // PLANNED, not yet a real field - see
+                                    // Entry override design in Domain model
             }
           },
           entryOrder: [entryId, ...]   // explicit render order within the
@@ -220,6 +360,53 @@ No traditional backend API/service. Instead, a hybrid:
   "unguessable URL" and "world-writable database."
 - All code (SSR server logic and client Firestore logic) stays TypeScript in
   the single SvelteKit repo — no separate backend service/language.
+
+**Planned addition: a real JSON API endpoint for catalog search** (not yet
+built). Distinct in kind from the two SvelteKit backend files that exist
+today — worth being precise about this, since all three look similar
+(`.server.ts` files) but behave very differently:
+
+- `+page.server.ts` (`actions.createBoard`) is a **form action** — its
+  response is wrapped in SvelteKit's own action-response envelope (we've
+  literally seen this wire format during testing:
+  `{"type":"redirect","status":303,"location":"/b/..."}`), meant to be
+  consumed by `use:enhance` on the client, not hit as a generic API.
+- `+page.server.ts` (`load`) — its return value becomes the `data` prop for
+  the matching `+page.svelte`, serialized via SvelteKit's own `devalue`
+  serializer and embedded in SSR'd HTML or fetched through an internal
+  SvelteKit-managed route on client navigation. Also not a generic API.
+- A **`+server.ts`** file (no "page" in the name) is the one that behaves
+  like an actual REST endpoint: exports plain functions per HTTP verb
+  (`GET`, etc.), takes a request, must explicitly `return json({...})` (or
+  any `Response`) — no envelope, no page attached, callable by anything
+  (`curl`, `fetch`, a future mobile client) and gets back exactly the JSON
+  written, nothing SvelteKit-specific wrapped around it.
+
+The search endpoint (`src/routes/api/search/+server.ts` or similar) will be
+this third kind — self-contained, zero `.svelte` involvement, fully
+buildable/testable via `curl` alone before any frontend wiring happens. It
+reads the catalog via a direct `import catalog from '$lib/data/bosses.json'`
+(Vite bundles JSON imports at build time) rather than Firestore — the
+catalog is shared static reference data, not per-user editable board
+content, so it doesn't belong in the database. The whole parsed catalog
+lives in the Node process's memory for the life of that container instance
+(cheap at current boss-only scale, tens of MB at worst; would need
+rethinking — a real search index, not a bigger JSON blob — if this ever
+grows toward "all 12k+ items"). Cost of this design: refreshing the catalog
+requires a rebuild + redeploy, since it's baked in at build time, not read
+live — an accepted tradeoff for zero runtime wiki dependency and no
+per-request I/O cost.
+
+**Deployment status: not yet deployed anywhere.** Everything so far has run
+via `npm run dev` + the Firestore emulator only. The Cloud Run hosting
+choice (see Stack below) has never actually been exercised — no Dockerfile
+written, no image built, no `gcloud run deploy` run. Needed before a real
+deploy: a `Dockerfile` wrapping the `adapter-node` build output, a build +
+push step (Cloud Build or local Docker + Artifact Registry), the actual
+`gcloud run deploy`, `PUBLIC_FIREBASE_*` env vars set on the Cloud Run
+service, and verifying the default Cloud Run service account actually has
+Firestore permissions (or granting them). Manual one-off deploy vs. an
+automated CI/CD trigger on push to `main` is also still an open question.
 
 ## Stack
 
