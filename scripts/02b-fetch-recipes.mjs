@@ -1,4 +1,4 @@
-// Stage 2c: fetch skill-derivable (recipe) items.
+// Stage 2b: fetch skill-derivable (recipe) items.
 //
 // Queries Bucket:Recipe once per skill (`.where("uses_skill", <skill>)`),
 // pulls each row's production_json, and keeps the ones that actually
@@ -12,12 +12,12 @@
 // is ~800). Rows whose production_json has no real `output` object (agility
 // courses, quest steps) are skipped.
 //
-// Run before the 2d fold-in step. Re-run any time; it's ~24 quick queries.
+// Run before 02c-flatten-items.mjs. Re-run any time; it's ~24 quick queries.
 //
 // Usage:
-//   node scripts/02c-fetch-recipes.mjs
-//   node scripts/02c-fetch-recipes.mjs --only="Crafting"
-//   node scripts/02c-fetch-recipes.mjs --only="Crafting,Smithing" --limit=20
+//   node scripts/02b-fetch-recipes.mjs
+//   node scripts/02b-fetch-recipes.mjs --only="Crafting"
+//   node scripts/02b-fetch-recipes.mjs --only="Crafting,Smithing" --limit=20
 
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';

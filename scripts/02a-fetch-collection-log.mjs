@@ -1,4 +1,4 @@
-// Stage 2b: fetch the collection-log source table.
+// Stage 2a: fetch the collection-log source table.
 //
 // One Bucket query pulls the entire Bucket:Collection_log_source table
 // (~1,712 rows, no pagination). Each row is an item that appears in some
@@ -6,18 +6,18 @@
 //
 // This is purely a cache-to-disk fetch: it writes
 // scripts/.data/collection-log-source.json for stage 2
-// (02a-flatten-items.mjs) to union into the item list. Every item_name here
+// (02c-flatten-items.mjs) to union into the item list. Every item_name here
 // belongs in the catalog - being collection-logged IS the notability
 // signal, so there's nothing to filter (see DESIGN.md "Notability: include
 // broadly, don't gate"). The `sources` are kept for later result ranking,
 // not used by the flat catalog itself.
 //
-// Run this before 02a-flatten-items.mjs. Re-run any time for a fresh pull;
+// Run this before 02c-flatten-items.mjs. Re-run any time for a fresh pull;
 // it's a single request.
 //
 // Usage:
-//   node scripts/02b-fetch-collection-log.mjs
-//   node scripts/02b-fetch-collection-log.mjs --limit=20   # dev preview
+//   node scripts/02a-fetch-collection-log.mjs
+//   node scripts/02a-fetch-collection-log.mjs --limit=20   # dev preview
 
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';

@@ -302,20 +302,16 @@ step is validated before the next depends on it.
      against Dagannoth Rex/Prime — Bucket's drop rows include the fully
      resolved Rare Drop Table contents per boss (flagged via
      `rareDropTable`), not just each page's literal drop lines.
-   - ~~Stage 2a — flatten & enrich items~~ (`02a-flatten-items.mjs`, done;
-     an earlier per-boss "process/filter" draft, `02-process.mjs`, was
-     scrapped along with the notability-gate idea — see Notability above).
-     Reads all raw files, flattens drop rows across every boss, dedupes by
-     item name, discards rarity/quantity/value, then enriches each unique
-     item via `Infobox_item` for its declared icon + wiki link. Output:
-     `scripts/.data/items.json`. Validated at 2-boss scale (105 items).
-     Does not yet union in the 2b/2c sources.
-   - ~~Stage 2b — collection-log source~~ (`02b-fetch-collection-log.mjs`,
+   - Stage 2 builds the flat item list from three parts, run in order
+     2a → 2b → 2c: 2a and 2b each fetch a supplementary source into its own
+     cache file, then 2c reads the raw boss data plus those two caches and
+     writes `items.json`.
+   - ~~Stage 2a — collection-log source~~ (`02a-fetch-collection-log.mjs`,
      done). One Bucket query for the whole `Collection_log_source` table
      (~1,712 rows), variant `#anchor` rows collapsed, source links parsed
      to page names, cached to `scripts/.data/collection-log-source.json`.
      `sources` kept for later ranking.
-   - ~~Stage 2c — recipe items~~ (`02c-fetch-recipes.mjs`, done).
+   - ~~Stage 2b — recipe items~~ (`02b-fetch-recipes.mjs`, done).
      `Bucket:Recipe` per skill (`--only=`/`--limit=` like the boss
      scripts), dedupe by `output.name`, cache
      `{name, wikiLink, iconUrl (from output.image), skills: [{skill, level}]}`
@@ -323,9 +319,15 @@ step is validated before the next depends on it.
      Recipe files an item under its _last_ production step's skill (Amulet
      of fury lands under Magic 87, the enchant, not Crafting) — fine for
      flat-catalog coverage, a known gap for any future skill→item feature.
-   - Stage 2d — fold 2b + 2c into `items.json` (not yet built). Union the
-     cached names into `02a-flatten-items.mjs`'s dedupe; recipe items carry
-     their own icon so they skip the `Infobox_item` call.
+   - Stage 2c — flatten & enrich items (`02c-flatten-items.mjs`; an earlier
+     per-boss "process/filter" draft, `02-process.mjs`, was scrapped along
+     with the notability-gate idea — see Notability above). Flattens drop
+     rows across every raw boss file, dedupes by item name, discards
+     rarity/quantity/value, then enriches each item via `Infobox_item` for
+     its declared icon + wiki link. Output: `scripts/.data/items.json`.
+     **Done for boss drops only** (validated at 2-boss scale, 105 items);
+     still needs to union in the 2a/2b caches — recipe items already carry
+     an icon so they skip the `Infobox_item` call.
    - ~~Stage 3 — cross-boss indexes~~ — dropped 2026-09-01 with the
      boss→item association (see Notability above). Nothing consumes a
      monster→drops index now that entry creation is search-only.

@@ -1,4 +1,4 @@
-// Stage 2a: flatten & enrich items.
+// Stage 2c: flatten & enrich items (runs after 2a + 2b).
 //
 // Reads every raw per-boss file from stage 1 (scripts/.data/raw/<slug>.json),
 // collects every drop name across all of them, dedupes to a flat item list,
@@ -19,8 +19,8 @@
 // different item-list logic never re-fetches drop tables.
 //
 // Usage:
-//   node scripts/02a-flatten-items.mjs
-//   node scripts/02a-flatten-items.mjs --limit=20    # first 20 unique items (dev)
+//   node scripts/02c-flatten-items.mjs
+//   node scripts/02c-flatten-items.mjs --limit=20    # first 20 unique items (dev)
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
