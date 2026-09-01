@@ -32,28 +32,31 @@ small independent chains rather than one master path.
   for one boss can be modeled as two single-entry nodes with two converging
   edges, or grouped into one node with one edge out, if you don't need to
   distinguish them individually.
-- **Entry** — one atomic thing inside a node: a skill, a boss/monster, an
-  item, or a minigame. Has its own independent done/not-done state, even
-  when grouped with other entries in the same node (e.g. a 4-item node
-  where some entries are done and others aren't).
-  - **Planned (not yet implemented): catalog-backed creation with
-    per-entry overrides.** Once the searchable catalog (see Data sourcing)
-    exists, creating an entry becomes a two-step search: an **identity
-    search** (by wiki name/page) sets `label`, `wikiLink`, and `icon` all
-    from the chosen catalog entry; an optional second **image-override
-    search** (same catalog, triggered separately) overwrites only `icon`,
-    leaving `label`/`wikiLink` untouched. Example: a "Blue Moon armor set"
-    entry whose catalog image looks bad — pick the armor set for identity,
-    then separately pick "Blue Moon staff" just to borrow its icon. Once
-    created, an entry is fully self-contained data (already true today —
-    `label`/`icon` are copied onto the entry, not live references), so
-    overrides are per-entry only and never touch the shared catalog or
-    affect other boards/entries built from the same catalog item. This
-    needs a new `wikiLink` field on `Entry` (currently only
-    `type`/`label`/`icon`/`done`) and new editing UI for an _existing_
-    entry's label/icon/wikiLink, which doesn't exist yet (today entries
-    can only be created or deleted, never renamed/re-iconed after the
-    fact).
+- **Entry** — one atomic thing inside a node. Has its own independent
+  done/not-done state, even when grouped with other entries in the same
+  node (e.g. a 4-item node where some entries are done and others aren't).
+  Fields: `label`, `wikiLink`, `icon`, `bottomText`, `done`.
+  - **`bottomText`** is the visible caption under the icon (e.g.
+    "77 Smithing", "1k steel bars") — free text now, replacing the old
+    type-specific level/quantity prompts. Not to be confused with the
+    Deferred "free-text notes per node" (which would be hidden until
+    expanded); this one always shows.
+  - **No `type` field.** Entries used to carry
+    `skill`/`boss`/`item`/`minigame`; dropped once creation became one
+    global search rather than per-category menus, and rendering became
+    uniform. The catalog / `/api/search` still expose `type` (for the
+    result-list badge) — re-add to `Entry` later if boss-drop filtering or
+    colour-coding wants it.
+  - **Catalog-backed creation with per-entry overrides (built
+    2026-09-01).** A single centred modal: an **identity search** over
+    `/api/search` sets `label`, `wikiLink`, `icon` from the picked catalog
+    result; the form's icon field opens a second **icon-only search** that
+    overwrites just `icon` (label/wikiLink untouched) — for cases like a
+    "Blue Moon armor set" entry borrowing the "Blue Moon staff" icon. The
+    same modal, pre-filled, edits an existing entry in place. An entry is
+    self-contained data (`label`/`icon`/`wikiLink` copied onto it, not live
+    references), so overrides never touch the shared catalog or other
+    boards.
 - **Edge** — a directed link between two _nodes_ (never between individual
   entries) showing "this feeds into that." The data model supports a node
   having multiple incoming edges (fan-in) and multiple outgoing edges
@@ -371,23 +374,30 @@ bosses, items, minigames}`, each entry `{name, wikiLink, icon}` with
    shape of the output (JSON catalog + downloaded/normalized icon files)
    proven out first, small scale, before committing to running it against
    everything.
-3. **Build the search endpoint** — `+server.ts`, reads the generated
-   catalog JSON, returns matches for a query. Buildable and testable via
-   curl alone, no frontend or Firestore involvement (see Backend
-   architecture above for why this is a clean, isolated piece of work).
-4. **Rewire the frontend to the new backend** — replace the hand-typed
-   `SKILLS`/`BOSSES`/`ITEMS` arrays and the category-button menus
-   (Skill/Kill/Item) with a single searchable flat list hitting the new
-   endpoint. The entry-creation UI is one search box across all types —
-   nothing renders until at least one character is typed, so there's no
-   pre-populated per-category or per-boss list to design or trim. Also
-   where the planned `wikiLink` field and per-entry identity/icon-override
-   search (see Domain model) actually get built.
+3. ~~**Build the search endpoint**~~ (`src/routes/api/search/+server.ts`,
+   done). `import catalog from '$lib/data/catalog.json'`, in-memory scan,
+   ranks exact > prefix > word-start > substring. Params `q`, `type`
+   (comma-separated), `limit`. `curl`-testable, no Firestore.
+4. ~~**Rewire the frontend to the new backend**~~ (done 2026-09-01). The
+   hand-typed `SKILLS`/`BOSSES`/`ITEMS` arrays, category menus, and
+   level/quantity prompts are gone. Add/edit/delete all run through modals
+   (`EntryModal.svelte`, `ConfirmModal.svelte`) — see the Entry bullet in
+   Domain model for the creation/override flow. Native `confirm()` popups
+   replaced too, for one consistent modal UX.
 5. Further out, not yet scoped in detail: result ranking (marquee-item
-   signal from collection-log / level-up membership), editing UI for
-   existing entries (rename/re-icon after creation), actual Cloud Run
-   deployment (see "Deployment status" above — still hasn't happened at
-   all).
+   signal from collection-log / recipe membership), the two coverage gaps
+   below, actual Cloud Run deployment (see "Deployment status" above).
+
+**Known catalog gaps (tabled 2026-09-01):**
+
+- **Minigames** — `catalog.json`'s `minigames` array is empty; no source
+  decided yet.
+- **Non-single-item things with a wiki page but no icon** — e.g.
+  "Blue Moon armor set" has its own wiki article but no infobox image
+  (it's not one item), so it isn't in the scrape and can't be added. The
+  modal only creates entries from a search result today; a "manual entry"
+  path (type a name + wiki link, no catalog match, borrow an icon) would
+  cover this and is not built yet.
 
 ## Data model (Firestore)
 

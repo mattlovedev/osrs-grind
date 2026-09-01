@@ -12,8 +12,12 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { db } from '$lib/firebase';
-	import type { Board, EntryType, Flow } from '$lib/types';
+	import type { Board } from '$lib/types';
 	import type { PageData } from './$types';
+	import EntryModal from '$lib/EntryModal.svelte';
+	import ConfirmModal from '$lib/ConfirmModal.svelte';
+
+	type EntryDraft = { label: string; wikiLink: string; icon: string; bottomText: string };
 
 	let { data }: { data: PageData } = $props();
 
@@ -23,157 +27,45 @@
 	let nameDraft = $state('');
 
 	type AddTarget = { flowId: string; nodeId: string; mode: 'append' | 'edge' } | null;
+	type EditTarget = { flowId: string; nodeId: string; entryId: string } | null;
 	let addTarget = $state<AddTarget>(null);
-	let addOpen = $state(false);
-	let showSkillMenu = $state(false);
-	let showBossMenu = $state(false);
-	let showItemMenu = $state(false);
+	let editTarget = $state<EditTarget>(null);
+	let modalOpen = $state(false);
 	let editMode = $state(false);
 
-	const SKILLS = [
-		'Attack',
-		'Strength',
-		'Defence',
-		'Ranged',
-		'Prayer',
-		'Magic',
-		'Runecraft',
-		'Construction',
-		'Hitpoints',
-		'Agility',
-		'Herblore',
-		'Thieving',
-		'Crafting',
-		'Fletching',
-		'Slayer',
-		'Hunter',
-		'Mining',
-		'Smithing',
-		'Fishing',
-		'Cooking',
-		'Firemaking',
-		'Woodcutting',
-		'Farming'
-	];
+	let editInitial = $derived.by(() => {
+		if (!editTarget) return null;
+		const e = board.flows[editTarget.flowId]?.nodes[editTarget.nodeId]?.entries[editTarget.entryId];
+		if (!e) return null;
+		return {
+			label: e.label ?? '',
+			wikiLink: e.wikiLink ?? '',
+			icon: e.icon ?? '',
+			bottomText: e.bottomText ?? ''
+		};
+	});
 
-	const BOSSES = [
-		{
-			name: 'Dagannoth Rex',
-			icon: 'https://oldschool.runescape.wiki/images/Dagannoth_Rex.png',
-			drops: [
-				{
-					name: 'Berserker ring',
-					icon: 'https://oldschool.runescape.wiki/images/Berserker_ring.png'
-				},
-				{ name: 'Warrior ring', icon: 'https://oldschool.runescape.wiki/images/Warrior_ring.png' },
-				{ name: 'Dragon axe', icon: 'https://oldschool.runescape.wiki/images/Dragon_axe.png' },
-				{
-					name: 'Pet Dagannoth Rex',
-					icon: 'https://oldschool.runescape.wiki/images/Pet_Dagannoth_Rex.png'
-				}
-			]
-		},
-		{
-			name: 'Dagannoth Prime',
-			icon: 'https://oldschool.runescape.wiki/images/Dagannoth_Prime.png',
-			drops: [
-				{
-					name: 'Mud battlestaff',
-					icon: 'https://oldschool.runescape.wiki/images/Mud_battlestaff.png'
-				},
-				{ name: 'Dragon axe', icon: 'https://oldschool.runescape.wiki/images/Dragon_axe.png' },
-				{ name: 'Seers ring', icon: 'https://oldschool.runescape.wiki/images/Seers_ring.png' },
-				{
-					name: 'Pet Dagannoth Prime',
-					icon: 'https://oldschool.runescape.wiki/images/Pet_Dagannoth_Prime.png'
-				}
-			]
-		}
-	];
-
-	const ITEMS = [
-		{ name: 'Amulet of fury', icon: 'https://oldschool.runescape.wiki/images/Amulet_of_fury.png' }
-	];
-
-	function unionDrops(bosses: typeof BOSSES) {
-		const result: { name: string; icon: string }[] = [];
-		for (const boss of bosses) {
-			for (const drop of boss.drops) {
-				if (!result.some((d) => d.name === drop.name)) {
-					result.push(drop);
-				}
-			}
-		}
-		return result.length ? result : null;
-	}
-
-	function bossesDirectlyInNode(node: { entries: Record<string, { label: string }> }) {
-		const labels = Object.values(node.entries).map((e) => e.label);
-		return BOSSES.filter((boss) => labels.includes(boss.name));
-	}
-
-	function dropsForAppend(flow: Flow, nodeId: string) {
-		const node = flow.nodes[nodeId];
-
-		// A node containing a boss itself is always unrestricted, regardless of
-		// how it was reached - takes priority over everything below.
-		if (bossesDirectlyInNode(node).length) return null;
-
-		// Prefer inheriting the full boss context from whatever created this
-		// node (its incoming edge's source), rather than re-matching just this
-		// node's own label - a node holding one drop shared by multiple bosses
-		// (e.g. Dragon axe) would otherwise only find the subset of bosses that
-		// happen to share that specific item, losing the rest of the union.
-		const incomingEdge = Object.values(flow.edges ?? {}).find((e) => e.to === nodeId);
-		const sourceNode = incomingEdge ? flow.nodes[incomingEdge.from] : null;
-		const sourceBosses = sourceNode ? bossesDirectlyInNode(sourceNode) : [];
-		if (sourceBosses.length) return unionDrops(sourceBosses);
-
-		// No usable source context (no incoming edge, or the source isn't a
-		// recognized boss) - fall back to matching this node's own entries.
-		const labels = Object.values(node.entries).map((e) => e.label);
-		return unionDrops(BOSSES.filter((boss) => boss.drops.some((d) => labels.includes(d.name))));
-	}
-
-	function dropsForEdge(node: { entries: Record<string, { label: string }> }) {
-		return unionDrops(bossesDirectlyInNode(node));
-	}
-
-	function skillIconUrl(skill: string) {
-		return `https://oldschool.runescape.wiki/images/${skill}_icon.png`;
-	}
-
-	let dropsContext = $state<{ name: string; icon: string }[] | null>(null);
-
-	function openAddMenu(target: AddTarget) {
+	function openAdd(target: AddTarget) {
 		addTarget = target;
-		addOpen = true;
-		showSkillMenu = false;
-		showBossMenu = false;
-		showItemMenu = false;
-		if (!target) {
-			dropsContext = null;
-		} else {
-			const flow = board.flows[target.flowId];
-			dropsContext =
-				target.mode === 'edge'
-					? dropsForEdge(flow.nodes[target.nodeId])
-					: dropsForAppend(flow, target.nodeId);
-		}
+		editTarget = null;
+		modalOpen = true;
 	}
 
-	function closeAddFlow() {
-		addOpen = false;
-		showSkillMenu = false;
-		showBossMenu = false;
-		showItemMenu = false;
-		dropsContext = null;
+	function openEdit(flowId: string, nodeId: string, entryId: string) {
+		editTarget = { flowId, nodeId, entryId };
 		addTarget = null;
+		modalOpen = true;
+	}
+
+	function closeModal() {
+		modalOpen = false;
+		addTarget = null;
+		editTarget = null;
 	}
 
 	function toggleEditMode() {
 		editMode = !editMode;
-		if (!editMode) closeAddFlow();
+		if (!editMode) closeModal();
 	}
 
 	$effect(() => {
@@ -208,15 +100,30 @@
 		editingName = false;
 	}
 
-	async function deleteBoard() {
-		if (!confirm('Delete this board? This cannot be undone.')) return;
+	type ConfirmData = {
+		title: string;
+		message: string;
+		perform: () => Promise<void> | void;
+	};
+	let confirmData = $state<ConfirmData | null>(null);
+
+	function cancelConfirm() {
+		confirmData = null;
+	}
+
+	async function runConfirm() {
+		const perform = confirmData?.perform;
+		confirmData = null;
+		await perform?.();
+	}
+
+	async function doDeleteBoard() {
 		const ref = doc(db, 'boards', data.boardId);
 		await deleteDoc(ref);
 		goto(resolve('/'));
 	}
 
-	async function deleteFlow(flowId: string) {
-		if (!confirm('Delete this grind? This cannot be undone.')) return;
+	async function doDeleteFlow(flowId: string) {
 		const ref = doc(db, 'boards', data.boardId);
 		await updateDoc(ref, {
 			updatedAt: serverTimestamp(),
@@ -225,24 +132,7 @@
 		});
 	}
 
-	async function deleteNode(flowId: string, nodeId: string) {
-		const isLastNode = (board.flows[flowId]?.nodeOrder ?? []).length <= 1;
-		if (isLastNode) {
-			if (
-				!confirm(
-					'This is the last node in this grind - deleting it removes the whole grind. Continue?'
-				)
-			)
-				return;
-			const ref = doc(db, 'boards', data.boardId);
-			await updateDoc(ref, {
-				updatedAt: serverTimestamp(),
-				flowOrder: arrayRemove(flowId),
-				[`flows.${flowId}`]: deleteField()
-			});
-			return;
-		}
-		if (!confirm('Delete this node and everything in it? This cannot be undone.')) return;
+	async function doDeleteNode(flowId: string, nodeId: string) {
 		const ref = doc(db, 'boards', data.boardId);
 		const edges = board.flows[flowId]?.edges ?? {};
 		const orphanedEdgeIds = Object.entries(edges)
@@ -259,10 +149,42 @@
 		await updateDoc(ref, updates);
 	}
 
+	function askDeleteBoard() {
+		confirmData = {
+			title: 'Delete board',
+			message: 'This board and everything on it will be gone. This cannot be undone.',
+			perform: doDeleteBoard
+		};
+	}
+
+	function askDeleteFlow(flowId: string) {
+		confirmData = {
+			title: 'Delete grind',
+			message: 'This grind and all its nodes will be gone. This cannot be undone.',
+			perform: () => doDeleteFlow(flowId)
+		};
+	}
+
+	function askDeleteNode(flowId: string, nodeId: string) {
+		const isLastNode = (board.flows[flowId]?.nodeOrder ?? []).length <= 1;
+		confirmData = isLastNode
+			? {
+					title: 'Delete grind',
+					message:
+						'This is the last node - deleting it removes the whole grind. This cannot be undone.',
+					perform: () => doDeleteFlow(flowId)
+				}
+			: {
+					title: 'Delete node',
+					message: 'This node and everything in it will be gone. This cannot be undone.',
+					perform: () => doDeleteNode(flowId, nodeId)
+				};
+	}
+
 	async function deleteEntry(flowId: string, nodeId: string, entryId: string) {
 		const isLastEntry = (board.flows[flowId]?.nodes[nodeId]?.entryOrder ?? []).length <= 1;
 		if (isLastEntry) {
-			await deleteNode(flowId, nodeId);
+			askDeleteNode(flowId, nodeId);
 			return;
 		}
 		const ref = doc(db, 'boards', data.boardId);
@@ -282,19 +204,16 @@
 		});
 	}
 
-	async function createGrind(type: EntryType, label: string, icon: string) {
+	async function createEntry(draft: EntryDraft) {
 		const ref = doc(db, 'boards', data.boardId);
 		const entryId = crypto.randomUUID().slice(0, 8);
+		const entry = { ...draft, done: false };
+
 		if (addTarget?.mode === 'append') {
 			const { flowId, nodeId } = addTarget;
 			await updateDoc(ref, {
 				updatedAt: serverTimestamp(),
-				[`flows.${flowId}.nodes.${nodeId}.entries.${entryId}`]: {
-					type,
-					label,
-					icon,
-					done: false
-				},
+				[`flows.${flowId}.nodes.${nodeId}.entries.${entryId}`]: entry,
 				[`flows.${flowId}.nodes.${nodeId}.entryOrder`]: arrayUnion(entryId)
 			});
 		} else if (addTarget?.mode === 'edge') {
@@ -304,7 +223,7 @@
 			await updateDoc(ref, {
 				updatedAt: serverTimestamp(),
 				[`flows.${flowId}.nodes.${newNodeId}`]: {
-					entries: { [entryId]: { type, label, icon, done: false } },
+					entries: { [entryId]: entry },
 					entryOrder: [entryId]
 				},
 				[`flows.${flowId}.nodeOrder`]: arrayUnion(newNodeId),
@@ -320,7 +239,7 @@
 					name: '',
 					nodes: {
 						[nodeId]: {
-							entries: { [entryId]: { type, label, icon, done: false } },
+							entries: { [entryId]: entry },
 							entryOrder: [entryId]
 						}
 					},
@@ -329,127 +248,41 @@
 				}
 			});
 		}
-		closeAddFlow();
+		closeModal();
 	}
 
-	function badgeFromLabel(label: string): string | null {
-		return label.match(/^\d\S*/)?.[0] ?? null;
+	async function updateEntry(target: NonNullable<EditTarget>, draft: EntryDraft) {
+		const { flowId, nodeId, entryId } = target;
+		const base = `flows.${flowId}.nodes.${nodeId}.entries.${entryId}`;
+		const ref = doc(db, 'boards', data.boardId);
+		await updateDoc(ref, {
+			updatedAt: serverTimestamp(),
+			[`${base}.label`]: draft.label,
+			[`${base}.wikiLink`]: draft.wikiLink,
+			[`${base}.icon`]: draft.icon,
+			[`${base}.bottomText`]: draft.bottomText
+		});
+		closeModal();
+	}
+
+	function handleModalSubmit(draft: EntryDraft) {
+		if (editTarget) updateEntry(editTarget, draft);
+		else createEntry(draft);
 	}
 </script>
 
-{#snippet addMenu()}
-	<div
-		class="add-flow-container"
-		onfocusout={(e) => {
-			const container = e.currentTarget;
-			setTimeout(() => {
-				if (!container.contains(document.activeElement)) closeAddFlow();
-			}, 0);
-		}}
-	>
-		{#if dropsContext}
-			<div class="skill-menu">
-				{#each dropsContext as drop, i (drop.name)}
-					<button
-						onclick={() => createGrind('item', drop.name, drop.icon)}
-						onkeydown={(e) => {
-							if (e.key === 'Escape') closeAddFlow();
-						}}
-						autofocus={i === 0}
-					>
-						<img src={drop.icon} alt="" />
-						{drop.name}
-					</button>
-				{/each}
-			</div>
-		{:else if showSkillMenu}
-			<div class="skill-menu">
-				{#each SKILLS as skill, i (skill)}
-					<button
-						onclick={() => {
-							const level = prompt(`Target level for ${skill}?`);
-							if (!level) return;
-							createGrind('skill', `${level} ${skill}`, skillIconUrl(skill));
-						}}
-						onkeydown={(e) => {
-							if (e.key === 'Escape') closeAddFlow();
-						}}
-						autofocus={i === 0}
-					>
-						<img src={skillIconUrl(skill)} alt="" />
-						{skill}
-					</button>
-				{/each}
-			</div>
-		{:else if showBossMenu}
-			<div class="skill-menu">
-				{#each BOSSES as boss, i (boss.name)}
-					<button
-						onclick={() => createGrind('boss', boss.name, boss.icon)}
-						onkeydown={(e) => {
-							if (e.key === 'Escape') closeAddFlow();
-						}}
-						autofocus={i === 0}
-					>
-						<img src={boss.icon} alt="" />
-						{boss.name}
-					</button>
-				{/each}
-			</div>
-		{:else if showItemMenu}
-			<div class="skill-menu">
-				{#each ITEMS as item, i (item.name)}
-					<button
-						onclick={() => {
-							const qty = prompt(`How many ${item.name}?`, '1');
-							if (!qty) return;
-							const label = qty === '1' ? item.name : `${qty} ${item.name}`;
-							createGrind('item', label, item.icon);
-						}}
-						onkeydown={(e) => {
-							if (e.key === 'Escape') closeAddFlow();
-						}}
-						autofocus={i === 0}
-					>
-						<img src={item.icon} alt="" />
-						{item.name}
-					</button>
-				{/each}
-			</div>
-		{:else}
-			<div class="add-flow-menu">
-				<button
-					onclick={() => (showSkillMenu = true)}
-					onkeydown={(e) => {
-						if (e.key === 'Escape') closeAddFlow();
-					}}
-					autofocus
-				>
-					<img src="https://oldschool.runescape.wiki/images/Stats_icon.png?1b467" alt="" />
-					Skill
-				</button>
-				<button
-					onclick={() => (showBossMenu = true)}
-					onkeydown={(e) => {
-						if (e.key === 'Escape') closeAddFlow();
-					}}
-				>
-					<img src="https://oldschool.runescape.wiki/images/Combat_icon.png" alt="" />
-					Kill
-				</button>
-				<button
-					onclick={() => (showItemMenu = true)}
-					onkeydown={(e) => {
-						if (e.key === 'Escape') closeAddFlow();
-					}}
-				>
-					<img src="https://oldschool.runescape.wiki/images/Inventory.png" alt="" />
-					Item
-				</button>
-			</div>
-		{/if}
-	</div>
-{/snippet}
+{#if modalOpen}
+	<EntryModal initial={editInitial} onsubmit={handleModalSubmit} oncancel={closeModal} />
+{/if}
+
+{#if confirmData}
+	<ConfirmModal
+		title={confirmData.title}
+		message={confirmData.message}
+		onconfirm={runConfirm}
+		oncancel={cancelConfirm}
+	/>
+{/if}
 
 <h1>
 	{#if editingName}
@@ -482,13 +315,13 @@
 	<button class="edit-board" onclick={toggleEditMode}
 		>{editMode ? 'Exit edit' : 'Edit board'}</button
 	>
-	<button class="delete-board" onclick={deleteBoard}>Delete board</button>
+	<button class="delete-board" onclick={askDeleteBoard}>Delete board</button>
 </div>
 
 {#each board.flowOrder as flowId (flowId)}
 	{@const flow = board.flows[flowId]}
 	<div class="flow" class:editing={editMode}>
-		<button class="flow-delete-button" title="Delete grind" onclick={() => deleteFlow(flowId)}>
+		<button class="flow-delete-button" title="Delete grind" onclick={() => askDeleteFlow(flowId)}>
 			&times;
 		</button>
 		{#each flow?.nodeOrder ?? Object.keys(flow?.nodes ?? {}) as nodeId, i (nodeId)}
@@ -505,19 +338,26 @@
 							class="entry-cell"
 							class:editing={editMode}
 							class:done={entry.done}
+							title={editMode ? undefined : entry.label}
 							role="button"
 							tabindex="0"
-							onclick={() => toggleDone(flowId, nodeId, entryId, entry.done)}
+							onclick={() =>
+								editMode
+									? openEdit(flowId, nodeId, entryId)
+									: toggleDone(flowId, nodeId, entryId, entry.done)}
 							onkeydown={(e) => {
-								if (e.key === 'Enter' || e.key === ' ')
-									toggleDone(flowId, nodeId, entryId, entry.done);
+								if (e.key !== 'Enter' && e.key !== ' ') return;
+								if (editMode) openEdit(flowId, nodeId, entryId);
+								else toggleDone(flowId, nodeId, entryId, entry.done);
 							}}
 						>
 							{#if entry.icon}
 								<img src={entry.icon} alt={entry.label} />
+							{:else}
+								<span class="icon-placeholder">?</span>
 							{/if}
-							{#if badgeFromLabel(entry.label)}
-								<span class="level-badge">{badgeFromLabel(entry.label)}</span>
+							{#if entry.bottomText}
+								<span class="level-badge">{entry.bottomText}</span>
 							{/if}
 							<button
 								class="entry-delete-button"
@@ -532,44 +372,36 @@
 						</div>
 					{/each}
 				</div>
-				{#if addOpen && addTarget?.flowId === flowId && addTarget?.nodeId === nodeId}
-					{@render addMenu()}
-				{:else}
+				<button
+					class="node-add-button"
+					title="Add to this node"
+					onclick={() => openAdd({ flowId, nodeId, mode: 'append' })}
+				>
+					+
+				</button>
+				{#if isTailNode}
 					<button
-						class="node-add-button"
-						title="Add to this node"
-						onclick={() => openAddMenu({ flowId, nodeId, mode: 'append' })}
+						class="node-edge-button"
+						title="Add connected grind"
+						onclick={() => openAdd({ flowId, nodeId, mode: 'edge' })}
 					>
-						+
-					</button>
-					{#if isTailNode}
-						<button
-							class="node-edge-button"
-							title="Add connected grind"
-							onclick={() => openAddMenu({ flowId, nodeId, mode: 'edge' })}
-						>
-							&rarr;
-						</button>
-					{/if}
-					<button
-						class="node-delete-button"
-						title="Delete node"
-						onclick={() => deleteNode(flowId, nodeId)}
-					>
-						&times;
+						&rarr;
 					</button>
 				{/if}
+				<button
+					class="node-delete-button"
+					title="Delete node"
+					onclick={() => askDeleteNode(flowId, nodeId)}
+				>
+					&times;
+				</button>
 			</div>
 		{/each}
 	</div>
 {/each}
 
 {#if editMode}
-	{#if addOpen && addTarget === null}
-		{@render addMenu()}
-	{:else if addTarget === null}
-		<button class="add-flow-button" title="Add grind" onclick={() => openAddMenu(null)}>+</button>
-	{/if}
+	<button class="add-flow-button" title="Add grind" onclick={() => openAdd(null)}>+</button>
 {/if}
 
 <style>
@@ -601,46 +433,6 @@
 		height: 6rem;
 		font-size: 3rem;
 		line-height: 1;
-	}
-
-	.add-flow-menu {
-		display: flex;
-		flex-direction: column;
-		margin: 2rem auto;
-		width: 6rem;
-		height: 6rem;
-	}
-
-	.add-flow-menu button {
-		flex: 1;
-		font-size: 1.5rem;
-	}
-
-	.add-flow-menu img {
-		height: 1.5rem;
-		width: auto;
-		vertical-align: middle;
-	}
-
-	.skill-menu {
-		display: flex;
-		flex-direction: column;
-		margin: 2rem auto;
-		width: 16rem;
-		max-height: 20rem;
-		overflow-y: auto;
-	}
-
-	.skill-menu button {
-		font-size: 1.5rem;
-		text-align: left;
-		white-space: nowrap;
-	}
-
-	.skill-menu img {
-		height: 1.5rem;
-		width: auto;
-		vertical-align: middle;
 	}
 
 	h1 input {
@@ -722,6 +514,12 @@
 	.entry-cell img {
 		max-width: 85%;
 		max-height: 85%;
+	}
+
+	.icon-placeholder {
+		font-size: 1.25rem;
+		font-weight: bold;
+		color: #999;
 	}
 
 	.level-badge {
