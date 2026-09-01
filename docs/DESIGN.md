@@ -392,12 +392,16 @@ bosses, items, minigames}`, each entry `{name, wikiLink, icon}` with
 
 - **Minigames** — `catalog.json`'s `minigames` array is empty; no source
   decided yet.
-- **Non-single-item things with a wiki page but no icon** — e.g.
-  "Blue Moon armor set" has its own wiki article but no infobox image
-  (it's not one item), so it isn't in the scrape and can't be added. The
-  modal only creates entries from a search result today; a "manual entry"
-  path (type a name + wiki link, no catalog match, borrow an icon) would
-  cover this and is not built yet.
+- **Real things missing from all three scrape sources.** Either the wiki
+  page has no infobox image ("Blue Moon armor set" — not one item), or
+  it's a normal single item that just isn't dropped / collection-logged /
+  in a recipe row ("Twinflame staff", a combination item — it has a page
+  and an infobox image, so its icon would resolve fine if the name ever
+  reached stage 2c; nothing enumerates it). Both want the same unbuilt
+  feature: a **manual-entry path** in the modal — type a name (+ wiki
+  link), no catalog match required, borrow an icon via the icon search.
+  A live wiki-search fallback when the local catalog returns nothing would
+  also help.
 
 ## Data model (Firestore)
 
