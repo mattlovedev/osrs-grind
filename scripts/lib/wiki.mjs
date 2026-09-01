@@ -86,6 +86,15 @@ export function fileRefToImageUrl(fileRef) {
 	return `https://oldschool.runescape.wiki/images/${encodeURIComponent(filename).replace(/%2F/g, '/')}`;
 }
 
+/** Direct URL to a wiki article page for a given page title. */
+export function wikiPageUrl(pageName) {
+	const slug = encodeURIComponent(pageName.replace(/ /g, '_'))
+		.replace(/%2F/g, '/')
+		.replace(/%3A/g, ':')
+		.replace(/%2C/g, ',');
+	return `https://oldschool.runescape.wiki/w/${slug}`;
+}
+
 /** Turn a wiki page title into a filesystem-safe kebab-case slug. */
 export function slugify(title) {
 	return title

@@ -123,8 +123,9 @@ tables including:
   filename instead of guessing a naming pattern, which already burned us
   once: `Inventory_tab.png` turned out to be a 204×275 screenshot of the
   whole panel, not the 25×27 backpack icon we wanted).
-- `Bucket:Recipe` — possible source for skill-derivable items (phase 2,
-  below) — not yet investigated.
+- `Bucket:Recipe` — fallback source for skill-derivable items if the
+  per-skill level-up tables (the current lead) turn out not to be
+  structured — not yet investigated.
 
 **Scope, phased:**
 
@@ -134,56 +135,75 @@ tables including:
    not the target). This is the de-risked phase: every mechanical piece
    (enumeration, drop data, icon resolution) has been verified to work.
 2. **Skill-derivable items second** — items you craft/smith/fletch/brew
-   rather than get as drops (e.g. items obtainable via Crafting). Only
-   applies to skills with a meaningful "things you make" output (not
-   Agility, Firemaking, etc.) — separate research phase, `Bucket:Recipe`
-   is the lead to chase but unverified.
+   rather than get as drops (e.g. Amulet of fury via Crafting). Lead is
+   now the per-skill **level-up tables** (each encodes level → unlock
+   directly, and includes both "make" rows like fury at 90 Crafting and
+   "wield" rows like Dragon axe at 61 Woodcutting); `Bucket:Recipe` is a
+   fallback. Not a distinct catalog phase anymore — it's just another item
+   source unioned into the flat list (roadmap stage 2b). Still needs a
+   research spike on whether the tables are structured or wikitext.
 3. **Manual entries remain a valid fallback throughout** — anything not yet
    covered by either scrape can still be hand-added the way Amulet of fury
    was. The catalog grows incrementally; it never needs to be "complete" to
    be useful.
 
-**Uniqueness filtering.** Raw drop-table scraping pulls in everything —
-coins, seaweed, big bones, generic clue scrolls — not just boss-specific
-"grind target" items. Two complementary signals, to be combined:
-`Bucket:Collection_log_source` (Jagex's own curation, likely the primary
-signal) and frequency analysis across our own scraped dataset (an item
-appearing in only 1-3 bosses' tables is probably boss-specific; appearing
-in dozens is obviously common loot) as a cross-check, plus outright
-excluding known-generic drop-table sections (`Tertiary`, `Rare and Gem drop
-table`, `100%`) regardless of frequency. Expect a manual review pass on the
-output either way — not treating this as fully hands-off.
+**Notability: include broadly, don't gate (revised 2026-09-01).** The
+original plan was a filtering pass that removed generic drops — excluding
+known-generic sections (`Tertiary`, `Rare and Gem drop table`, `100%`),
+frequency analysis across the scraped dataset (an item in only 1-3 bosses'
+tables is probably boss-specific; one in dozens is common loot), with
+`Bucket:Collection_log_source` as the primary "real grind target" signal.
+Abandoned as a gate after the first real run: Dagannoth Rex processed to 44
+of 77 drops still flagged "notable," and no reasonable blocklist trims that
+toward the ~4 items (Berserker ring, Warrior ring, Dragon axe, pet) people
+actually camp him for — a blocklist only removes what you think to name.
 
-**Storage: everything scraped, filtering applied separately.** The scrape
-should store _all_ drops with rarity/metadata attached, not just the
-filtered "uniques" subset — so which drops count as notable stays a
-re-runnable filtering decision over already-fetched data, not something
-baked permanently into a scrape that would need re-running from the wiki
-to adjust.
+The reframe: for a search-backed catalog, **recall beats precision**.
+Nobody types "Prayer potion(2)" into the entry search, so its presence
+costs nothing; a _missing_ Berserker ring is a real defect. The catalog
+includes every item it can enumerate, with no notability gate. The
+`Collection_log_source` and skill level-up-table signals don't disappear —
+they change role:
 
-**Output shape** — two artifacts, both checked into the repo, no runtime
-wiki dependency after generation:
+- **Coverage.** Drop tables miss anything not dropped (crafted/smithed
+  items like Amulet of fury). Skill level-up tables catch those;
+  collection-log-source catches notable untradeables and pets. Each is an
+  additional _source_ feeding the same deduped item list, not a filter
+  over it.
+- **Ranking (deferred).** Membership in a collection log or a level-up
+  table is a good "marquee item" signal for ordering search results so
+  Berserker ring sorts above Prayer potion. Not needed to ship — layer it
+  on once the catalog and search box exist.
+
+**Boss→item association dropped (2026-09-01).** Earlier drafts stored drops
+nested under each boss with rarity/quantity/value. The app doesn't need to
+know which boss drops which item at this stage — the drop tables are just a
+convenient way to enumerate (1) every boss and (2) a large chunk of every
+item. The generated catalog is flat deduped lists; the association and the
+per-drop metadata are discarded. Stage 1's raw per-boss files still keep
+everything, so associations can be reconstructed later without re-fetching
+if a feature ever needs them.
+
+**Output shape** — one catalog file plus downloaded icons, checked into the
+repo, no runtime wiki dependency after generation:
 
 ```
-data/bosses.json
+data/catalog.json
 {
   "generatedAt": "...", "source": "...",
-  "bosses": [{
-    "name": "Dagannoth Rex",
-    "wikiLink": "https://oldschool.runescape.wiki/w/Dagannoth_Rex",
-    "icon": "/icons/monsters/dagannoth-rex.png",
-    "drops": [{
-      "name": "Berserker ring",
-      "wikiLink": "https://oldschool.runescape.wiki/w/Berserker_ring",
-      "icon": "/icons/items/berserker-ring.png",
-      "rarity": "1/128"
-    }]
-  }]
+  "skills":    [{ "name": "Crafting",      "wikiLink": "...", "icon": "/icons/skills/crafting.png" }],
+  "bosses":    [{ "name": "Dagannoth Rex",  "wikiLink": "...", "icon": "/icons/bosses/dagannoth-rex.png", "combatLevel": 303 }],
+  "items":     [{ "name": "Berserker ring", "wikiLink": "...", "icon": "/icons/items/berserker-ring.png" }],
+  "minigames": [{ "name": "...",            "wikiLink": "...", "icon": "..." }]
 }
 ```
 
-Plus the actual downloaded icon files at those paths, filenames normalized
-to kebab-case (not the wiki's raw "Dagannoth Rex.png" with spaces/casing).
+`skills` is a static hand-written list of all 24 (includes Sailing).
+`bosses` comes from `Category:Bosses` + `Infobox_monster`. `items` is the
+deduped union of every source (drop tables first; collection-log-source and
+skill level-up tables as they're added). `minigames` source is still TBD.
+Icon files are downloaded to the paths shown, filenames normalized to
+kebab-case (not the wiki's raw "Dagannoth Rex.png" with spaces/casing).
 
 **Icons: bundled in `static/`, not GCS.** At OSRS icon scale (items ~200-700
 bytes each, monster portraits ~30-50KB), even a few thousand icons is only
@@ -268,11 +288,26 @@ step is validated before the next depends on it.
      against Dagannoth Rex/Prime — Bucket's drop rows include the fully
      resolved Rare Drop Table contents per boss (flagged via
      `rareDropTable`), not just each page's literal drop lines.
-   - Stage 2 — process/filter (per-boss transform, not yet built).
-   - Stage 3 — build cross-boss indexes (monster→drops, drop→monsters,
-     not yet built).
-   - Stage 4 — download icons (not yet built).
-   - Stage 5 — assemble final catalog (not yet built).
+   - Stage 2 — flatten & enrich items (not yet built; an earlier per-boss
+     "process/filter" draft, `02-process.mjs`, was scrapped along with the
+     notability-gate idea — see Notability above). Reads all raw files,
+     flattens drop rows across every boss, dedupes by item name, discards
+     rarity/quantity/value, then enriches each unique item via
+     `Infobox_item` for its declared icon + wiki link. Output: a flat item
+     list.
+   - Stage 2b — extra item sources (not yet built). `Collection_log_source`
+     (one table fetch, ~1,712 rows) and the per-skill level-up tables —
+     each a small fetch script writing its own cache file, feeding the same
+     dedupe as stage 2. Open question: whether the level-up tables are a
+     Bucket table or need wikitext parsing — needs a research spike like
+     the one done for `Dropsline`. Keep each row's relationship verb
+     (make/brew/fletch vs. wield/use) for later ranking.
+   - ~~Stage 3 — cross-boss indexes~~ — dropped 2026-09-01 with the
+     boss→item association (see Notability above). Nothing consumes a
+     monster→drops index now that entry creation is search-only.
+   - Stage 3 (was 4) — download icons (not yet built): skills + bosses +
+     items.
+   - Stage 4 (was 5) — assemble `data/catalog.json` (not yet built).
 2. **Pull real data** — not at full 341-boss scale yet; get the actual
    shape of the output (JSON catalog + downloaded/normalized icon files)
    proven out first, small scale, before committing to running it against
@@ -284,12 +319,16 @@ step is validated before the next depends on it.
 4. **Rewire the frontend to the new backend** — replace the hand-typed
    `SKILLS`/`BOSSES`/`ITEMS` arrays and the category-button menus
    (Skill/Kill/Item) with a single searchable flat list hitting the new
-   endpoint. Also where the planned `wikiLink` field and per-entry
-   identity/icon-override search (see Domain model) actually get built.
-5. Further out, not yet scoped in detail: skill-derivable items (phase 2
-   of the catalog), editing UI for existing entries (rename/re-icon after
-   creation), actual Cloud Run deployment (see "Deployment status" above —
-   still hasn't happened at all).
+   endpoint. The entry-creation UI is one search box across all types —
+   nothing renders until at least one character is typed, so there's no
+   pre-populated per-category or per-boss list to design or trim. Also
+   where the planned `wikiLink` field and per-entry identity/icon-override
+   search (see Domain model) actually get built.
+5. Further out, not yet scoped in detail: result ranking (marquee-item
+   signal from collection-log / level-up membership), editing UI for
+   existing entries (rename/re-icon after creation), actual Cloud Run
+   deployment (see "Deployment status" above — still hasn't happened at
+   all).
 
 ## Data model (Firestore)
 
@@ -401,12 +440,12 @@ today — worth being precise about this, since all three look similar
 The search endpoint (`src/routes/api/search/+server.ts` or similar) will be
 this third kind — self-contained, zero `.svelte` involvement, fully
 buildable/testable via `curl` alone before any frontend wiring happens. It
-reads the catalog via a direct `import catalog from '$lib/data/bosses.json'`
+reads the catalog via a direct `import catalog from '$lib/data/catalog.json'`
 (Vite bundles JSON imports at build time) rather than Firestore — the
 catalog is shared static reference data, not per-user editable board
 content, so it doesn't belong in the database. The whole parsed catalog
 lives in the Node process's memory for the life of that container instance
-(cheap at current boss-only scale, tens of MB at worst; would need
+(cheap at current scale, tens of MB at worst; would need
 rethinking — a real search index, not a bigger JSON blob — if this ever
 grows toward "all 12k+ items"). Cost of this design: refreshing the catalog
 requires a rebuild + redeploy, since it's baked in at build time, not read
