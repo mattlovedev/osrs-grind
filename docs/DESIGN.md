@@ -302,8 +302,8 @@ step is validated before the next depends on it.
      against Dagannoth Rex/Prime — Bucket's drop rows include the fully
      resolved Rare Drop Table contents per boss (flagged via
      `rareDropTable`), not just each page's literal drop lines.
-   - ~~Stage 2 — flatten & enrich items~~ (`02-flatten-items.mjs`, done; an
-     earlier per-boss "process/filter" draft, `02-process.mjs`, was
+   - ~~Stage 2a — flatten & enrich items~~ (`02a-flatten-items.mjs`, done;
+     an earlier per-boss "process/filter" draft, `02-process.mjs`, was
      scrapped along with the notability-gate idea — see Notability above).
      Reads all raw files, flattens drop rows across every boss, dedupes by
      item name, discards rarity/quantity/value, then enriches each unique
@@ -315,12 +315,16 @@ step is validated before the next depends on it.
      (~1,712 rows), variant `#anchor` rows collapsed, source links parsed
      to page names, cached to `scripts/.data/collection-log-source.json`.
      `sources` kept for later ranking.
-   - Stage 2c — recipe items (not yet built). `Bucket:Recipe` per skill
-     (`--only=`/`--limit=` like the boss scripts), dedupe by `output.name`,
-     cache `{name, iconUrl (from output.image), skill, level}` to
-     `scripts/.data/recipe-items.json`. Skip rows with empty `output`.
+   - ~~Stage 2c — recipe items~~ (`02c-fetch-recipes.mjs`, done).
+     `Bucket:Recipe` per skill (`--only=`/`--limit=` like the boss
+     scripts), dedupe by `output.name`, cache
+     `{name, wikiLink, iconUrl (from output.image), skills: [{skill, level}]}`
+     to `scripts/.data/recipe-items.json`. Rows with empty `output` skipped.
+     Recipe files an item under its _last_ production step's skill (Amulet
+     of fury lands under Magic 87, the enchant, not Crafting) — fine for
+     flat-catalog coverage, a known gap for any future skill→item feature.
    - Stage 2d — fold 2b + 2c into `items.json` (not yet built). Union the
-     cached names into `02-flatten-items.mjs`'s dedupe; recipe items carry
+     cached names into `02a-flatten-items.mjs`'s dedupe; recipe items carry
      their own icon so they skip the `Infobox_item` call.
    - ~~Stage 3 — cross-boss indexes~~ — dropped 2026-09-01 with the
      boss→item association (see Notability above). Nothing consumes a
