@@ -62,4 +62,36 @@ export async function fetchRevisionTimestamps(titles) {
 	return result;
 }
 
+/**
+ * Run a Bucket query DSL string (e.g. `bucket("dropsline").select(...).run()`)
+ * against the wiki's structured-data extension. Returns the array of result
+ * rows (empty array if none).
+ */
+export async function bucketQuery(query) {
+	const data = await apiGet({ action: 'bucket', query, format: 'json' });
+	if (data.error) {
+		throw new Error(`Bucket query failed: ${data.error.info ?? data.error.code} (${query})`);
+	}
+	return data.bucket ?? [];
+}
+
+/** Escape double quotes so a title/name is safe to embed in a Bucket query string literal. */
+export function bucketStringLiteral(value) {
+	return `"${value.replace(/"/g, '\\"')}"`;
+}
+
+/** Convert a wiki "File:X.png" reference into its direct downloadable image URL. */
+export function fileRefToImageUrl(fileRef) {
+	const filename = fileRef.replace(/^File:/, '').replace(/ /g, '_');
+	return `https://oldschool.runescape.wiki/images/${encodeURIComponent(filename).replace(/%2F/g, '/')}`;
+}
+
+/** Turn a wiki page title into a filesystem-safe kebab-case slug. */
+export function slugify(title) {
+	return title
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '');
+}
+
 export { apiGet };
