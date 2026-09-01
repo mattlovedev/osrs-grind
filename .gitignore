@@ -29,8 +29,8 @@ ui-debug.log
 .firebase/
 firebase-export-*/
 
-# Scraper pipeline intermediate data - regeneratable by re-running the
-# scripts/ pipeline, not meant to be committed. Final output
-# (src/lib/data/catalog.json, static/icons/) is committed; these staging
-# artifacts are not.
+# Scraper pipeline output - regeneratable by re-running the scripts/
+# pipeline. src/lib/data/catalog.json (text) is committed; the staging
+# data and the downloaded icons (thousands of binaries) are not.
 scripts/.data/
+static/icons/

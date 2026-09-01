@@ -226,13 +226,18 @@ deduped union of every source (drop tables first; collection-log-source and
 Icon files are downloaded to the paths shown, filenames normalized to
 kebab-case (not the wiki's raw "Dagannoth Rex.png" with spaces/casing).
 
-**Icons: bundled in `static/`, not GCS.** At OSRS icon scale (items ~200-700
-bytes each, monster portraits ~30-50KB), even a few thousand icons is only
-tens of MB — fine to commit and ship in the container image. Revisit only
-if this grows into thousands-of-monsters territory. Local serving was never
-actually a stack constraint — SvelteKit serves `static/` automatically in
-both `npm run dev` and the deployed Cloud Run container, no extra
-infrastructure needed either way.
+**Icons: served from `static/`, regenerated not committed (revised
+2026-09-01).** SvelteKit serves `static/` automatically in both `npm run
+dev` and the deployed container, so that's where the icons live. The first
+full run produced ~4,800 files / ~30 MB — and committing that was a
+mistake: git stores every version of every binary in full, so each
+re-scrape that changes icons would bloat history permanently. So
+`static/icons/` is **gitignored**; `scripts/03-download-icons.mjs`
+regenerates it (fast — skips files already on disk). `src/lib/data/
+catalog.json` (~800 KB text) _is_ committed. Open item for deployment: the
+Docker build needs the icons — either run stage 3 (or `npm run scrape`) as
+a build step, or pull a pre-built bundle from a Release asset / GCS.
+Git LFS is the other option if a build-step fetch proves annoying.
 
 **Scraper tooling lives in `scripts/`**, meant to be re-run repeatedly as
 the catalog grows/changes (not a one-time throwaway) — distinct from the
