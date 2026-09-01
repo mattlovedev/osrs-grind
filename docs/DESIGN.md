@@ -336,8 +336,18 @@ step is validated before the next depends on it.
    - ~~Stage 3 — cross-boss indexes~~ — dropped 2026-09-01 with the
      boss→item association (see Notability above). Nothing consumes a
      monster→drops index now that entry creation is search-only.
-   - Stage 3 (was 4) — download icons (not yet built): skills + bosses +
-     items.
+   - Stage 3 — download icons (`03-download-icons.mjs`, done). Pulls each
+     entry's icon to `static/icons/<category>/<slug>.<ext>` (slug =
+     kebab-cased name), 8-way concurrent, skips files already on disk
+     (`--refresh` to force). Sources: `items.json` iconUrls, boss iconUrls
+     from `raw/*.json`, and skills via the verified `<Skill>_icon.png`
+     pattern. The upstream URLs are string-built from `File:` names, which
+     404 on file-page redirects (charged-jewellery variants etc.), so
+     stage 3 first resolves them all through the API's `imageinfo`
+     (batched 50/call, follows redirects) before downloading. Writes
+     `scripts/.data/icons.json` — a name→`/icons/...` map per category,
+     plus `failed` and `noIcon` lists — for stage 4. `static/` is
+     committed, so the downloaded files get checked in.
    - Stage 4 (was 5) — assemble `data/catalog.json` (not yet built).
 2. **Pull real data** — not at full 341-boss scale yet; get the actual
    shape of the output (JSON catalog + downloaded/normalized icon files)

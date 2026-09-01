@@ -17,6 +17,15 @@ async function apiGet(params) {
 	return res.json();
 }
 
+/** Download a binary resource (e.g. an icon image) as a Buffer. Throws on non-2xx. */
+export async function downloadBinary(url) {
+	const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
+	if (!res.ok) {
+		throw new Error(`Download failed: ${res.status} ${res.statusText} (${url})`);
+	}
+	return Buffer.from(await res.arrayBuffer());
+}
+
 /** Fetch every page title in a category, following pagination. */
 export async function fetchAllCategoryMembers(category) {
 	const titles = [];
