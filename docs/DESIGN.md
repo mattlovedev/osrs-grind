@@ -132,14 +132,18 @@ tables including:
   chunks it by skill (794 rows for Crafting). Rows with `output: ""`
   (agility courses, quest steps) filter out.
 
-**Bucket caps every query at 5,000 rows.** `bucket("recipe").limit(20000)`
-returns exactly 5,000. `.offset(N)` works, so paginate with limit+offset,
-or chunk by a `.where(...)` that stays under (per-skill for recipes,
-per-boss for drops). A bucket's schema is readable at its `Bucket:<Name>`
-page. There is **no** skill / level-up / unlock bucket — checked the full
-`Bucket:` namespace; the per-skill "X/Level up table" wiki pages are
-`{{Level up table}}` wikitext (item `{{plink}}`s mixed with prose), which
-is why `Bucket:Recipe` wins over parsing those.
+**Bucket caps every query at 5,000 rows**, and `where` only takes a single
+scalar — no `OR` / `IN` / array. `.offset(N)` works, so paginate with
+limit+offset, or chunk by a `.where(...)` that stays under (per-skill for
+recipes). This makes bulk-then-filter-locally the pattern for icon
+resolution: `Infobox_item` is only ~16.8k rows, so paging the whole table
+(4 requests) and building a `page_name → image` map beats one `.where`
+lookup per item — the map is cached to `scripts/.data/infobox-items.json`
+so re-runs do no wiki traffic. A bucket's schema is readable at its
+`Bucket:<Name>` page. There is **no** skill / level-up / unlock bucket —
+checked the full `Bucket:` namespace; the per-skill "X/Level up table" wiki
+pages are `{{Level up table}}` wikitext (item `{{plink}}`s mixed with
+prose), which is why `Bucket:Recipe` wins over parsing those.
 
 **Scope, phased:**
 
@@ -319,15 +323,16 @@ step is validated before the next depends on it.
      Recipe files an item under its _last_ production step's skill (Amulet
      of fury lands under Magic 87, the enchant, not Crafting) — fine for
      flat-catalog coverage, a known gap for any future skill→item feature.
-   - Stage 2c — flatten & enrich items (`02c-flatten-items.mjs`; an earlier
-     per-boss "process/filter" draft, `02-process.mjs`, was scrapped along
-     with the notability-gate idea — see Notability above). Flattens drop
-     rows across every raw boss file, dedupes by item name, discards
-     rarity/quantity/value, then enriches each item via `Infobox_item` for
-     its declared icon + wiki link. Output: `scripts/.data/items.json`.
-     **Done for boss drops only** (validated at 2-boss scale, 105 items);
-     still needs to union in the 2a/2b caches — recipe items already carry
-     an icon so they skip the `Infobox_item` call.
+   - ~~Stage 2c — flatten & enrich items~~ (`02c-flatten-items.mjs`, done;
+     an earlier per-boss "process/filter" draft, `02-process.mjs`, was
+     scrapped with the notability-gate idea — see Notability above). Unions
+     the boss drop names + the 2a/2b caches into one deduped list, tags
+     each with its source(s) (`from: [...]`), derives a wiki link, and
+     resolves icons: recipe items keep their own; everything else is looked
+     up in the cached full `Infobox_item` map (`infobox-items.json`, 4
+     paged requests, `--refresh` to re-pull). No per-item wiki calls.
+     Missing caches are warned about and skipped. Output:
+     `scripts/.data/items.json`.
    - ~~Stage 3 — cross-boss indexes~~ — dropped 2026-09-01 with the
      boss→item association (see Notability above). Nothing consumes a
      monster→drops index now that entry creation is search-only.
