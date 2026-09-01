@@ -28,3 +28,8 @@ firestore-debug.log
 ui-debug.log
 .firebase/
 firebase-export-*/
+
+# Scraper pipeline intermediate data - regeneratable by re-running the
+# scripts/ pipeline, not meant to be committed. Final output (data/*.json,
+# static/icons/) is committed; these staging artifacts are not.
+scripts/.data/
