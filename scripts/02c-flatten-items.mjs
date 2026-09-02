@@ -1,19 +1,25 @@
 // Stage 2c: flatten & enrich items (runs after 2a + 2b).
 //
-// Merges the three item sources into one flat, deduped list:
+// Merges four item sources into one flat, deduped list:
 //   - boss drop names from stage 1's raw files (scripts/.data/raw/*.json)
 //   - collection-log item names from stage 2a
 //     (scripts/.data/collection-log-source.json)
 //   - recipe output items from stage 2b (scripts/.data/recipe-items.json)
+//   - every page in the full Bucket:Infobox_item table itself (~12.4k
+//     rows) - the broadest source, added 2026-09-02 so items with no
+//     drop/collection-log/recipe presence (e.g. Twinflame staff, Blue moon
+//     armour set - real item pages that just aren't dropped, logged, or
+//     crafted) still make the catalog. Recall over precision (see
+//     DESIGN.md "Notability").
 //
 // Each unique item gets a wiki link (derived from its name) and an icon.
 // Recipe items already carry an icon (the recipe's output.image); every
-// other name is resolved against the full Bucket:Infobox_item table, which
-// is only ~16.8k rows and pages out in 4 requests (limit 5000 + offset).
-// That whole map is cached to scripts/.data/infobox-items.json, so re-runs
-// do zero wiki traffic - pass --refresh to re-pull it. Items with no icon
-// anywhere are kept with iconUrl: null - recall beats precision for a
-// search catalog. Writes scripts/.data/items.json.
+// other name is resolved against the Infobox_item table, which pages out
+// in 4 requests (limit 5000 + offset) and is cached to
+// scripts/.data/infobox-items.json, so re-runs do zero wiki traffic - pass
+// --refresh to re-pull it. Items with no icon anywhere are kept with
+// iconUrl: null - recall beats precision for a search catalog. Writes
+// scripts/.data/items.json.
 //
 // Discards rarity / quantity / drop-value and the which-boss-dropped-it
 // association (see DESIGN.md "Boss->item association dropped"). The 2a/2b
@@ -134,22 +140,21 @@ async function main() {
 	} else {
 		console.warn(`  ${RECIPE_ITEMS_PATH} missing - skipping recipe source (run 2b).`);
 	}
+	const beforeInfobox = byName.size;
+
+	// Source 4: every page in Infobox_item itself - the broadest source,
+	// catches item pages the other three sources never mention at all.
+	const iconMap = await loadIconMap(refresh);
+	for (const [name, iconUrl] of Object.entries(iconMap)) add(name, 'infobox-item', iconUrl);
 
 	let entries = [...byName.values()].sort((a, b) => a.name.localeCompare(b.name));
 	console.log(
 		`${entries.length} unique item(s): ${dropCount} from ${rawFiles.length} boss file(s), ` +
-			`+${entries.length - dropCount} added by 2a/2b.`
+			`+${beforeInfobox - dropCount} added by 2a/2b, +${entries.length - beforeInfobox} added by infobox-item.`
 	);
 	if (limit) {
 		entries = entries.slice(0, limit);
 		console.log(`Limited to first ${limit}.`);
-	}
-
-	// Resolve icons for everything that didn't come with one, from the
-	// cached/fetched Infobox_item map - no per-item wiki calls.
-	const iconMap = await loadIconMap(refresh);
-	for (const entry of entries) {
-		if (!entry.iconUrl) entry.iconUrl = iconMap[entry.name] ?? null;
 	}
 
 	const items = entries.map((e) => ({

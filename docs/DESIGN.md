@@ -224,8 +224,10 @@ downloaded (frontend shows a placeholder — no wiki hotlinking at runtime).
 
 `skills` is a static hand-written list of all 24 (includes Sailing).
 `bosses` comes from `Category:Bosses` + `Infobox_monster`. `items` is the
-deduped union of every source (drop tables first; collection-log-source and
-`Bucket:Recipe` as they're added). `minigames` source is still TBD.
+deduped union of every source: drop tables, collection-log-source,
+`Bucket:Recipe`, and (added 2026-09-02) the full `Infobox_item` table
+itself — see the item-count note under Roadmap step 1's stage 2c bullet.
+`minigames` source is still TBD.
 Icon files are downloaded to the paths shown, filenames normalized to
 kebab-case (not the wiki's raw "Dagannoth Rex.png" with spaces/casing).
 
@@ -349,6 +351,20 @@ step is validated before the next depends on it.
      paged requests, `--refresh` to re-pull). No per-item wiki calls.
      Missing caches are warned about and skipped. Output:
      `scripts/.data/items.json`.
+     - **Fourth source added 2026-09-02: every page in `Infobox_item`
+       itself**, not just icon-resolution for names the other three
+       sources already found. Union of drop/collection-log/recipe alone
+       gave 4,727 items and was missing real single-item pages that just
+       aren't dropped, collection-logged, or recipe-crafted (Twinflame
+       staff, a combination weapon; Blue moon armour set, which turned out
+       to have its own infobox page after all) — see the closed-out
+       "Known catalog gaps" entry below. Adding the full bucket (~12.4k
+       page names, 6 with no declared image) brought the catalog to
+       13,418 items. Re-running stage 3 after this surfaced 2 dead-link
+       404s out of the ~8,700 new names (edge-case non-grind pages — a
+       Construction interface variant and a quest scenery object) plus 61
+       with no image URL at all in their infobox; left as `icon: null` per
+       the recall-over-precision stance, not worth chasing.
    - ~~Stage 3 — cross-boss indexes~~ — dropped 2026-09-01 with the
      boss→item association (see Notability above). Nothing consumes a
      monster→drops index now that entry creation is search-only.
@@ -385,23 +401,29 @@ bosses, items, minigames}`, each entry `{name, wikiLink, icon}` with
    Domain model for the creation/override flow. Native `confirm()` popups
    replaced too, for one consistent modal UX.
 5. Further out, not yet scoped in detail: result ranking (marquee-item
-   signal from collection-log / recipe membership), the two coverage gaps
-   below, actual Cloud Run deployment (see "Deployment status" above).
+   signal from collection-log / recipe membership), minigames (the
+   remaining coverage gap below), actual Cloud Run deployment (see
+   "Deployment status" above).
 
-**Known catalog gaps (tabled 2026-09-01):**
+**Known catalog gaps (tabled 2026-09-01, item-coverage half closed
+2026-09-02):**
 
 - **Minigames** — `catalog.json`'s `minigames` array is empty; no source
   decided yet.
-- **Real things missing from all three scrape sources.** Either the wiki
-  page has no infobox image ("Blue Moon armor set" — not one item), or
-  it's a normal single item that just isn't dropped / collection-logged /
-  in a recipe row ("Twinflame staff", a combination item — it has a page
-  and an infobox image, so its icon would resolve fine if the name ever
-  reached stage 2c; nothing enumerates it). Both want the same unbuilt
-  feature: a **manual-entry path** in the modal — type a name (+ wiki
-  link), no catalog match required, borrow an icon via the icon search.
-  A live wiki-search fallback when the local catalog returns nothing would
-  also help.
+- ~~Real things missing from all three scrape sources~~ — closed by
+  unioning the full `Infobox_item` table into stage 2c as a fourth source
+  (see the stage 2c bullet above); both examples that motivated this
+  ("Twinflame staff", "Blue moon armour set" — which turned out to have
+  its own infobox page after all) are searchable now. What's left is
+  narrower: a wiki concept with genuinely no single item page of its own
+  (a true multi-item "set" grouping, if one actually exists — not
+  confirmed, since the one example we had turned out to have a page) would
+  still need manual entry: type a name (+ wiki link), no catalog match
+  required, borrow an icon via the icon search. Not scoped further since
+  no concrete example is known to still need it. A live wiki-search
+  fallback when the local catalog returns nothing (raised when this was
+  first discussed, before the fourth source closed most of the gap) would
+  also help for anything genuinely uncatalogued.
 
 ## Data model (Firestore)
 
