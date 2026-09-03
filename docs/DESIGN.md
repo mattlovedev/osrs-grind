@@ -744,9 +744,14 @@ service:
      `createBoard` form action to accept requests - not known until step 6
      assigns the Cloud Run URL, so it's a step-7 runtime env var, not
      something the image itself can carry.
-5. Set the `ORIGIN` env var on the Cloud Run service once its URL is known
-   (see the Dockerfile bullet above for why - `PUBLIC_FIREBASE_*` needs no
-   Cloud Run config at all, it's already baked into the image).
+5. ~~Set the `ORIGIN` env var on the Cloud Run service~~ once its URL was
+   known (see the Dockerfile bullet above for why - `PUBLIC_FIREBASE_*`
+   needs no Cloud Run config at all, it's already baked into the image).
+   `gcloud run services update --update-env-vars` - lives on the service,
+   not the image, so it carries forward into future deploys automatically
+   as long as they never use `--set-env-vars` (replaces the whole set)
+   instead of `--update-env-vars` (merges), and as long as the URL itself
+   doesn't change (e.g. a future custom domain would need this redone).
 6. ~~Verify the Cloud Run service's attached service account has Firestore
    permissions~~ — no default compute service account exists yet (this
    project's never used Compute Engine or Cloud Run), so the plan changed
@@ -761,9 +766,16 @@ service:
    needed enabling first, one-time per-project). This is where the built
    image lives; GitHub never stores or serves it — git only ever holds the
    `Dockerfile` recipe, not the built image.
-8. First deploy by hand (build, push to that Artifact Registry repo,
-   `gcloud run deploy`) to prove the whole thing end-to-end before
-   automating.
+8. ~~First deploy by hand~~ — `grind-app` is live at
+   `https://grind-app-549755295105.us-central1.run.app`. Verified
+   end-to-end for real: SSR, the `createBoard` form action writing to
+   production Firestore via the attached service account, and an added
+   entry's icon loading from the GCS bucket. `scripts/deploy-{1,2,3}-*.sh`
+   (build+push, `gcloud run deploy`, the `ORIGIN` update) are kept as
+   reusable manual-deploy tooling, not one-offs - same category as the
+   scraper scripts. They'll likely fold into or get superseded by the
+   GitHub Actions workflow (next), but stay useful as a manual escape
+   hatch if CI's ever down.
 9. Set up Workload Identity Federation between the GitHub repo and the
    GCP project — GitHub Actions authenticates via short-lived OIDC
    tokens, no stored service-account key.
