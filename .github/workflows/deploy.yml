@@ -2,9 +2,28 @@ name: Deploy to Cloud Run
 
 # A merged PR is a push to main, so this covers both without a separate
 # trigger - see DESIGN.md "Roadmap - deployment".
+#
+# paths-ignore skips the whole workflow when every changed file matches -
+# none of these ever reach the built image or affect the running app, so
+# pushing only these shouldn't cost a deploy. A push that touches any file
+# outside this list still runs normally, even if it also touches these.
+#
+# Deliberately NOT ignoring .github/workflows/** - a change to the deploy
+# pipeline itself should keep exercising itself on the next push, same way
+# this workflow's own bring-up caught the IAM API issue for real.
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '**/*.md' # docs, README
+      - 'scripts/**' # scraper + deploy scripts - never run by the Docker build, don't survive into the image; catalog.json changes still trigger normally
+      - 'firestore.rules' # deployed separately via `firebase deploy`, not this pipeline
+      - 'firebase.json'
+      - '.firebaserc'
+      - '.gitignore'
+      - 'eslint.config.js' # lint/format only, never touched by `npm run build`
+      - 'prettier.config.js'
+      - '.prettierignore'
 
 permissions:
   contents: read
