@@ -316,7 +316,9 @@
 	<button class="edit-board" onclick={toggleEditMode}
 		>{editMode ? 'Exit edit' : 'Edit board'}</button
 	>
-	<button class="delete-board" onclick={askDeleteBoard}>Delete board</button>
+	{#if editMode}
+		<button class="delete-board" onclick={askDeleteBoard}>Delete board</button>
+	{/if}
 </div>
 
 {#each board.flowOrder as flowId (flowId)}
