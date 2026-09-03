@@ -810,11 +810,16 @@ service:
 automatically on every push to `main`. What's left is the deferred items
 below, whenever they become relevant, not before.
 
-**Deferred, not blocking any of the above:** making the repo public (a
-git-history sanity check for anything sensitive is worth doing right
-before that specific step, not before the rest of this list), and locking
-`main` to just the account holder once others might get involved (not
-needed for a while - WIF itself is already safe under a public repo, since
-it only trusts `push`-triggered workflow runs, not fork-originated
-`pull_request` runs, so a public repo alone doesn't grant deploy access to
-anyone who can't already push to `main`).
+**Both formerly-deferred items done, 2026-09-03.** Repo is public (git
+history sanity-checked first - nothing sensitive found). `main` is locked
+to just the account holder: personal (non-organization) GitHub accounts
+don't get classic branch protection's "restrict who can push" allowlist
+at all (that needs Teams, which require an Organization) - the actual
+mechanism ended up being **Lock branch** (read-only for anyone with push
+access) with **"Do not allow bypassing the above settings" left
+unchecked**, since admins bypass branch-protection locks by default
+unless that box forces the lock onto them too. Scoped to the `main`
+pattern only, so feature branches stay fully open for push. WIF itself
+was already safe under a public repo regardless, since it only trusts
+`push`-triggered workflow runs, not fork-originated `pull_request` runs -
+this just closes the direct-push gap on top of that.
