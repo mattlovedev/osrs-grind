@@ -225,7 +225,7 @@
 		});
 	}
 
-	async function createEntry(draft: EntryDraft) {
+	async function createEntry(draft: EntryDraft, flowName?: string) {
 		const ref = doc(db, 'boards', data.boardId);
 		const entryId = crypto.randomUUID().slice(0, 8);
 		const entry = { ...draft, done: false };
@@ -257,7 +257,7 @@
 				updatedAt: serverTimestamp(),
 				flowOrder: [...board.flowOrder, flowId],
 				[`flows.${flowId}`]: {
-					name: '',
+					name: flowName?.trim() ?? '',
 					nodes: {
 						[nodeId]: {
 							entries: { [entryId]: entry },
@@ -286,14 +286,19 @@
 		closeModal();
 	}
 
-	function handleModalSubmit(draft: EntryDraft) {
+	function handleModalSubmit(draft: EntryDraft, flowName?: string) {
 		if (editTarget) updateEntry(editTarget, draft);
-		else createEntry(draft);
+		else createEntry(draft, flowName);
 	}
 </script>
 
 {#if modalOpen}
-	<EntryModal initial={editInitial} onsubmit={handleModalSubmit} oncancel={closeModal} />
+	<EntryModal
+		initial={editInitial}
+		isNewFlow={addTarget === null && editTarget === null}
+		onsubmit={handleModalSubmit}
+		oncancel={closeModal}
+	/>
 {/if}
 
 {#if confirmData}
@@ -370,6 +375,9 @@
 				</button>
 			{/if}
 		</div>
+		{#if flow?.name}
+			<span class="flow-name">{flow.name}</span>
+		{/if}
 		{#each flow?.nodeOrder ?? Object.keys(flow?.nodes ?? {}) as nodeId, i (nodeId)}
 			{@const node = flow.nodes[nodeId]}
 			{@const isTailNode = !Object.values(flow.edges ?? {}).some((e) => e.from === nodeId)}
@@ -501,6 +509,16 @@
 		justify-content: center;
 		width: fit-content;
 		margin: 2rem auto;
+	}
+
+	.flow-name {
+		flex-shrink: 0;
+		max-width: 6rem;
+		font-size: 0.9rem;
+		font-weight: 600;
+		text-align: right;
+		overflow-wrap: break-word;
+		margin-right: 0.75rem;
 	}
 
 	.flow.editing {

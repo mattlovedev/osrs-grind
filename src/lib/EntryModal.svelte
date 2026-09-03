@@ -18,11 +18,13 @@
 
 	let {
 		initial = null,
+		isNewFlow = false,
 		onsubmit,
 		oncancel
 	}: {
 		initial?: EntryDraft | null;
-		onsubmit: (entry: EntryDraft) => void;
+		isNewFlow?: boolean;
+		onsubmit: (entry: EntryDraft, flowName?: string) => void;
 		oncancel: () => void;
 	} = $props();
 
@@ -41,6 +43,9 @@
 	let wikiLink = $state(seed?.wikiLink ?? '');
 	let icon = $state(seed?.icon ?? '');
 	let bottomText = $state(seed?.bottomText ?? '');
+	// Only meaningful when isNewFlow - the grind's own name, not the entry's.
+	// Not editable after creation yet, so this is its only input point.
+	let flowName = $state('');
 
 	let q = $state('');
 	let results = $state<SearchResult[]>([]);
@@ -97,7 +102,8 @@
 	function submit(e: SubmitEvent) {
 		e.preventDefault();
 		if (!label.trim()) return;
-		onsubmit({ label: label.trim(), wikiLink, icon, bottomText: bottomText.trim() });
+		const entry = { label: label.trim(), wikiLink, icon, bottomText: bottomText.trim() };
+		onsubmit(entry, isNewFlow ? flowName.trim() : undefined);
 	}
 
 	function onKeydown(e: KeyboardEvent) {
@@ -109,6 +115,12 @@
 
 {#snippet searchView(heading: string, canGoBack: boolean)}
 	<h2>{heading}</h2>
+	{#if isNewFlow && view === 'search'}
+		<label class="flow-name-field">
+			Grind name (optional)
+			<input type="text" bind:value={flowName} placeholder="Acquire blank" />
+		</label>
+	{/if}
 	<!-- svelte-ignore a11y_autofocus -->
 	<input
 		class="search-input"
@@ -232,7 +244,8 @@
 	}
 
 	.search-input,
-	form label input {
+	form label input,
+	.flow-name-field input {
 		width: 100%;
 		box-sizing: border-box;
 		font-size: 1rem;
@@ -287,7 +300,8 @@
 		padding: 0.3rem;
 	}
 
-	form label {
+	form label,
+	.flow-name-field {
 		display: block;
 		margin-bottom: 0.6rem;
 		font-size: 0.85rem;
