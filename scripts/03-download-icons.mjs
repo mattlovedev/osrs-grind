@@ -16,9 +16,14 @@
 // (scripts/.data/icons.json) mapping each entry name to its local
 // /icons/... path, for stage 4 to build data/catalog.json.
 //
-// static/ is committed and shipped in the container, so the downloaded
-// files are meant to be checked in (see DESIGN.md "Icons: bundled in
-// static/").
+// static/icons/ is a local staging directory only (gitignored, never
+// served by the app) - the actual public copy lives in the osrs-grind-icons
+// GCS bucket. After running this stage, publish with:
+//   gcloud storage rsync -r static/icons gs://osrs-grind-icons/icons
+// Stage 4 turns this manifest's local /icons/... paths into the bucket's
+// public URLs - see its GCS_ICON_BASE_URL. See DESIGN.md "Roadmap -
+// deployment" for the reasoning (icons served straight from GCS, never
+// baked into the Cloud Run image).
 //
 // Usage:
 //   node scripts/03-download-icons.mjs
