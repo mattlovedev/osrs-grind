@@ -66,7 +66,10 @@
 
 	function toggleEditMode() {
 		editMode = !editMode;
-		if (!editMode) closeModal();
+		if (!editMode) {
+			closeModal();
+			editingName = false;
+		}
 	}
 
 	$effect(() => {
@@ -315,7 +318,7 @@
 				autofocus
 			/>
 		</form>
-	{:else}
+	{:else if editMode}
 		<span
 			role="button"
 			tabindex="0"
@@ -326,6 +329,8 @@
 		>
 			{board.name || `Board ${data.boardId}`}
 		</span>
+	{:else}
+		{board.name || `Board ${data.boardId}`}
 	{/if}
 </h1>
 
