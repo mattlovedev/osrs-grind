@@ -133,6 +133,20 @@
 		});
 	}
 
+	async function moveFlow(flowId: string, direction: -1 | 1) {
+		const order = board.flowOrder;
+		const index = order.indexOf(flowId);
+		const newIndex = index + direction;
+		if (index === -1 || newIndex < 0 || newIndex >= order.length) return;
+		const newOrder = [...order];
+		[newOrder[index], newOrder[newIndex]] = [newOrder[newIndex], newOrder[index]];
+		const ref = doc(db, 'boards', data.boardId);
+		await updateDoc(ref, {
+			updatedAt: serverTimestamp(),
+			flowOrder: newOrder
+		});
+	}
+
 	async function doDeleteNode(flowId: string, nodeId: string) {
 		const ref = doc(db, 'boards', data.boardId);
 		const edges = board.flows[flowId]?.edges ?? {};
@@ -321,12 +335,32 @@
 	{/if}
 </div>
 
-{#each board.flowOrder as flowId (flowId)}
+{#each board.flowOrder as flowId, flowIndex (flowId)}
 	{@const flow = board.flows[flowId]}
 	<div class="flow" class:editing={editMode}>
-		<button class="flow-delete-button" title="Delete grind" onclick={() => askDeleteFlow(flowId)}>
-			&times;
-		</button>
+		<div class="flow-controls">
+			{#if flowIndex > 0}
+				<button
+					class="flow-move-button"
+					title="Move up"
+					onclick={() => moveFlow(flowId, -1)}
+				>
+					&uarr;
+				</button>
+			{/if}
+			<button class="flow-delete-button" title="Delete grind" onclick={() => askDeleteFlow(flowId)}>
+				&times;
+			</button>
+			{#if flowIndex < board.flowOrder.length - 1}
+				<button
+					class="flow-move-button"
+					title="Move down"
+					onclick={() => moveFlow(flowId, 1)}
+				>
+					&darr;
+				</button>
+			{/if}
+		</div>
 		{#each flow?.nodeOrder ?? Object.keys(flow?.nodes ?? {}) as nodeId, i (nodeId)}
 			{@const node = flow.nodes[nodeId]}
 			{@const isTailNode = !Object.values(flow.edges ?? {}).some((e) => e.from === nodeId)}
@@ -460,23 +494,31 @@
 		border: 1px solid #999;
 	}
 
-	.flow-delete-button {
+	.flow-controls {
 		position: absolute;
 		top: 50%;
 		left: -1rem;
 		transform: translateY(-50%);
 		z-index: 1;
-		width: 2rem;
-		height: 2rem;
-		font-size: 1.25rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.25rem;
 		opacity: 0;
 		pointer-events: none;
 	}
 
-	.flow.editing:hover .flow-delete-button,
-	.flow.editing:focus-within .flow-delete-button {
+	.flow.editing:hover .flow-controls,
+	.flow.editing:focus-within .flow-controls {
 		opacity: 1;
 		pointer-events: auto;
+	}
+
+	.flow-delete-button,
+	.flow-move-button {
+		width: 2rem;
+		height: 2rem;
+		font-size: 1.25rem;
 	}
 
 	.edge-arrow {
