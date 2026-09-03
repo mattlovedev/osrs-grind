@@ -17,6 +17,7 @@
 	import type { PageData } from './$types';
 	import EntryModal from '$lib/EntryModal.svelte';
 	import ConfirmModal from '$lib/ConfirmModal.svelte';
+	import ImportModal from '$lib/ImportModal.svelte';
 
 	type EntryDraft = { label: string; wikiLink: string; icon: string; bottomText: string };
 
@@ -24,6 +25,7 @@
 
 	let liveBoard = $state<Board | null>(null);
 	let board = $derived(liveBoard ?? data.board);
+	let isBlank = $derived((board.flowOrder ?? []).length === 0);
 	let editingName = $state(false);
 	let nameDraft = $state('');
 	let editingFlowNameId = $state<string | null>(null);
@@ -70,6 +72,7 @@
 		editMode = !editMode;
 		if (!editMode) {
 			closeModal();
+			importModalOpen = false;
 			editingName = false;
 			editingFlowNameId = null;
 		}
@@ -127,6 +130,98 @@
 		await navigator.clipboard.writeText(JSON.stringify(buildExport(), null, 2));
 		exportCopied = true;
 		setTimeout(() => (exportCopied = false), 1500);
+	}
+
+	// Inverse of buildExport: take the plain-data JSON pasted into the import
+	// modal and write it onto this (blank) board, minting fresh ids for every
+	// flow, node and entry. Edges come in as from/to node indices. Returns an
+	// error message to show in the modal, or null once the write succeeded.
+	let importModalOpen = $state(false);
+	let importDone = $state(false);
+
+	async function importBoard(text: string): Promise<string | null> {
+		let parsed: unknown;
+		try {
+			parsed = JSON.parse(text);
+		} catch {
+			return 'That is not valid JSON.';
+		}
+		if (
+			typeof parsed !== 'object' ||
+			parsed === null ||
+			!Array.isArray((parsed as { grinds?: unknown }).grinds)
+		) {
+			return 'Expected an exported board: an object with a "grinds" array.';
+		}
+		const source = parsed as { name?: unknown; grinds: unknown[] };
+
+		const id = () => crypto.randomUUID().slice(0, 8);
+		const flows: Record<string, unknown> = {};
+		const flowOrder: string[] = [];
+
+		for (const rawGrind of source.grinds) {
+			const grind = (rawGrind ?? {}) as {
+				name?: unknown;
+				nodes?: unknown[];
+				edges?: unknown[];
+			};
+			const flowId = id();
+			flowOrder.push(flowId);
+
+			const nodeIds: string[] = [];
+			const nodes: Record<string, unknown> = {};
+			const nodeOrder: string[] = [];
+			for (const rawNode of Array.isArray(grind.nodes) ? grind.nodes : []) {
+				const node = (rawNode ?? {}) as { entries?: unknown[] };
+				const nodeId = id();
+				nodeIds.push(nodeId);
+				nodeOrder.push(nodeId);
+				const entries: Record<string, unknown> = {};
+				const entryOrder: string[] = [];
+				for (const rawEntry of Array.isArray(node.entries) ? node.entries : []) {
+					const e = (rawEntry ?? {}) as Record<string, unknown>;
+					const entryId = id();
+					entryOrder.push(entryId);
+					entries[entryId] = {
+						label: typeof e.label === 'string' ? e.label : '',
+						wikiLink: typeof e.wikiLink === 'string' ? e.wikiLink : '',
+						icon: typeof e.icon === 'string' ? e.icon : '',
+						bottomText: typeof e.bottomText === 'string' ? e.bottomText : '',
+						done: e.done === true
+					};
+				}
+				nodes[nodeId] = { entries, entryOrder };
+			}
+
+			const edges: Record<string, unknown> = {};
+			for (const rawEdge of Array.isArray(grind.edges) ? grind.edges : []) {
+				const edge = (rawEdge ?? {}) as { from?: unknown; to?: unknown };
+				const from = nodeIds[edge.from as number];
+				const to = nodeIds[edge.to as number];
+				if (!from || !to || from === to) continue;
+				edges[id()] = { from, to };
+			}
+
+			flows[flowId] = {
+				name: typeof grind.name === 'string' ? grind.name : '',
+				nodes,
+				nodeOrder,
+				edges
+			};
+		}
+
+		const ref = doc(db, 'boards', data.boardId);
+		await updateDoc(ref, {
+			updatedAt: serverTimestamp(),
+			// only adopt the imported name if this board hasn't been named yet
+			...(board.name ? {} : { name: typeof source.name === 'string' ? source.name : '' }),
+			flowOrder,
+			flows
+		});
+		importModalOpen = false;
+		importDone = true;
+		setTimeout(() => (importDone = false), 1500);
+		return null;
 	}
 
 	$effect(() => {
@@ -391,6 +486,10 @@
 	/>
 {/if}
 
+{#if importModalOpen}
+	<ImportModal onsubmit={importBoard} oncancel={() => (importModalOpen = false)} />
+{/if}
+
 <h1>
 	{#if editingName}
 		<form onsubmit={saveName} style="display: contents;">
@@ -430,9 +529,15 @@
 		>{editMode ? 'Exit' : 'Edit'}</button
 	>
 	{#if editMode}
-		<button class="export-board" onclick={copyExport}>
-			{exportCopied ? 'Copied!' : 'Export'}
-		</button>
+		{#if isBlank}
+			<button class="import-board" onclick={() => (importModalOpen = true)}>
+				{importDone ? 'Imported!' : 'Import'}
+			</button>
+		{:else}
+			<button class="export-board" onclick={copyExport}>
+				{exportCopied ? 'Copied!' : 'Export'}
+			</button>
+		{/if}
 		<button class="delete-board" onclick={askDeleteBoard}>Delete</button>
 	{/if}
 </div>
