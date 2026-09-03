@@ -26,6 +26,8 @@
 	let board = $derived(liveBoard ?? data.board);
 	let editingName = $state(false);
 	let nameDraft = $state('');
+	let editingFlowNameId = $state<string | null>(null);
+	let flowNameDraft = $state('');
 
 	type AddTarget = { flowId: string; nodeId: string; mode: 'append' | 'edge' } | null;
 	type EditTarget = { flowId: string; nodeId: string; entryId: string } | null;
@@ -69,6 +71,7 @@
 		if (!editMode) {
 			closeModal();
 			editingName = false;
+			editingFlowNameId = null;
 		}
 	}
 
@@ -102,6 +105,25 @@
 
 	function cancelEditingName() {
 		editingName = false;
+	}
+
+	function startEditingFlowName(flowId: string, currentName: string) {
+		flowNameDraft = currentName;
+		editingFlowNameId = flowId;
+	}
+
+	async function saveFlowName(e: SubmitEvent, flowId: string) {
+		e.preventDefault();
+		const ref = doc(db, 'boards', data.boardId);
+		await updateDoc(ref, {
+			updatedAt: serverTimestamp(),
+			[`flows.${flowId}.name`]: flowNameDraft.trim()
+		});
+		editingFlowNameId = null;
+	}
+
+	function cancelEditingFlowName() {
+		editingFlowNameId = null;
 	}
 
 	type ConfirmData = {
@@ -375,7 +397,35 @@
 				</button>
 			{/if}
 		</div>
-		{#if flow?.name}
+		{#if editMode}
+			{#if editingFlowNameId === flowId}
+				<form onsubmit={(e) => saveFlowName(e, flowId)} class="flow-name-form">
+					<!-- svelte-ignore a11y_autofocus -->
+					<input
+						bind:value={flowNameDraft}
+						onblur={cancelEditingFlowName}
+						onkeydown={(e) => {
+							if (e.key === 'Escape') cancelEditingFlowName();
+						}}
+						onfocus={(e) => e.currentTarget.select()}
+						autofocus
+					/>
+				</form>
+			{:else}
+				<span
+					class="flow-name"
+					role="button"
+					tabindex="0"
+					onclick={() => startEditingFlowName(flowId, flow?.name ?? '')}
+					onkeydown={(e) => {
+						if (e.key === 'Enter' || e.key === ' ')
+							startEditingFlowName(flowId, flow?.name ?? '');
+					}}
+				>
+					{flow?.name || 'Edit name'}
+				</span>
+			{/if}
+		{:else if flow?.name}
 			<span class="flow-name">{flow.name}</span>
 		{/if}
 		{#each flow?.nodeOrder ?? Object.keys(flow?.nodes ?? {}) as nodeId, i (nodeId)}
@@ -519,6 +569,18 @@
 		text-align: right;
 		overflow-wrap: break-word;
 		margin-right: 0.75rem;
+	}
+
+	.flow-name-form {
+		flex-shrink: 0;
+		margin-right: 0.75rem;
+	}
+
+	.flow-name-form input {
+		width: 6rem;
+		font-size: 0.9rem;
+		font-weight: 600;
+		text-align: right;
 	}
 
 	.flow.editing {
