@@ -1,0 +1,23 @@
+node_modules
+build
+.svelte-kit
+.git
+
+# Icons are served from the osrs-grind-icons GCS bucket, not the container
+# (see DESIGN.md "Roadmap - deployment") - static/icons/ is a local
+# scraper staging directory only. Without this, SvelteKit would copy
+# whatever's on disk here (100+ MB) straight into the image.
+static/icons
+
+# Scraper cache - regeneratable, never needed at runtime.
+scripts/.data
+
+# Local-only.
+.env
+.env.*
+!.env.example
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+.firebase
+firebase-export-*

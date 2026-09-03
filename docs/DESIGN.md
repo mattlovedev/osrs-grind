@@ -708,25 +708,62 @@ service:
 
 1. ~~Redeploy Firestore security rules to production~~ — done 2026-09-03,
    see the TODO note under "Infrastructure already provisioned" above.
-2. Create a public-read GCS bucket in the `osrs-grind` project; upload the
-   current `static/icons/` contents to it once.
-3. Update the scraper (stages 3-4) to write full GCS URLs into
-   `catalog.json`'s `icon` field instead of local `/icons/...` paths;
-   regenerate and commit the catalog.
-4. Write the Dockerfile (`adapter-node` build; no icon-download step,
-   since icons are GCS-served now — keeps the image small).
-5. Set `PUBLIC_FIREBASE_*` env vars on the Cloud Run service.
+2. ~~Create a public-read GCS bucket~~ (`osrs-grind-icons`, `us-central1`,
+   uniform bucket-level access) in the `osrs-grind` project; current
+   `static/icons/` contents uploaded. Verified with a live `curl` (200).
+3. ~~Update the scraper (stages 3-4) to write full GCS URLs~~ into
+   `catalog.json`'s `icon` field instead of local `/icons/...` paths —
+   `GCS_ICON_BASE_URL` in stage 4, a plain prefix swap over stage 3's
+   existing manifest. `static/icons/` is now local staging only, published
+   with `gcloud storage rsync -r static/icons gs://osrs-grind-icons/icons`
+   (a separate, manual step — never part of an app deploy, since icons
+   aren't in git and change on a completely different cadence than code).
+4. ~~Write the Dockerfile~~ (`adapter-node` multi-stage build; `.dockerignore`
+   excludes `static/icons/`, `scripts/.data/`, `.env*` etc. from the build
+   context). Two things only found by actually building it:
+   - `PUBLIC_FIREBASE_*` (`$env/static/public`) get baked into the JS
+     bundle at **build time**, not read at container runtime - so the
+     Dockerfile's builder stage runs `cp .env.example .env` before `npm
+     run build` (reusing the real, non-secret values already committed
+     there) rather than needing them wired up as deploy-time config at
+     all. This replaces the original plan of setting them as Cloud Run env
+     vars - there's nothing to set for these.
+   - The Admin SDK's `applicationDefault()` credentials only resolve
+     automatically inside a real GCP environment (Cloud Run's attached
+     service account, via its metadata server) - a bare local container
+     has no credentials at all, and hitting Firestore without them threw
+     an uncaught rejection that **crashed the whole container process**,
+     not just the one request (verified locally, both the crash without
+     credentials and, mounting a local `gcloud auth
+     application-default-login` credential file in, a full working
+     create-board-to-Firestore flow). The crash-the-whole-process behavior
+     is a real robustness gap worth hardening later (a misconfigured
+     service account in prod would take down every request, not fail one
+     gracefully) - not blocking this list, just noted so it isn't lost.
+   - `ORIGIN` needs to be set for SvelteKit's CSRF check on the
+     `createBoard` form action to accept requests - not known until step 6
+     assigns the Cloud Run URL, so it's a step-7 runtime env var, not
+     something the image itself can carry.
+5. Set the `ORIGIN` env var on the Cloud Run service once its URL is known
+   (see the Dockerfile bullet above for why - `PUBLIC_FIREBASE_*` needs no
+   Cloud Run config at all, it's already baked into the image).
 6. Verify the Cloud Run service's attached service account has Firestore
-   permissions (grant if not).
-7. First deploy by hand (build, push to Artifact Registry, `gcloud run
-   deploy`) to prove the whole thing end-to-end before automating.
-8. Set up Workload Identity Federation between the GitHub repo and the
+   permissions (grant if not) - see the credentials bullet above for
+   exactly what breaks if this is wrong.
+7. Create an Artifact Registry repository in the `osrs-grind` project —
+   the built image needs somewhere to live. GitHub never stores or serves
+   it; git only ever holds the `Dockerfile` recipe, not the built image.
+8. First deploy by hand (build, push to that Artifact Registry repo,
+   `gcloud run deploy`) to prove the whole thing end-to-end before
+   automating.
+9. Set up Workload Identity Federation between the GitHub repo and the
    GCP project — GitHub Actions authenticates via short-lived OIDC
    tokens, no stored service-account key.
-9. Write the GitHub Actions workflow: `on: push: branches: [main]` →
-   build + deploy. (A merged PR is a push to `main`, so this covers both
-   without a separate trigger.)
-10. Test the workflow with a trivial push.
+10. Write the GitHub Actions workflow: `on: push: branches: [main]` →
+    build (on the runner, or via a triggered Cloud Build job) → push to
+    Artifact Registry → `gcloud run deploy`. (A merged PR is a push to
+    `main`, so this covers both without a separate trigger.)
+11. Test the workflow with a trivial push.
 
 **Deferred, not blocking any of the above:** making the repo public (a
 git-history sanity check for anything sensitive is worth doing right
