@@ -594,16 +594,14 @@ requires a rebuild + redeploy, since it's baked in at build time, not read
 live — an accepted tradeoff for zero runtime wiki dependency and no
 per-request I/O cost.
 
-**Deployment status: not yet deployed anywhere.** Everything so far has run
-via `npm run dev` + the Firestore emulator only. The Cloud Run hosting
-choice (see Stack below) has never actually been exercised — no Dockerfile
-written, no image built, no `gcloud run deploy` run. Needed before a real
-deploy: a `Dockerfile` wrapping the `adapter-node` build output, a build +
-push step (Cloud Build or local Docker + Artifact Registry), the actual
-`gcloud run deploy`, `PUBLIC_FIREBASE_*` env vars set on the Cloud Run
-service, and verifying the default Cloud Run service account actually has
-Firestore permissions (or granting them). Manual one-off deploy vs. an
-automated CI/CD trigger on push to `main` is also still an open question.
+**Deployment status: live** as of 2026-09-03, at
+`https://grind-app-549755295105.us-central1.run.app` — see "Roadmap -
+deployment" further down for the full plan, what got found only by
+actually building it, and the punch list this replaced. Short version:
+Cloud Run (`adapter-node` in a Dockerfile), icons served straight from a
+public GCS bucket rather than baked into the image, and GitHub Actions
+(via Workload Identity Federation, no stored key) auto-deploying on every
+push to `main`.
 
 ## Stack
 
@@ -792,12 +790,25 @@ service:
     Registry, tagged with `${{ github.sha }}` (not `:latest`, unlike the
     manual scripts - every deployed revision traces back to an exact
     commit, and rollback is just redeploying an older SHA-tagged image) →
-    `gcloud run deploy`. Team decided against PRs entirely for this
-    project (local merge + push to `main` is the workflow) - still covered
-    the same way, since that's a push to `main` regardless of how the
-    merge happened.
-11. Test the workflow with a trivial push — the push that adds this
-    workflow file is itself that test.
+    `gcloud run deploy`. Decided against PRs entirely for this project
+    (local merge + push to `main` is the workflow) - still covered the
+    same way, since that's a push to `main` regardless of how the merge
+    happened.
+11. ~~Test the workflow with a trivial push~~ — the push that added the
+    workflow file was itself that test. First attempt failed: the IAM
+    Service Account Credentials API (`iamcredentials.googleapis.com`,
+    what WIF's impersonation step actually calls under the hood) wasn't
+    enabled on the project - same class of one-time per-project API
+    enablement as Artifact Registry earlier. Enabled it, re-ran the failed
+    job (no new push needed), and got a real confirmation it's genuinely
+    automated: `gcloud run revisions list` showed a new revision
+    `DEPLOYED BY github-deployer@osrs-grind.iam.gserviceaccount.com`,
+    not `matt@mattlove.dev` like the two manual deploys before it.
+
+**Deployment plan complete as of 2026-09-03.** `grind-app` is live at
+`https://grind-app-549755295105.us-central1.run.app`, deploying
+automatically on every push to `main`. What's left is the deferred items
+below, whenever they become relevant, not before.
 
 **Deferred, not blocking any of the above:** making the repo public (a
 git-history sanity check for anything sensitive is worth doing right
