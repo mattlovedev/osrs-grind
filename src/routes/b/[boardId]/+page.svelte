@@ -196,18 +196,26 @@
 				};
 	}
 
-	async function deleteEntry(flowId: string, nodeId: string, entryId: string) {
-		const isLastEntry = (board.flows[flowId]?.nodes[nodeId]?.entryOrder ?? []).length <= 1;
-		if (isLastEntry) {
-			askDeleteNode(flowId, nodeId);
-			return;
-		}
+	async function doDeleteEntry(flowId: string, nodeId: string, entryId: string) {
 		const ref = doc(db, 'boards', data.boardId);
 		await updateDoc(ref, {
 			updatedAt: serverTimestamp(),
 			[`flows.${flowId}.nodes.${nodeId}.entryOrder`]: arrayRemove(entryId),
 			[`flows.${flowId}.nodes.${nodeId}.entries.${entryId}`]: deleteField()
 		});
+	}
+
+	function askDeleteEntry(flowId: string, nodeId: string, entryId: string) {
+		const isLastEntry = (board.flows[flowId]?.nodes[nodeId]?.entryOrder ?? []).length <= 1;
+		if (isLastEntry) {
+			askDeleteNode(flowId, nodeId);
+			return;
+		}
+		confirmData = {
+			title: 'Delete entry',
+			message: 'This entry will be gone. This cannot be undone.',
+			perform: () => doDeleteEntry(flowId, nodeId, entryId)
+		};
 	}
 
 	async function toggleDone(flowId: string, nodeId: string, entryId: string, done: boolean) {
@@ -401,7 +409,7 @@
 								title="Delete entry"
 								onclick={(e) => {
 									e.stopPropagation();
-									deleteEntry(flowId, nodeId, entryId);
+									askDeleteEntry(flowId, nodeId, entryId);
 								}}
 							>
 								&times;
