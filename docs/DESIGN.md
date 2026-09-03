@@ -655,14 +655,12 @@ application-default login`) are still needed for one-off scripts that
   require top-level shape validation, `delete` open to anyone with the
   board's exact ID (same as edit access — there's no auth to gate it
   further on, and deletion has a confirm prompt client-side).
-  - **⚠ TODO before deploying the app for real:** the rules file in the repo
-    is ahead of production in two ways now — the `name` field (board naming
-    feature) and `delete` being allowed (delete board feature) — neither
-    has been redeployed. Only the emulator picks up `firestore.rules`
-    automatically. Redeploy with `firebase deploy --only firestore:rules
---project osrs-grind` before/at actual deploy time, and keep prod in
-    sync with the repo from then on (or this note reappears for every
-    future rules change).
+  - Redeployed 2026-09-03 (`firebase deploy --only firestore:rules
+    --project osrs-grind`) as part of prepping for the Cloud Run
+    deployment (see Roadmap — deployment below) — prod now matches the
+    repo's `name` field and `delete` rules. Keep it that way: only the
+    emulator picks up `firestore.rules` automatically, so any future rules
+    change needs the same manual redeploy.
 - End-to-end plumbing wired and verified: `/` has a `createBoard` form
   action (Admin SDK, generates a `nanoid` board ID, redirects to
   `/b/[boardId]`); `/b/[boardId]` SSRs the board via Admin SDK (404s if
@@ -670,3 +668,71 @@ application-default login`) are still needed for one-off scripts that
   `onSnapshot` sync, with a test "add flow" button proving writes go through
   the deployed security rules. No graph UI yet — this only proves the data
   layer works.
+
+## Roadmap — deployment (current, active)
+
+Decided 2026-09-03, superseding the open questions in "Deployment status"
+and "Stack" above where they conflict. Architecture: **one Cloud Run
+service** runs the whole SvelteKit app (`adapter-node`) — SSR, the
+`createBoard` action, and `/api/search` all in the same Node process,
+same as `npm run dev` today. Two things deliberately live outside that
+service:
+
+- **Icons served directly from a public-read GCS bucket**, never baked
+  into the container image and never routed through the app. Rejected
+  alternatives: baking icons into the image via a Docker build step
+  (works, but every build either re-downloads ~4,800 files from the wiki
+  or depends on Docker/Cloud Build layer caching actually being
+  configured and persisted between builds — not automatic on Cloud
+  Build's default fresh-worker-per-build model); fetching from GCS into
+  the container at startup (shrinks the image but taxes every cold
+  start — Cloud Run scales to zero at this app's traffic level, so cold
+  starts are frequent). Serving straight from GCS avoids both: the image
+  never contains icons at all, so it's small on every build, and the
+  browser gets icon bytes independent of the app server entirely. Cost:
+  a catalog-changing deploy becomes two ordered steps instead of one —
+  sync icons to GCS *first*, then deploy the app (deploying the new
+  `catalog.json` first would reference icon URLs that don't exist in the
+  bucket yet). A pure code change never touches GCS at all.
+- **Full static-site hosting (GitHub Pages, `adapter-static`) was
+  considered and rejected** — see the deployment brainstorm in chat
+  history around 2026-09-03. It would've required moving `createBoard`
+  and the board-page load to be fully client-side (losing the SSR fast
+  first paint DESIGN.md already calls out as important for mobile), plus
+  running search as a second, separately-hosted service or shipping the
+  entire catalog (2.5MB raw / ~270KB gzipped and growing) to every
+  client. Decided against on both counts. GitHub is still used for
+  source hosting and CI (below), just not as the thing serving the app.
+
+**Punch list, in dependency order:**
+
+1. ~~Redeploy Firestore security rules to production~~ — done 2026-09-03,
+   see the TODO note under "Infrastructure already provisioned" above.
+2. Create a public-read GCS bucket in the `osrs-grind` project; upload the
+   current `static/icons/` contents to it once.
+3. Update the scraper (stages 3-4) to write full GCS URLs into
+   `catalog.json`'s `icon` field instead of local `/icons/...` paths;
+   regenerate and commit the catalog.
+4. Write the Dockerfile (`adapter-node` build; no icon-download step,
+   since icons are GCS-served now — keeps the image small).
+5. Set `PUBLIC_FIREBASE_*` env vars on the Cloud Run service.
+6. Verify the Cloud Run service's attached service account has Firestore
+   permissions (grant if not).
+7. First deploy by hand (build, push to Artifact Registry, `gcloud run
+   deploy`) to prove the whole thing end-to-end before automating.
+8. Set up Workload Identity Federation between the GitHub repo and the
+   GCP project — GitHub Actions authenticates via short-lived OIDC
+   tokens, no stored service-account key.
+9. Write the GitHub Actions workflow: `on: push: branches: [main]` →
+   build + deploy. (A merged PR is a push to `main`, so this covers both
+   without a separate trigger.)
+10. Test the workflow with a trivial push.
+
+**Deferred, not blocking any of the above:** making the repo public (a
+git-history sanity check for anything sensitive is worth doing right
+before that specific step, not before the rest of this list), and branch
+protection / collaborator merge-access rules on `main` (only needed
+before actually inviting others to contribute — WIF itself is safe under
+a public repo already, since it only trusts `push`-triggered workflow
+runs, not fork-originated `pull_request` runs, so a public repo alone
+doesn't grant deploy access to anyone who can't already merge to `main`).
