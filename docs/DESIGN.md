@@ -297,9 +297,12 @@ the catalog grows/changes (not a one-time throwaway) — distinct from the
 one-off manual verification during feature testing, which get deleted
 after use.
 
-## Read-only sharing (added 2026-09-03)
+## Read-only sharing (added 2026-09-03, live in production)
 
-Every board has a read-only link at `/s/[shareId]` — a friend can watch
+Merged to `main` and deployed (`grind-app-00006-2ng`), rules redeployed
+right after (code first, then rules - see the reasoning below if this
+order ever needs repeating for a similar change). Every board has a
+read-only link at `/s/[shareId]` — a friend can watch
 progress (including done/not-done state) without being able to edit
 anything. Distinct from the still-deferred "shareable templates" idea
 below (publish + fork into a fresh editable board) - this is purely
@@ -351,6 +354,24 @@ write: if false` rather than actually needing to permit anything. Adding
 `hasOnly([...])`, a strict allowlist) - forgotten, this would have
 silently broken every client-side board edit the moment boards started
 carrying the new field, not just sharing itself.
+
+**Deploy ordering for a change that touches both app code and
+`firestore.rules` together: code first, then rules, not the other way
+round.** App code (Cloud Run, via GitHub Actions) and Firestore rules
+(the Firebase CLI) are two fully independent deploy mechanisms with no
+way to land atomically together, so there's always a gap where one is
+newer than the other - the question is which gap is safer. Rules-first
+means old code (which never wrote `shareId`) runs against new rules
+(which require `shareId is string` on every board, checked against the
+*full merged document* on every `update`, not just the changed fields) -
+every board edit fails, existing boards included, for as long as the
+code deploy takes. Code-first means new code (which writes `shareId` on
+create) runs against old rules (`hasOnly` without `shareId` in the
+allowlist) - only *creating a new board* fails during the gap; editing
+any board that predates the change keeps working, since a document
+missing a key still satisfies `hasOnly`. Narrower blast radius, so
+code-first is the right default whenever a future change needs both
+updated together.
 
 ## Deferred (explicitly not v1)
 
