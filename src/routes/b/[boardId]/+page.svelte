@@ -205,12 +205,11 @@
 		});
 	}
 
+	// Only called for the entry-delete button, which itself only renders
+	// when the node has more than one entry (see entryCount in the
+	// template) - a node's only entry is deleted via "Delete node" instead,
+	// since they're the same operation.
 	function askDeleteEntry(flowId: string, nodeId: string, entryId: string) {
-		const isLastEntry = (board.flows[flowId]?.nodes[nodeId]?.entryOrder ?? []).length <= 1;
-		if (isLastEntry) {
-			askDeleteNode(flowId, nodeId);
-			return;
-		}
 		confirmData = {
 			title: 'Delete entry',
 			message: 'This entry will be gone. This cannot be undone.',
@@ -372,6 +371,7 @@
 		{#each flow?.nodeOrder ?? Object.keys(flow?.nodes ?? {}) as nodeId, i (nodeId)}
 			{@const node = flow.nodes[nodeId]}
 			{@const isTailNode = !Object.values(flow.edges ?? {}).some((e) => e.from === nodeId)}
+			{@const entryCount = (node.entryOrder ?? Object.keys(node.entries)).length}
 			{#if i > 0}
 				<span class="edge-arrow">&rarr;</span>
 			{/if}
@@ -404,16 +404,18 @@
 							{#if entry.bottomText}
 								<span class="level-badge">{entry.bottomText}</span>
 							{/if}
-							<button
-								class="entry-delete-button"
-								title="Delete entry"
-								onclick={(e) => {
-									e.stopPropagation();
-									askDeleteEntry(flowId, nodeId, entryId);
-								}}
-							>
-								&times;
-							</button>
+							{#if entryCount > 1}
+								<button
+									class="entry-delete-button"
+									title="Delete entry"
+									onclick={(e) => {
+										e.stopPropagation();
+										askDeleteEntry(flowId, nodeId, entryId);
+									}}
+								>
+									&times;
+								</button>
+							{/if}
 						</div>
 					{/each}
 				</div>
