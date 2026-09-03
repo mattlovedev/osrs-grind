@@ -20,7 +20,11 @@ setup). That changes what "just commit it" safely means in this repo:
   never automatically right after a change looks done).
 - **Merging that branch into `main`** is a separate, higher-bar action
   from committing — do it only when explicitly told to merge/deploy/ship,
-  never inferred from a commit instruction or a "looks good."
+  never inferred from a commit instruction or a "looks good." Merge with
+  a plain `git merge` (or `git merge --no-ff` for an explicit merge commit
+  even when a fast-forward would apply) — never `--squash` or anything
+  else that collapses a branch's commits into one. No PRs on this repo,
+  so there's no "squash and merge" button to worry about either.
 
 This applies regardless of which machine or session you're reading this
 from — it's a fact about how this repo is wired, not a one-off
