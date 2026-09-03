@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { iconUrl } from '$lib/icon-url';
+
 	interface EntryDraft {
 		label: string;
 		wikiLink: string;
@@ -120,7 +122,7 @@
 		{#each results as r (r.type + '/' + r.wikiLink)}
 			<li>
 				<button type="button" onclick={() => pick(r)}>
-					{#if r.icon}<img src={r.icon} alt="" />{/if}
+					{#if r.icon}<img src={iconUrl(r.icon)} alt="" />{/if}
 					<span class="name">{r.name}</span>
 					<span class="badge">{r.type}</span>
 				</button>
@@ -172,7 +174,7 @@
 						title="Choose a different icon"
 					>
 						{#if icon}
-							<img src={icon} alt="" />
+							<img src={iconUrl(icon)} alt="" />
 						{:else}
 							<span class="icon-placeholder">?</span>
 						{/if}

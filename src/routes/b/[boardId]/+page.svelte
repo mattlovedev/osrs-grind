@@ -12,6 +12,7 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { db } from '$lib/firebase';
+	import { iconUrl } from '$lib/icon-url';
 	import type { Board } from '$lib/types';
 	import type { PageData } from './$types';
 	import EntryModal from '$lib/EntryModal.svelte';
@@ -352,7 +353,7 @@
 							}}
 						>
 							{#if entry.icon}
-								<img src={entry.icon} alt={entry.label} />
+								<img src={iconUrl(entry.icon)} alt={entry.label} />
 							{:else}
 								<span class="icon-placeholder">?</span>
 							{/if}

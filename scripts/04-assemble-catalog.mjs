@@ -13,14 +13,18 @@
 //   - items    : the merged list from stage 2c (scripts/.data/items.json)
 //   - minigames : empty for now (source TBD)
 //
-// Each entry gets { name, wikiLink, icon }, where `icon` is a public URL
-// on the osrs-grind-icons GCS bucket (see GCS_ICON_BASE_URL below and
-// DESIGN.md "Roadmap - deployment"), built from stage 3's manifest
-// (scripts/.data/icons.json) - or null if that icon wasn't downloaded.
-// Assumes `gcloud storage rsync -r static/icons gs://osrs-grind-icons/icons`
-// has already been run to actually publish the files stage 3 downloaded;
-// this stage only builds URLs, it doesn't upload anything itself. Bosses
-// and monsters also carry `combatLevel`.
+// Each entry gets { name, wikiLink, icon }, where `icon` is the local
+// /icons/<category>/<file> path from stage 3's manifest
+// (scripts/.data/icons.json), or null if that icon wasn't downloaded.
+// This path is environment-agnostic on purpose: the app decides at render
+// time (src/lib/icon-url.ts) whether to serve it locally (dev - reads
+// straight from static/icons/, so newly-downloaded icons show up
+// immediately, no publish step needed) or prefix it with the
+// osrs-grind-icons GCS base URL (production - see DESIGN.md "Roadmap -
+// deployment"). This stage never uploads anything to GCS itself; that's
+// `gcloud storage rsync -r static/icons gs://osrs-grind-icons/icons`, run
+// separately whenever you're ready to publish. Bosses and monsters also
+// carry `combatLevel`.
 //
 // Output: src/lib/data/catalog.json (committed - this is what the search
 // endpoint will `import`).
@@ -40,12 +44,6 @@ const ICONS_MANIFEST = path.join(DATA_DIR, 'icons.json');
 const OUT_PATH = path.join(CWD, 'src', 'lib', 'data', 'catalog.json');
 
 const SOURCE = 'https://oldschool.runescape.wiki (Bucket API)';
-
-// Icons are served straight from this public GCS bucket, never through the
-// Cloud Run app - see DESIGN.md "Roadmap - deployment". Stage 3's manifest
-// stores local /icons/<category>/<file> paths; the bucket mirrors that same
-// icons/<category>/<file> layout, so this is a plain prefix swap.
-const GCS_ICON_BASE_URL = 'https://storage.googleapis.com/osrs-grind-icons';
 
 function readJson(p) {
 	return JSON.parse(readFileSync(p, 'utf8'));
@@ -67,10 +65,7 @@ function main() {
 	if (!existsSync(ICONS_MANIFEST)) {
 		console.warn(`  ${ICONS_MANIFEST} missing - every icon will be null (run stage 3).`);
 	}
-	const iconFor = (category, name) => {
-		const localPath = iconMap[category]?.[name];
-		return localPath ? GCS_ICON_BASE_URL + localPath : null;
-	};
+	const iconFor = (category, name) => iconMap[category]?.[name] ?? null;
 
 	const skills = SKILLS.map((name) => ({
 		name,
