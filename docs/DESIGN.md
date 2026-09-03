@@ -747,9 +747,15 @@ service:
 5. Set the `ORIGIN` env var on the Cloud Run service once its URL is known
    (see the Dockerfile bullet above for why - `PUBLIC_FIREBASE_*` needs no
    Cloud Run config at all, it's already baked into the image).
-6. Verify the Cloud Run service's attached service account has Firestore
-   permissions (grant if not) - see the credentials bullet above for
-   exactly what breaks if this is wrong.
+6. ~~Verify the Cloud Run service's attached service account has Firestore
+   permissions~~ — no default compute service account exists yet (this
+   project's never used Compute Engine or Cloud Run), so the plan changed
+   to deploying with an explicit `--service-account` instead of relying on
+   that default: `firebase-adminsdk-fbsvc@osrs-grind.iam.gserviceaccount.com`,
+   which Firebase already created for Admin SDK access. Granted it
+   `roles/datastore.user` explicitly (on top of its existing
+   `roles/firebase.sdkAdminServiceAgent`, which likely already covered
+   this - added anyway to remove doubt, IAM roles stack additively).
 7. Create an Artifact Registry repository in the `osrs-grind` project —
    the built image needs somewhere to live. GitHub never stores or serves
    it; git only ever holds the `Dockerfile` recipe, not the built image.
