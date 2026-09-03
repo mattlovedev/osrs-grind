@@ -180,20 +180,16 @@
 		};
 	}
 
+	// Only called for the node-delete button, which itself only renders
+	// when the flow has more than one node (see nodeCount in the template) -
+	// a flow's only node is deleted via "Delete grind" instead, since
+	// they're the same operation.
 	function askDeleteNode(flowId: string, nodeId: string) {
-		const isLastNode = (board.flows[flowId]?.nodeOrder ?? []).length <= 1;
-		confirmData = isLastNode
-			? {
-					title: 'Delete grind',
-					message:
-						'This is the last node - deleting it removes the whole grind. This cannot be undone.',
-					perform: () => doDeleteFlow(flowId)
-				}
-			: {
-					title: 'Delete node',
-					message: 'This node and everything in it will be gone. This cannot be undone.',
-					perform: () => doDeleteNode(flowId, nodeId)
-				};
+		confirmData = {
+			title: 'Delete node',
+			message: 'This node and everything in it will be gone. This cannot be undone.',
+			perform: () => doDeleteNode(flowId, nodeId)
+		};
 	}
 
 	async function doDeleteEntry(flowId: string, nodeId: string, entryId: string) {
@@ -344,6 +340,7 @@
 
 {#each board.flowOrder as flowId, flowIndex (flowId)}
 	{@const flow = board.flows[flowId]}
+	{@const nodeCount = (flow?.nodeOrder ?? Object.keys(flow?.nodes ?? {})).length}
 	<div class="flow" class:editing={editMode}>
 		<div class="flow-controls">
 			{#if flowIndex > 0}
@@ -435,13 +432,15 @@
 						&rarr;
 					</button>
 				{/if}
-				<button
-					class="node-delete-button"
-					title="Delete node"
-					onclick={() => askDeleteNode(flowId, nodeId)}
-				>
-					&times;
-				</button>
+				{#if nodeCount > 1}
+					<button
+						class="node-delete-button"
+						title="Delete node"
+						onclick={() => askDeleteNode(flowId, nodeId)}
+					>
+						&times;
+					</button>
+				{/if}
 			</div>
 		{/each}
 	</div>
