@@ -3,7 +3,6 @@
 		doc,
 		onSnapshot,
 		updateDoc,
-		deleteDoc,
 		deleteField,
 		serverTimestamp,
 		arrayUnion,
@@ -294,8 +293,13 @@
 	}
 
 	async function doDeleteBoard() {
-		const ref = doc(db, 'boards', data.boardId);
-		await deleteDoc(ref);
+		// Server action, so it can also delete the shareLinks mapping doc
+		// (client has no access to that collection).
+		await fetch('?/deleteBoard', {
+			method: 'POST',
+			headers: { 'x-sveltekit-action': 'true' },
+			body: new FormData()
+		});
 		goto(resolve('/'));
 	}
 
