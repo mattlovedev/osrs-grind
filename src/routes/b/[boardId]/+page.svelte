@@ -84,6 +84,51 @@
 		setTimeout(() => (shareLinkCopied = false), 1500);
 	}
 
+	// Plain-data snapshot of the board: ordered arrays instead of the
+	// id-keyed maps, no ids at all. Edges keep the structure as
+	// from/to node indices into the flow's nodes array.
+	function buildExport() {
+		const grinds = (board.flowOrder ?? [])
+			.map((flowId) => {
+				const flow = board.flows[flowId];
+				if (!flow) return null;
+				const nodeIds = flow.nodeOrder ?? Object.keys(flow.nodes ?? {});
+				const nodeIndex = new Map(nodeIds.map((id, i) => [id, i]));
+				return {
+					name: flow.name ?? '',
+					nodes: nodeIds.map((nodeId) => {
+						const node = flow.nodes[nodeId];
+						const entryIds = node.entryOrder ?? Object.keys(node.entries ?? {});
+						return {
+							entries: entryIds.map((entryId) => {
+								const e = node.entries[entryId];
+								return {
+									label: e.label ?? '',
+									wikiLink: e.wikiLink ?? '',
+									icon: e.icon ?? '',
+									bottomText: e.bottomText ?? '',
+									done: e.done ?? false
+								};
+							})
+						};
+					}),
+					edges: Object.values(flow.edges ?? {})
+						.map((edge) => ({ from: nodeIndex.get(edge.from), to: nodeIndex.get(edge.to) }))
+						.filter((edge) => edge.from !== undefined && edge.to !== undefined)
+				};
+			})
+			.filter((g) => g !== null);
+		return { name: board.name ?? '', grinds };
+	}
+
+	let exportCopied = $state(false);
+
+	async function copyExport() {
+		await navigator.clipboard.writeText(JSON.stringify(buildExport(), null, 2));
+		exportCopied = true;
+		setTimeout(() => (exportCopied = false), 1500);
+	}
+
 	$effect(() => {
 		liveBoard = null;
 		const ref = doc(db, 'boards', data.boardId);
@@ -385,6 +430,9 @@
 		>{editMode ? 'Exit' : 'Edit'}</button
 	>
 	{#if editMode}
+		<button class="export-board" onclick={copyExport}>
+			{exportCopied ? 'Copied!' : 'Export'}
+		</button>
 		<button class="delete-board" onclick={askDeleteBoard}>Delete</button>
 	{/if}
 </div>
