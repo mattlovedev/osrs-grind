@@ -25,6 +25,14 @@ setup). That changes what "just commit it" safely means in this repo:
   even when a fast-forward would apply) — never `--squash` or anything
   else that collapses a branch's commits into one. No PRs on this repo,
   so there's no "squash and merge" button to worry about either.
+- **After merging and pushing to `main`, delete the feature branch —
+  local and remote — without asking.** Nothing does this automatically
+  here: no PRs means no "delete branch" button, and a plain `git merge`
+  never removes the source branch on its own. Once merged, the branch's
+  commits are permanently part of `main`'s history regardless of deploy
+  outcome, so cleanup isn't gated on the deploy succeeding.
+  `git branch -d <branch>` (safe delete - refuses if somehow not fully
+  merged) then `git push origin --delete <branch>`.
 
 This applies regardless of which machine or session you're reading this
 from — it's a fact about how this repo is wired, not a one-off
