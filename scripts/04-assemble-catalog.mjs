@@ -2,14 +2,21 @@
 //
 // Combines the earlier stages' outputs into one flat file the app imports
 // directly (no runtime wiki dependency):
-//   - skills : the static 24-skill list
-//   - bosses : name + combat level from stage 1's raw files
-//   - items  : the merged list from stage 2c (scripts/.data/items.json)
+//   - skills   : the static 24-skill list
+//   - bosses   : name + combat level from stage 1's raw files tagged "boss"
+//                (Category:Bosses, unchanged by the monsters addition)
+//   - monsters : same, but for raw files tagged "slayer" and NOT "boss" -
+//                Category:Slayer monsters minus anything already a boss, so
+//                a monster in both categories (e.g. Vorkath) only shows up
+//                once, as a boss. A raw file with no `source` field at all
+//                predates that field and is treated as "boss" (see stage 1).
+//   - items    : the merged list from stage 2c (scripts/.data/items.json)
 //   - minigames : empty for now (source TBD)
 //
 // Each entry gets { name, wikiLink, icon }, where `icon` is the local
 // /icons/... path from stage 3's manifest (scripts/.data/icons.json), or
-// null if that icon wasn't downloaded. Bosses also carry `combatLevel`.
+// null if that icon wasn't downloaded. Bosses and monsters also carry
+// `combatLevel`.
 //
 // Output: src/lib/data/catalog.json (committed - this is what the search
 // endpoint will `import`).
@@ -59,20 +66,25 @@ function main() {
 	})).sort(byName);
 
 	const bosses = [];
+	const monsters = [];
 	if (existsSync(RAW_DIR)) {
 		for (const f of readdirSync(RAW_DIR).filter((f) => f.endsWith('.json'))) {
 			const raw = readJson(path.join(RAW_DIR, f));
 			const name = raw.name ?? raw.title;
-			bosses.push({
+			const source = raw.source ?? ['boss'];
+			const isBoss = source.includes('boss');
+			const entry = {
 				name,
 				wikiLink: wikiPageUrl(raw.title ?? name),
-				icon: iconFor('bosses', name),
+				icon: iconFor(isBoss ? 'bosses' : 'monsters', name),
 				combatLevel: raw.combatLevel ?? null
-			});
+			};
+			(isBoss ? bosses : monsters).push(entry);
 		}
 		bosses.sort(byName);
+		monsters.sort(byName);
 	} else {
-		console.warn(`  ${RAW_DIR} missing - no bosses in the catalog (run stages 0-1).`);
+		console.warn(`  ${RAW_DIR} missing - no bosses/monsters in the catalog (run stages 0-1).`);
 	}
 
 	const items = readJson(ITEMS_PATH)
@@ -91,11 +103,13 @@ function main() {
 		counts: {
 			skills: skills.length,
 			bosses: bosses.length,
+			monsters: monsters.length,
 			items: items.length,
 			minigames: minigames.length
 		},
 		skills,
 		bosses,
+		monsters,
 		items,
 		minigames
 	};
@@ -106,9 +120,10 @@ function main() {
 	const nullIcons = (list) => list.filter((e) => !e.icon).length;
 	console.log(`Wrote ${OUT_PATH}`);
 	console.log(
-		`  skills: ${skills.length} (${nullIcons(skills)} no icon)\n` +
-			`  bosses: ${bosses.length} (${nullIcons(bosses)} no icon)\n` +
-			`  items:  ${items.length} (${nullIcons(items)} no icon)\n` +
+		`  skills:   ${skills.length} (${nullIcons(skills)} no icon)\n` +
+			`  bosses:   ${bosses.length} (${nullIcons(bosses)} no icon)\n` +
+			`  monsters: ${monsters.length} (${nullIcons(monsters)} no icon)\n` +
+			`  items:    ${items.length} (${nullIcons(items)} no icon)\n` +
 			`  minigames: ${minigames.length}`
 	);
 }

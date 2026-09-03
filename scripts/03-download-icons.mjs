@@ -3,10 +3,14 @@
 // Downloads the icon image for every catalog entry to
 // static/icons/<category>/<slug>.<ext>, where <slug> is the entry name
 // kebab-cased (not the wiki's raw "Dagannoth Rex.png"). Sources:
-//   - items  : scripts/.data/items.json      (iconUrl per item; null = skipped)
-//   - bosses : scripts/.data/raw/*.json      (iconUrl per boss)
-//   - skills : the static 24-skill list; icon URL is "<Skill>_icon.png" on
-//              the wiki (verified pattern for all 24)
+//   - items    : scripts/.data/items.json    (iconUrl per item; null = skipped)
+//   - bosses   : scripts/.data/raw/*.json    (iconUrl per page tagged "boss")
+//   - monsters : scripts/.data/raw/*.json    (iconUrl per page tagged "slayer"
+//                but not "boss" - see lib/monster-categories.mjs; a raw file
+//                with no `source` field at all predates that field and is
+//                treated as "boss", matching how it was actually discovered)
+//   - skills   : the static 24-skill list; icon URL is "<Skill>_icon.png" on
+//                the wiki (verified pattern for all 24)
 //
 // Files already on disk are left alone unless --refresh. Writes a manifest
 // (scripts/.data/icons.json) mapping each entry name to its local
@@ -152,10 +156,14 @@ async function main() {
 	const noIconItems = itemEntries.filter((e) => !e.url).map((e) => e.name);
 
 	const bossEntries = [];
+	const monsterEntries = [];
 	if (existsSync(RAW_DIR)) {
 		for (const f of readdirSync(RAW_DIR).filter((f) => f.endsWith('.json'))) {
 			const raw = readJson(path.join(RAW_DIR, f));
-			bossEntries.push({ name: raw.name ?? raw.title, url: raw.iconUrl });
+			const source = raw.source ?? ['boss'];
+			const entry = { name: raw.name ?? raw.title, url: raw.iconUrl };
+			if (source.includes('boss')) bossEntries.push(entry);
+			else monsterEntries.push(entry);
 		}
 	}
 
@@ -169,6 +177,7 @@ async function main() {
 	const entries = [
 		...dedupeEntries('items', itemEntries, limit),
 		...dedupeEntries('bosses', bossEntries, limit),
+		...dedupeEntries('monsters', monsterEntries, limit),
 		...dedupeEntries('skills', skillEntries, limit)
 	];
 
@@ -182,7 +191,7 @@ async function main() {
 
 	const tasks = entries.map(toTask);
 
-	for (const c of ['items', 'bosses', 'skills']) {
+	for (const c of ['items', 'bosses', 'monsters', 'skills']) {
 		mkdirSync(path.join(STATIC_ICONS, c), { recursive: true });
 	}
 
@@ -190,7 +199,7 @@ async function main() {
 	let downloaded = 0;
 	let skipped = 0;
 	const failed = [];
-	const manifest = { items: {}, bosses: {}, skills: {} };
+	const manifest = { items: {}, bosses: {}, monsters: {}, skills: {} };
 
 	await mapPool(tasks, CONCURRENCY, async (task) => {
 		if (!refresh && existsSync(task.dest)) {

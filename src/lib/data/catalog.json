@@ -1,10 +1,11 @@
 {
-  "generatedAt": "2026-09-02T19:50:21.606Z",
+  "generatedAt": "2026-09-03T14:36:40.206Z",
   "source": "https://oldschool.runescape.wiki (Bucket API)",
   "counts": {
     "skills": 24,
     "bosses": 173,
-    "items": 13418,
+    "monsters": 609,
+    "items": 13470,
     "minigames": 0
   },
   "skills": [
@@ -1169,6 +1170,3662 @@
       "combatLevel": 725
     }
   ],
+  "monsters": [
+    {
+      "name": "A corpse",
+      "wikiLink": "https://oldschool.runescape.wiki/w/A_corpse",
+      "icon": "/icons/monsters/a-corpse.png",
+      "combatLevel": 103
+    },
+    {
+      "name": "Aberrant spectre",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Aberrant_spectre",
+      "icon": "/icons/monsters/aberrant-spectre.png",
+      "combatLevel": 96
+    },
+    {
+      "name": "Abhorrent spectre",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Abhorrent_spectre",
+      "icon": "/icons/monsters/abhorrent-spectre.png",
+      "combatLevel": 253
+    },
+    {
+      "name": "Abyssal demon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Abyssal_demon",
+      "icon": "/icons/monsters/abyssal-demon.png",
+      "combatLevel": 124
+    },
+    {
+      "name": "Acidic Araxyte",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Acidic_Araxyte",
+      "icon": "/icons/monsters/acidic-araxyte.png",
+      "combatLevel": 114
+    },
+    {
+      "name": "Adamant dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Adamant_dragon",
+      "icon": "/icons/monsters/adamant-dragon.png",
+      "combatLevel": 338
+    },
+    {
+      "name": "Albino bat",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Albino_bat",
+      "icon": "/icons/monsters/albino-bat.png",
+      "combatLevel": 52
+    },
+    {
+      "name": "Ammonite Crab",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ammonite_Crab",
+      "icon": "/icons/monsters/ammonite-crab.png",
+      "combatLevel": 25
+    },
+    {
+      "name": "Amoxliatl (Echo)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Amoxliatl_(Echo)",
+      "icon": "/icons/monsters/amoxliatl-echo.png",
+      "combatLevel": 328
+    },
+    {
+      "name": "Ancient Custodian",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ancient_Custodian",
+      "icon": "/icons/monsters/ancient-custodian.png",
+      "combatLevel": 239
+    },
+    {
+      "name": "Ancient Wyvern",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ancient_Wyvern",
+      "icon": "/icons/monsters/ancient-wyvern.png",
+      "combatLevel": 210
+    },
+    {
+      "name": "Ancient Zygomite",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ancient_Zygomite",
+      "icon": "/icons/monsters/ancient-zygomite.png",
+      "combatLevel": 109
+    },
+    {
+      "name": "Ankou",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ankou",
+      "icon": "/icons/monsters/ankou.png",
+      "combatLevel": 86
+    },
+    {
+      "name": "Aquanite",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Aquanite",
+      "icon": "/icons/monsters/aquanite.png",
+      "combatLevel": 145
+    },
+    {
+      "name": "Araxyte",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Araxyte",
+      "icon": "/icons/monsters/araxyte.png",
+      "combatLevel": 146
+    },
+    {
+      "name": "Armoured zombie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Armoured_zombie_(Defender_of_Varrock)",
+      "icon": "/icons/monsters/armoured-zombie.png",
+      "combatLevel": 82
+    },
+    {
+      "name": "Armoured zombie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Armoured_zombie_(Zemouregal's_Base)",
+      "icon": "/icons/monsters/armoured-zombie.png",
+      "combatLevel": 82
+    },
+    {
+      "name": "Armoured zombie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Armoured_zombie_(Zemouregal's_Fort)",
+      "icon": "/icons/monsters/armoured-zombie.png",
+      "combatLevel": 105
+    },
+    {
+      "name": "Arrg (hard)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Arrg_(Nightmare_Zone)",
+      "icon": "/icons/monsters/arrg-hard.png",
+      "combatLevel": 210
+    },
+    {
+      "name": "Asyn Shade",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Asyn_Shade",
+      "icon": "/icons/monsters/asyn-shade.png",
+      "combatLevel": 100
+    },
+    {
+      "name": "Asyn shadow",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Asyn_shadow_(Temple_Trekking)",
+      "icon": "/icons/monsters/asyn-shadow.png",
+      "combatLevel": 110
+    },
+    {
+      "name": "Aviansie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Aviansie",
+      "icon": "/icons/monsters/aviansie.png",
+      "combatLevel": 84
+    },
+    {
+      "name": "Baby black dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Baby_black_dragon",
+      "icon": "/icons/monsters/baby-black-dragon.png",
+      "combatLevel": 83
+    },
+    {
+      "name": "Baby blue dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Baby_blue_dragon",
+      "icon": "/icons/monsters/baby-blue-dragon.png",
+      "combatLevel": 48
+    },
+    {
+      "name": "Baby red dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Baby_red_dragon",
+      "icon": "/icons/monsters/baby-red-dragon.png",
+      "combatLevel": 48
+    },
+    {
+      "name": "Baby Roc",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Baby_Roc",
+      "icon": "/icons/monsters/baby-roc.png",
+      "combatLevel": 75
+    },
+    {
+      "name": "Balfrug Kreeyath",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Balfrug_Kreeyath",
+      "icon": "/icons/monsters/balfrug-kreeyath.png",
+      "combatLevel": 151
+    },
+    {
+      "name": "Bandit",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bandit",
+      "icon": "/icons/monsters/bandit.png",
+      "combatLevel": 22
+    },
+    {
+      "name": "Banshee",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Banshee",
+      "icon": "/icons/monsters/banshee.png",
+      "combatLevel": 23
+    },
+    {
+      "name": "Basilisk",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Basilisk_(The_Fremennik_Exiles)",
+      "icon": "/icons/monsters/basilisk.png",
+      "combatLevel": 61
+    },
+    {
+      "name": "Basilisk",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Basilisk_(unused)",
+      "icon": "/icons/monsters/basilisk.png",
+      "combatLevel": 61
+    },
+    {
+      "name": "Basilisk",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Basilisk",
+      "icon": "/icons/monsters/basilisk.png",
+      "combatLevel": 61
+    },
+    {
+      "name": "Basilisk Knight",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Basilisk_Knight",
+      "icon": "/icons/monsters/basilisk-knight.png",
+      "combatLevel": 204
+    },
+    {
+      "name": "Basilisk Sentinel",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Basilisk_Sentinel",
+      "icon": "/icons/monsters/basilisk-sentinel.png",
+      "combatLevel": 358
+    },
+    {
+      "name": "Basilisk Youngling",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Basilisk_Youngling",
+      "icon": "/icons/monsters/basilisk-youngling.png",
+      "combatLevel": 57
+    },
+    {
+      "name": "Bat",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bat",
+      "icon": "/icons/monsters/bat.png",
+      "combatLevel": 6
+    },
+    {
+      "name": "Bear Cub",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bear_Cub",
+      "icon": "/icons/monsters/bear-cub.png",
+      "combatLevel": 15
+    },
+    {
+      "name": "Berry",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Berry",
+      "icon": "/icons/monsters/berry.png",
+      "combatLevel": 71
+    },
+    {
+      "name": "Big Wolf",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Big_Wolf",
+      "icon": "/icons/monsters/big-wolf.png",
+      "combatLevel": 73
+    },
+    {
+      "name": "Bird",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bird",
+      "icon": "/icons/monsters/bird.png",
+      "combatLevel": 5
+    },
+    {
+      "name": "Black bear",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Black_bear",
+      "icon": "/icons/monsters/black-bear.png",
+      "combatLevel": 19
+    },
+    {
+      "name": "Black demon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Black_demon_(The_Grand_Tree)",
+      "icon": "/icons/monsters/black-demon.png",
+      "combatLevel": 172
+    },
+    {
+      "name": "Black demon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Black_demon_(The_Scar)",
+      "icon": "/icons/monsters/black-demon.png",
+      "combatLevel": 172
+    },
+    {
+      "name": "Black demon (hard)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Black_demon_(Nightmare_Zone)",
+      "icon": "/icons/monsters/black-demon-hard.png",
+      "combatLevel": 292
+    },
+    {
+      "name": "Black dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Black_dragon",
+      "icon": "/icons/monsters/black-dragon.png",
+      "combatLevel": 247
+    },
+    {
+      "name": "Black Guard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Black_Guard",
+      "icon": "/icons/monsters/black-guard.png",
+      "combatLevel": 25
+    },
+    {
+      "name": "Black Guard Berserker",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Black_Guard_Berserker",
+      "icon": "/icons/monsters/black-guard-berserker.png",
+      "combatLevel": 66
+    },
+    {
+      "name": "Black Heather",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Black_Heather",
+      "icon": "/icons/monsters/black-heather.png",
+      "combatLevel": 34
+    },
+    {
+      "name": "Black Knight",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Black_Knight",
+      "icon": "/icons/monsters/black-knight.png",
+      "combatLevel": 33
+    },
+    {
+      "name": "Blessed giant rat",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Blessed_giant_rat",
+      "icon": "/icons/monsters/blessed-giant-rat.png",
+      "combatLevel": 9
+    },
+    {
+      "name": "Blessed spider",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Blessed_spider",
+      "icon": "/icons/monsters/blessed-spider.png",
+      "combatLevel": 39
+    },
+    {
+      "name": "Blood-starved venator",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Blood-starved_venator",
+      "icon": "/icons/monsters/blood-starved-venator.png",
+      "combatLevel": 246
+    },
+    {
+      "name": "Bloodthirst rockslug<sup class=\"noprint\">&#91;<span class=\"fact-text\" title=\"The preceding quoted material has been reproduced verbatim from the quoted original and is not a transcription error.\">sic</span>&#93;</sup>",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirst_rockslug",
+      "icon": "/icons/monsters/bloodthirst-rockslug-sup-class-noprint-91-span-class-fact-text-title-the-preceding-quoted-material-has-been-reproduced-verbatim-from-the-quoted-original-and-is-not-a-transcription-error-sic-span-93-sup.png",
+      "combatLevel": 86
+    },
+    {
+      "name": "Bloodthirsty abomination",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_abomination",
+      "icon": "/icons/monsters/bloodthirsty-abomination.png",
+      "combatLevel": 206
+    },
+    {
+      "name": "Bloodthirsty abyssal demon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_abyssal_demon",
+      "icon": "/icons/monsters/bloodthirsty-abyssal-demon.png",
+      "combatLevel": 513
+    },
+    {
+      "name": "Bloodthirsty banshee",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_banshee",
+      "icon": "/icons/monsters/bloodthirsty-banshee.png",
+      "combatLevel": 70
+    },
+    {
+      "name": "Bloodthirsty basilisk",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_basilisk",
+      "icon": "/icons/monsters/bloodthirsty-basilisk.png",
+      "combatLevel": 202
+    },
+    {
+      "name": "Bloodthirsty Basilisk Sentinel",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_Basilisk_Sentinel",
+      "icon": "/icons/monsters/bloodthirsty-basilisk-sentinel.png",
+      "combatLevel": 537
+    },
+    {
+      "name": "Bloodthirsty Bloodveld",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_Bloodveld",
+      "icon": "/icons/monsters/bloodthirsty-bloodveld.png",
+      "combatLevel": 303
+    },
+    {
+      "name": "Bloodthirsty choke devil",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_choke_devil",
+      "icon": "/icons/monsters/bloodthirsty-choke-devil.png",
+      "combatLevel": 396
+    },
+    {
+      "name": "Bloodthirsty Cockathrice",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_Cockathrice",
+      "icon": "/icons/monsters/bloodthirsty-cockathrice.png",
+      "combatLevel": 133
+    },
+    {
+      "name": "Bloodthirsty Crawler",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_Crawler",
+      "icon": "/icons/monsters/bloodthirsty-crawler.png",
+      "combatLevel": 68
+    },
+    {
+      "name": "Bloodthirsty Drake",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_Drake",
+      "icon": "/icons/monsters/bloodthirsty-drake.png",
+      "combatLevel": 576
+    },
+    {
+      "name": "Bloodthirsty gargoyle",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_gargoyle",
+      "icon": "/icons/monsters/bloodthirsty-gargoyle.png",
+      "combatLevel": 349
+    },
+    {
+      "name": "Bloodthirsty hand",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_hand",
+      "icon": "/icons/monsters/bloodthirsty-hand.png",
+      "combatLevel": 45
+    },
+    {
+      "name": "Bloodthirsty Hydra",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_Hydra",
+      "icon": "/icons/monsters/bloodthirsty-hydra.png",
+      "combatLevel": 501
+    },
+    {
+      "name": "Bloodthirsty Infernal pyrelord",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_Infernal_pyrelord",
+      "icon": "/icons/monsters/bloodthirsty-infernal-pyrelord.png",
+      "combatLevel": 201
+    },
+    {
+      "name": "Bloodthirsty Jelly",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_Jelly",
+      "icon": "/icons/monsters/bloodthirsty-jelly.png",
+      "combatLevel": 309
+    },
+    {
+      "name": "Bloodthirsty kurask",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_kurask",
+      "icon": "/icons/monsters/bloodthirsty-kurask.png",
+      "combatLevel": 295
+    },
+    {
+      "name": "Bloodthirsty Mage",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_Mage",
+      "icon": "/icons/monsters/bloodthirsty-mage.png",
+      "combatLevel": 162
+    },
+    {
+      "name": "Bloodthirsty mutated Bloodveld",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_mutated_Bloodveld",
+      "icon": "/icons/monsters/bloodthirsty-mutated-bloodveld.png",
+      "combatLevel": 417
+    },
+    {
+      "name": "Bloodthirsty Nechryarch",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_Nechryarch",
+      "icon": "/icons/monsters/bloodthirsty-nechryarch.png",
+      "combatLevel": 450
+    },
+    {
+      "name": "Bloodthirsty Night beast",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_Night_beast",
+      "icon": "/icons/monsters/bloodthirsty-night-beast.png",
+      "combatLevel": 561
+    },
+    {
+      "name": "Bloodthirsty pyrelord",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_pyrelord",
+      "icon": "/icons/monsters/bloodthirsty-pyrelord.png",
+      "combatLevel": 145
+    },
+    {
+      "name": "Bloodthirsty Repugnant spectre",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_Repugnant_spectre",
+      "icon": "/icons/monsters/bloodthirsty-repugnant-spectre.png",
+      "combatLevel": 335
+    },
+    {
+      "name": "Bloodthirsty Shadow Wyrm",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_Shadow_Wyrm",
+      "icon": "/icons/monsters/bloodthirsty-shadow-wyrm.png",
+      "combatLevel": 400
+    },
+    {
+      "name": "Bloodthirsty smoke devil",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_smoke_devil",
+      "icon": "/icons/monsters/bloodthirsty-smoke-devil.png",
+      "combatLevel": 420
+    },
+    {
+      "name": "Bloodthirsty spectre",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_spectre",
+      "icon": "/icons/monsters/bloodthirsty-spectre.png",
+      "combatLevel": 253
+    },
+    {
+      "name": "Bloodthirsty Turoth",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_Turoth",
+      "icon": "/icons/monsters/bloodthirsty-turoth.png",
+      "combatLevel": 366
+    },
+    {
+      "name": "Bloodthirsty twisted banshee",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_twisted_banshee",
+      "icon": "/icons/monsters/bloodthirsty-twisted-banshee.png",
+      "combatLevel": 144
+    },
+    {
+      "name": "Bloodthirsty Warped Jelly",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodthirsty_Warped_Jelly",
+      "icon": "/icons/monsters/bloodthirsty-warped-jelly.png",
+      "combatLevel": 361
+    },
+    {
+      "name": "Bloodveld",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bloodveld",
+      "icon": "/icons/monsters/bloodveld.png",
+      "combatLevel": 76
+    },
+    {
+      "name": "Blue dagannoth",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Blue_dagannoth",
+      "icon": "/icons/monsters/blue-dagannoth.png",
+      "combatLevel": 100
+    },
+    {
+      "name": "Blue dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Blue_dragon",
+      "icon": "/icons/monsters/blue-dragon.png",
+      "combatLevel": 111
+    },
+    {
+      "name": "Brine rat",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Brine_rat",
+      "icon": "/icons/monsters/brine-rat.png",
+      "combatLevel": 70
+    },
+    {
+      "name": "Bronze dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bronze_dragon",
+      "icon": "/icons/monsters/bronze-dragon.png",
+      "combatLevel": 131
+    },
+    {
+      "name": "Brutal black dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Brutal_black_dragon",
+      "icon": "/icons/monsters/brutal-black-dragon.png",
+      "combatLevel": 318
+    },
+    {
+      "name": "Brutal blue dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Brutal_blue_dragon",
+      "icon": "/icons/monsters/brutal-blue-dragon.png",
+      "combatLevel": 271
+    },
+    {
+      "name": "Brutal red dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Brutal_red_dragon",
+      "icon": "/icons/monsters/brutal-red-dragon.png",
+      "combatLevel": 289
+    },
+    {
+      "name": "Buffalo",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Buffalo",
+      "icon": "/icons/monsters/buffalo.png",
+      "combatLevel": 9
+    },
+    {
+      "name": "Callisto",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Callisto_(PvM_Arena)",
+      "icon": "/icons/monsters/callisto.png",
+      "combatLevel": 470
+    },
+    {
+      "name": "Catablepon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Catablepon",
+      "icon": "/icons/monsters/catablepon.png",
+      "combatLevel": 68
+    },
+    {
+      "name": "Cave abomination",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cave_abomination",
+      "icon": "/icons/monsters/cave-abomination.png",
+      "combatLevel": 206
+    },
+    {
+      "name": "Cave bug",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cave_bug",
+      "icon": "/icons/monsters/cave-bug.png",
+      "combatLevel": 6
+    },
+    {
+      "name": "Cave crawler",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cave_crawler",
+      "icon": "/icons/monsters/cave-crawler.png",
+      "combatLevel": 23
+    },
+    {
+      "name": "Cave goblin",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cave_goblin_(monster)",
+      "icon": "/icons/monsters/cave-goblin.png",
+      "combatLevel": 3
+    },
+    {
+      "name": "Cave goblin guard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cave_goblin_guard",
+      "icon": "/icons/monsters/cave-goblin-guard.png",
+      "combatLevel": 26
+    },
+    {
+      "name": "Cave goblin miner",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cave_goblin_miner",
+      "icon": "/icons/monsters/cave-goblin-miner.png",
+      "combatLevel": 11
+    },
+    {
+      "name": "Cave horror",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cave_horror",
+      "icon": "/icons/monsters/cave-horror.png",
+      "combatLevel": 80
+    },
+    {
+      "name": "Cave kraken",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cave_kraken",
+      "icon": "/icons/monsters/cave-kraken.png",
+      "combatLevel": 127
+    },
+    {
+      "name": "Cave slime",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cave_slime",
+      "icon": "/icons/monsters/cave-slime.png",
+      "combatLevel": 23
+    },
+    {
+      "name": "Cerberus",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cerberus_(Deadman)",
+      "icon": "/icons/monsters/cerberus.png",
+      "combatLevel": 726
+    },
+    {
+      "name": "Cerberus (Echo)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cerberus_(Echo)",
+      "icon": "/icons/monsters/cerberus-echo.png",
+      "combatLevel": 477
+    },
+    {
+      "name": "Chaos druid",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Chaos_druid",
+      "icon": "/icons/monsters/chaos-druid.png",
+      "combatLevel": 13
+    },
+    {
+      "name": "Chaos dwarf",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Chaos_dwarf",
+      "icon": "/icons/monsters/chaos-dwarf.png",
+      "combatLevel": 48
+    },
+    {
+      "name": "Chaos Elemental",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Chaos_Elemental_(PvM_Arena)",
+      "icon": "/icons/monsters/chaos-elemental.png",
+      "combatLevel": 305
+    },
+    {
+      "name": "Chasm Crawler",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Chasm_Crawler",
+      "icon": "/icons/monsters/chasm-crawler.png",
+      "combatLevel": 68
+    },
+    {
+      "name": "Chicken",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Chicken",
+      "icon": "/icons/monsters/chicken.png",
+      "combatLevel": 1
+    },
+    {
+      "name": "Chilled jelly",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Chilled_jelly",
+      "icon": "/icons/monsters/chilled-jelly.png",
+      "combatLevel": 112
+    },
+    {
+      "name": "Choke devil",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Choke_devil",
+      "icon": "/icons/monsters/choke-devil.png",
+      "combatLevel": 264
+    },
+    {
+      "name": "Chompy bird",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Chompy_bird",
+      "icon": "/icons/monsters/chompy-bird.png",
+      "combatLevel": 6
+    },
+    {
+      "name": "Chuck up",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Chuck_up",
+      "icon": "/icons/monsters/chuck-up.png",
+      "combatLevel": 98
+    },
+    {
+      "name": "City guard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/City_guard",
+      "icon": "/icons/monsters/city-guard.png",
+      "combatLevel": 83
+    },
+    {
+      "name": "Cockathrice",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cockathrice",
+      "icon": "/icons/monsters/cockathrice.png",
+      "combatLevel": 89
+    },
+    {
+      "name": "Cockatrice",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cockatrice_(unused)",
+      "icon": "/icons/monsters/cockatrice.png",
+      "combatLevel": 37
+    },
+    {
+      "name": "Cockatrice",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cockatrice",
+      "icon": "/icons/monsters/cockatrice.png",
+      "combatLevel": 37
+    },
+    {
+      "name": "Colossal Hydra",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Colossal_Hydra",
+      "icon": "/icons/monsters/colossal-hydra.png",
+      "combatLevel": 309
+    },
+    {
+      "name": "Commander Zilyana",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Commander_Zilyana_(Deadman)",
+      "icon": "/icons/monsters/commander-zilyana.png",
+      "combatLevel": 596
+    },
+    {
+      "name": "Commander Zilyana",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Commander_Zilyana_(PvM_Arena)",
+      "icon": "/icons/monsters/commander-zilyana.png",
+      "combatLevel": 596
+    },
+    {
+      "name": "Corrupt Lizardman",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Corrupt_Lizardman",
+      "icon": "/icons/monsters/corrupt-lizardman.png",
+      "combatLevel": 46
+    },
+    {
+      "name": "Corrupt Lizardman (hard)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Corrupt_Lizardman_(Nightmare_Zone)",
+      "icon": "/icons/monsters/corrupt-lizardman-hard.png",
+      "combatLevel": 152
+    },
+    {
+      "name": "Count Draynor (hard)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Count_Draynor_(Nightmare_Zone)",
+      "icon": "/icons/monsters/count-draynor-hard.png",
+      "combatLevel": 177
+    },
+    {
+      "name": "Cow",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cow",
+      "icon": "/icons/monsters/cow.png",
+      "combatLevel": 2
+    },
+    {
+      "name": "Cow calf",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cow_calf",
+      "icon": "/icons/monsters/cow-calf.png",
+      "combatLevel": 2
+    },
+    {
+      "name": "Crab",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Crab",
+      "icon": "/icons/monsters/crab.png",
+      "combatLevel": 23
+    },
+    {
+      "name": "Crawling Hand",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Crawling_Hand",
+      "icon": "/icons/monsters/crawling-hand.png",
+      "combatLevel": 8
+    },
+    {
+      "name": "Crocodile",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Crocodile",
+      "icon": "/icons/monsters/crocodile.png",
+      "combatLevel": 63
+    },
+    {
+      "name": "Crushing hand",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Crushing_hand",
+      "icon": "/icons/monsters/crushing-hand.png",
+      "combatLevel": 45
+    },
+    {
+      "name": "Crypt rat",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Crypt_rat",
+      "icon": "/icons/monsters/crypt-rat.png",
+      "combatLevel": 43
+    },
+    {
+      "name": "Crypt spider",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Crypt_spider",
+      "icon": "/icons/monsters/crypt-spider.png",
+      "combatLevel": 56
+    },
+    {
+      "name": "Cyclops",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cyclops_(Ardougne_Zoo)",
+      "icon": "/icons/monsters/cyclops.png",
+      "combatLevel": 56
+    },
+    {
+      "name": "Cyclops",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cyclops_(Catacombs_of_Kourend)",
+      "icon": "/icons/monsters/cyclops.png",
+      "combatLevel": 56
+    },
+    {
+      "name": "Cyclops",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cyclops_(God_Wars_Dungeon)",
+      "icon": "/icons/monsters/cyclops.png",
+      "combatLevel": 81
+    },
+    {
+      "name": "Cyclops",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cyclops",
+      "icon": "/icons/monsters/cyclops.png",
+      "combatLevel": 106
+    },
+    {
+      "name": "Dad (hard)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dad_(Nightmare_Zone)",
+      "icon": "/icons/monsters/dad-hard.png",
+      "combatLevel": 201
+    },
+    {
+      "name": "Daddy's special water",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Daddy's_special_water",
+      "icon": "/icons/monsters/daddy-s-special-water.png",
+      "combatLevel": 125
+    },
+    {
+      "name": "Dagannoth",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dagannoth_(Waterbirth_Island)",
+      "icon": "/icons/monsters/dagannoth.png",
+      "combatLevel": 88
+    },
+    {
+      "name": "Dagannoth",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dagannoth",
+      "icon": "/icons/monsters/dagannoth.png",
+      "combatLevel": 74
+    },
+    {
+      "name": "Dagannoth fledgeling",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dagannoth_fledgeling",
+      "icon": "/icons/monsters/dagannoth-fledgeling.png",
+      "combatLevel": 70
+    },
+    {
+      "name": "Dagannoth mother (hard)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dagannoth_mother_(Nightmare_Zone)",
+      "icon": "/icons/monsters/dagannoth-mother-hard.png",
+      "combatLevel": 201
+    },
+    {
+      "name": "Dagannoth Prime",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dagannoth_Prime_(Deadman)",
+      "icon": "/icons/monsters/dagannoth-prime.png",
+      "combatLevel": 947
+    },
+    {
+      "name": "Dagannoth Prime",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dagannoth_Prime_(PvM_Arena)",
+      "icon": "/icons/monsters/dagannoth-prime.png",
+      "combatLevel": 303
+    },
+    {
+      "name": "Dagannoth Prime (Echo)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dagannoth_Prime_(Echo)",
+      "icon": "/icons/monsters/dagannoth-prime-echo.png",
+      "combatLevel": 454
+    },
+    {
+      "name": "Dagannoth Rex",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dagannoth_Rex_(Deadman)",
+      "icon": "/icons/monsters/dagannoth-rex.png",
+      "combatLevel": 1104
+    },
+    {
+      "name": "Dagannoth Rex",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dagannoth_Rex_(PvM_Arena)",
+      "icon": "/icons/monsters/dagannoth-rex.png",
+      "combatLevel": 303
+    },
+    {
+      "name": "Dagannoth Rex (Echo)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dagannoth_Rex_(Echo)",
+      "icon": "/icons/monsters/dagannoth-rex-echo.png",
+      "combatLevel": 454
+    },
+    {
+      "name": "Dagannoth spawn",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dagannoth_spawn",
+      "icon": "/icons/monsters/dagannoth-spawn.png",
+      "combatLevel": 42
+    },
+    {
+      "name": "Dagannoth Supreme",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dagannoth_Supreme_(Deadman)",
+      "icon": "/icons/monsters/dagannoth-supreme.png",
+      "combatLevel": 936
+    },
+    {
+      "name": "Dagannoth Supreme",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dagannoth_Supreme_(PvM_Arena)",
+      "icon": "/icons/monsters/dagannoth-supreme.png",
+      "combatLevel": 303
+    },
+    {
+      "name": "Dagannoth Supreme (Echo)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dagannoth_Supreme_(Echo)",
+      "icon": "/icons/monsters/dagannoth-supreme-echo.png",
+      "combatLevel": 681
+    },
+    {
+      "name": "Damien Leucurte",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Damien_Leucurte",
+      "icon": "/icons/monsters/damien-leucurte.png",
+      "combatLevel": 204
+    },
+    {
+      "name": "Dark Ankou",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dark_Ankou",
+      "icon": "/icons/monsters/dark-ankou.png",
+      "combatLevel": 95
+    },
+    {
+      "name": "Dark beast",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dark_beast",
+      "icon": "/icons/monsters/dark-beast.png",
+      "combatLevel": 182
+    },
+    {
+      "name": "Dark warrior",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dark_warrior",
+      "icon": "/icons/monsters/dark-warrior.png",
+      "combatLevel": 37
+    },
+    {
+      "name": "Deadly red spider",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Deadly_red_spider",
+      "icon": "/icons/monsters/deadly-red-spider.png",
+      "combatLevel": 34
+    },
+    {
+      "name": "Death wing",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Death_wing",
+      "icon": "/icons/monsters/death-wing.png",
+      "combatLevel": 83
+    },
+    {
+      "name": "Demon of Balance",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Demon_of_Balance",
+      "icon": "/icons/monsters/demon-of-balance.png",
+      "combatLevel": 202
+    },
+    {
+      "name": "Demon of Darkness",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Demon_of_Darkness",
+      "icon": "/icons/monsters/demon-of-darkness.png",
+      "combatLevel": 202
+    },
+    {
+      "name": "Demon of Light",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Demon_of_Light",
+      "icon": "/icons/monsters/demon-of-light.png",
+      "combatLevel": 202
+    },
+    {
+      "name": "Demonic gorilla",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Demonic_gorilla",
+      "icon": "/icons/monsters/demonic-gorilla.png",
+      "combatLevel": 275
+    },
+    {
+      "name": "Desert Lizard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Desert_Lizard",
+      "icon": "/icons/monsters/desert-lizard.png",
+      "combatLevel": 24
+    },
+    {
+      "name": "Desert Wolf",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Desert_Wolf",
+      "icon": "/icons/monsters/desert-wolf.png",
+      "combatLevel": 27
+    },
+    {
+      "name": "Dessous (hard)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dessous_(Nightmare_Zone)",
+      "icon": "/icons/monsters/dessous-hard.png",
+      "combatLevel": 217
+    },
+    {
+      "name": "Deviant spectre",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Deviant_spectre",
+      "icon": "/icons/monsters/deviant-spectre.png",
+      "combatLevel": 169
+    },
+    {
+      "name": "Dharok the Wretched",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dharok_the_Wretched_(Deadman)",
+      "icon": "/icons/monsters/dharok-the-wretched.png",
+      "combatLevel": 666
+    },
+    {
+      "name": "Dinky the drink troll",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dinky_the_drink_troll",
+      "icon": "/icons/monsters/dinky-the-drink-troll.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Dire gryphon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dire_gryphon",
+      "icon": "/icons/monsters/dire-gryphon.png",
+      "combatLevel": 209
+    },
+    {
+      "name": "Dire Wolf",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dire_Wolf",
+      "icon": "/icons/monsters/dire-wolf.png",
+      "combatLevel": 72
+    },
+    {
+      "name": "Dire Wolf Alpha",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dire_Wolf_Alpha",
+      "icon": "/icons/monsters/dire-wolf-alpha.png",
+      "combatLevel": 113
+    },
+    {
+      "name": "Donny the lad",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Donny_the_lad",
+      "icon": "/icons/monsters/donny-the-lad.png",
+      "combatLevel": 34
+    },
+    {
+      "name": "Drake",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Drake",
+      "icon": "/icons/monsters/drake.png",
+      "combatLevel": 192
+    },
+    {
+      "name": "Dreadborn Araxyte",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dreadborn_Araxyte",
+      "icon": "/icons/monsters/dreadborn-araxyte.png",
+      "combatLevel": 281
+    },
+    {
+      "name": "Drink troll",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Drink_troll",
+      "icon": "/icons/monsters/drink-troll.png",
+      "combatLevel": 14
+    },
+    {
+      "name": "Duck",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Duck",
+      "icon": "/icons/monsters/duck.png",
+      "combatLevel": 1
+    },
+    {
+      "name": "Duckling",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Duckling",
+      "icon": "/icons/monsters/duckling.png",
+      "combatLevel": 1
+    },
+    {
+      "name": "Duke",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Duke_(monkey)",
+      "icon": "/icons/monsters/duke.png",
+      "combatLevel": 149
+    },
+    {
+      "name": "Dungeon rat",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dungeon_rat",
+      "icon": "/icons/monsters/dungeon-rat.png",
+      "combatLevel": 12
+    },
+    {
+      "name": "Dust devil",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dust_devil",
+      "icon": "/icons/monsters/dust-devil.png",
+      "combatLevel": 110
+    },
+    {
+      "name": "Dwarf",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dwarf",
+      "icon": "/icons/monsters/dwarf.png",
+      "combatLevel": 10
+    },
+    {
+      "name": "Dwarf gang member",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dwarf_gang_member",
+      "icon": "/icons/monsters/dwarf-gang-member.png",
+      "combatLevel": 44
+    },
+    {
+      "name": "Earth warrior",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Earth_warrior",
+      "icon": "/icons/monsters/earth-warrior.png",
+      "combatLevel": 51
+    },
+    {
+      "name": "Earthen Nagua",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Earthen_Nagua",
+      "icon": "/icons/monsters/earthen-nagua.png",
+      "combatLevel": 128
+    },
+    {
+      "name": "Elder aquanite",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Elder_aquanite",
+      "icon": "/icons/monsters/elder-aquanite.png",
+      "combatLevel": 305
+    },
+    {
+      "name": "Elder Chaos druid",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Elder_Chaos_druid",
+      "icon": "/icons/monsters/elder-chaos-druid.png",
+      "combatLevel": 129
+    },
+    {
+      "name": "Elder custodian stalker",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Elder_custodian_stalker",
+      "icon": "/icons/monsters/elder-custodian-stalker.png",
+      "combatLevel": 142
+    },
+    {
+      "name": "Elf Archer",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Elf_Archer",
+      "icon": "/icons/monsters/elf-archer.png",
+      "combatLevel": 90
+    },
+    {
+      "name": "Elf Warrior",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Elf_Warrior",
+      "icon": "/icons/monsters/elf-warrior.png",
+      "combatLevel": 108
+    },
+    {
+      "name": "Elvarg (hard)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Elvarg_(Nightmare_Zone)",
+      "icon": "/icons/monsters/elvarg-hard.png",
+      "combatLevel": 214
+    },
+    {
+      "name": "Enclave guard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Enclave_guard",
+      "icon": "/icons/monsters/enclave-guard.png",
+      "combatLevel": 83
+    },
+    {
+      "name": "Ent",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ent",
+      "icon": "/icons/monsters/ent.png",
+      "combatLevel": 86
+    },
+    {
+      "name": "Entrana firebird",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Entrana_firebird",
+      "icon": "/icons/monsters/entrana-firebird.png",
+      "combatLevel": 2
+    },
+    {
+      "name": "Evil Chicken",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Evil_Chicken_(Recipe_for_Disaster)",
+      "icon": "/icons/monsters/evil-chicken.png",
+      "combatLevel": 159
+    },
+    {
+      "name": "Evil Chicken",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Evil_Chicken",
+      "icon": "/icons/monsters/evil-chicken.png",
+      "combatLevel": 159
+    },
+    {
+      "name": "Evil Chicken (hard)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Evil_Chicken_(Nightmare_Zone)",
+      "icon": "/icons/monsters/evil-chicken-hard.png",
+      "combatLevel": 286
+    },
+    {
+      "name": "Feral Vampyre",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Feral_Vampyre",
+      "icon": "/icons/monsters/feral-vampyre.png",
+      "combatLevel": 61
+    },
+    {
+      "name": "Fever spider",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Fever_spider",
+      "icon": "/icons/monsters/fever-spider.png",
+      "combatLevel": 49
+    },
+    {
+      "name": "Fire giant",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Fire_giant",
+      "icon": "/icons/monsters/fire-giant.png",
+      "combatLevel": 104
+    },
+    {
+      "name": "Fiyr Shade",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Fiyr_Shade",
+      "icon": "/icons/monsters/fiyr-shade.png",
+      "combatLevel": 120
+    },
+    {
+      "name": "Flaming pyrelord",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Flaming_pyrelord",
+      "icon": "/icons/monsters/flaming-pyrelord.png",
+      "combatLevel": 97
+    },
+    {
+      "name": "Flesh Crawler",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Flesh_Crawler",
+      "icon": "/icons/monsters/flesh-crawler.png",
+      "combatLevel": 41
+    },
+    {
+      "name": "Flight Kilisa",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Flight_Kilisa",
+      "icon": "/icons/monsters/flight-kilisa.png",
+      "combatLevel": 159
+    },
+    {
+      "name": "Flockleader Geerin",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Flockleader_Geerin",
+      "icon": "/icons/monsters/flockleader-geerin.png",
+      "combatLevel": 149
+    },
+    {
+      "name": "Forgotten Soul",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Forgotten_Soul",
+      "icon": "/icons/monsters/forgotten-soul.png",
+      "combatLevel": 20
+    },
+    {
+      "name": "Frenzied ice troll female",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Frenzied_ice_troll_female",
+      "icon": "/icons/monsters/frenzied-ice-troll-female.png",
+      "combatLevel": 82
+    },
+    {
+      "name": "Frenzied ice troll grunt",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Frenzied_ice_troll_grunt",
+      "icon": "/icons/monsters/frenzied-ice-troll-grunt.png",
+      "combatLevel": 102
+    },
+    {
+      "name": "Frenzied ice troll male",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Frenzied_ice_troll_male",
+      "icon": "/icons/monsters/frenzied-ice-troll-male.png",
+      "combatLevel": 82
+    },
+    {
+      "name": "Frenzied ice troll runt",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Frenzied_ice_troll_runt",
+      "icon": "/icons/monsters/frenzied-ice-troll-runt.png",
+      "combatLevel": 74
+    },
+    {
+      "name": "Frost dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Frost_dragon",
+      "icon": "/icons/monsters/frost-dragon.png",
+      "combatLevel": 202
+    },
+    {
+      "name": "Frost Nagua",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Frost_Nagua",
+      "icon": "/icons/monsters/frost-nagua.png",
+      "combatLevel": 104
+    },
+    {
+      "name": "Gargoyle",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Gargoyle",
+      "icon": "/icons/monsters/gargoyle.png",
+      "combatLevel": 111
+    },
+    {
+      "name": "General Graardor",
+      "wikiLink": "https://oldschool.runescape.wiki/w/General_Graardor_(Deadman)",
+      "icon": "/icons/monsters/general-graardor.png",
+      "combatLevel": 624
+    },
+    {
+      "name": "General Graardor",
+      "wikiLink": "https://oldschool.runescape.wiki/w/General_Graardor_(PvM_Arena)",
+      "icon": "/icons/monsters/general-graardor.png",
+      "combatLevel": 624
+    },
+    {
+      "name": "Ghost",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ghost_(Grave_of_Scorpius)",
+      "icon": "/icons/monsters/ghost.png",
+      "combatLevel": 24
+    },
+    {
+      "name": "Ghost",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ghost_(Melzar's_Maze)",
+      "icon": "/icons/monsters/ghost.png",
+      "combatLevel": 19
+    },
+    {
+      "name": "Ghost",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ghost",
+      "icon": "/icons/monsters/ghost.png",
+      "combatLevel": 19
+    },
+    {
+      "name": "Ghost",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Haze",
+      "icon": "/icons/monsters/ghost.png",
+      "combatLevel": 29
+    },
+    {
+      "name": "Ghoul",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ghoul",
+      "icon": "/icons/monsters/ghoul.png",
+      "combatLevel": 42
+    },
+    {
+      "name": "Giant bat",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giant_bat_(Brine_Rat_Cavern)",
+      "icon": "/icons/monsters/giant-bat.png",
+      "combatLevel": 27
+    },
+    {
+      "name": "Giant bat",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giant_bat",
+      "icon": "/icons/monsters/giant-bat.png",
+      "combatLevel": 27
+    },
+    {
+      "name": "Giant crypt rat",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giant_crypt_rat",
+      "icon": "/icons/monsters/giant-crypt-rat.png",
+      "combatLevel": 76
+    },
+    {
+      "name": "Giant crypt spider",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giant_crypt_spider",
+      "icon": "/icons/monsters/giant-crypt-spider.png",
+      "combatLevel": 79
+    },
+    {
+      "name": "Giant goblin",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giant_goblin",
+      "icon": "/icons/monsters/giant-goblin.png",
+      "combatLevel": 1022
+    },
+    {
+      "name": "Giant lobster",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giant_lobster_(Ghosts_Ahoy)",
+      "icon": "/icons/monsters/giant-lobster.png",
+      "combatLevel": 32
+    },
+    {
+      "name": "Giant Lobster",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giant_lobster",
+      "icon": null,
+      "combatLevel": 45
+    },
+    {
+      "name": "Giant Mole",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giant_Mole_(PvM_Arena)",
+      "icon": "/icons/monsters/giant-mole.png",
+      "combatLevel": 230
+    },
+    {
+      "name": "Giant rat",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giant_rat_(Scurrius)",
+      "icon": "/icons/monsters/giant-rat.png",
+      "combatLevel": 46
+    },
+    {
+      "name": "Giant rat",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giant_rat",
+      "icon": "/icons/monsters/giant-rat.png",
+      "combatLevel": 6
+    },
+    {
+      "name": "Giant Roc (hard)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giant_Roc_(Nightmare_Zone)",
+      "icon": "/icons/monsters/giant-roc-hard.png",
+      "combatLevel": 257
+    },
+    {
+      "name": "Giant Rock Crab",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giant_Rock_Crab",
+      "icon": "/icons/monsters/giant-rock-crab.png",
+      "combatLevel": 137
+    },
+    {
+      "name": "Giant rockslug",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giant_rockslug",
+      "icon": "/icons/monsters/giant-rockslug.png",
+      "combatLevel": 86
+    },
+    {
+      "name": "Giant Scarab (hard)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giant_Scarab_(Nightmare_Zone)",
+      "icon": "/icons/monsters/giant-scarab-hard.png",
+      "combatLevel": 316
+    },
+    {
+      "name": "Giant skeleton",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giant_skeleton_(Shadow_Dungeon)",
+      "icon": "/icons/monsters/giant-skeleton.png",
+      "combatLevel": 80
+    },
+    {
+      "name": "Giant skeleton",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giant_skeleton_(Tarn's_Lair)",
+      "icon": "/icons/monsters/giant-skeleton.png",
+      "combatLevel": 100
+    },
+    {
+      "name": "Giant spider",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giant_spider",
+      "icon": "/icons/monsters/giant-spider.png",
+      "combatLevel": 2
+    },
+    {
+      "name": "Goblin",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Goblin_(Goblin_Village)",
+      "icon": "/icons/monsters/goblin.png",
+      "combatLevel": 5
+    },
+    {
+      "name": "Goblin",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Goblin_(God_Wars_Dungeon)",
+      "icon": "/icons/monsters/goblin.png",
+      "combatLevel": 12
+    },
+    {
+      "name": "Goblin",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Goblin_(Vault_of_War)",
+      "icon": "/icons/monsters/goblin.png",
+      "combatLevel": 5
+    },
+    {
+      "name": "Goblin",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Goblin",
+      "icon": "/icons/monsters/goblin.png",
+      "combatLevel": 5
+    },
+    {
+      "name": "Goblin guard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Goblin_guard",
+      "icon": "/icons/monsters/goblin-guard.png",
+      "combatLevel": 42
+    },
+    {
+      "name": "Gorad",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Gorad",
+      "icon": "/icons/monsters/gorad.png",
+      "combatLevel": 68
+    },
+    {
+      "name": "Grave scorpion",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Grave_scorpion",
+      "icon": "/icons/monsters/grave-scorpion.png",
+      "combatLevel": 12
+    },
+    {
+      "name": "Greater abyssal demon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Greater_abyssal_demon_(Deadman)",
+      "icon": "/icons/monsters/greater-abyssal-demon.png",
+      "combatLevel": 719
+    },
+    {
+      "name": "Greater abyssal demon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Greater_abyssal_demon",
+      "icon": "/icons/monsters/greater-abyssal-demon.png",
+      "combatLevel": 342
+    },
+    {
+      "name": "Greater demon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Greater_demon_(The_Scar)",
+      "icon": "/icons/monsters/greater-demon.png",
+      "combatLevel": 92
+    },
+    {
+      "name": "Greater demon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Greater_demon",
+      "icon": "/icons/monsters/greater-demon.png",
+      "combatLevel": 100
+    },
+    {
+      "name": "Greater Nechryael",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Greater_Nechryael",
+      "icon": "/icons/monsters/greater-nechryael.png",
+      "combatLevel": 200
+    },
+    {
+      "name": "Greater Skeleton Hellhound",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Greater_Skeleton_Hellhound_(Calvar'ion)",
+      "icon": "/icons/monsters/greater-skeleton-hellhound.png",
+      "combatLevel": 139
+    },
+    {
+      "name": "Greater Skeleton Hellhound",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Greater_Skeleton_Hellhound_(Vet'ion)",
+      "icon": "/icons/monsters/greater-skeleton-hellhound.png",
+      "combatLevel": 231
+    },
+    {
+      "name": "Green dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Green_dragon",
+      "icon": "/icons/monsters/green-dragon.png",
+      "combatLevel": 79
+    },
+    {
+      "name": "Grimy Lizard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Grimy_Lizard",
+      "icon": "/icons/monsters/grimy-lizard.png",
+      "combatLevel": 50
+    },
+    {
+      "name": "Grizzly bear",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Grizzly_bear_(Escape_Caves)",
+      "icon": "/icons/monsters/grizzly-bear.png",
+      "combatLevel": 83
+    },
+    {
+      "name": "Grizzly bear",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Grizzly_bear",
+      "icon": "/icons/monsters/grizzly-bear.png",
+      "combatLevel": 42
+    },
+    {
+      "name": "Grizzly bear cub",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Grizzly_bear_cub",
+      "icon": "/icons/monsters/grizzly-bear-cub.png",
+      "combatLevel": 33
+    },
+    {
+      "name": "Gryphon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Gryphon_(Troubled_Tortugans)",
+      "icon": "/icons/monsters/gryphon.png",
+      "combatLevel": 95
+    },
+    {
+      "name": "Gryphon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Gryphon",
+      "icon": "/icons/monsters/gryphon.png",
+      "combatLevel": 95
+    },
+    {
+      "name": "Guard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Guard_(Cave_goblin)",
+      "icon": "/icons/monsters/guard.png",
+      "combatLevel": 26
+    },
+    {
+      "name": "Guard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Guard_(dwarf)",
+      "icon": "/icons/monsters/guard.png",
+      "combatLevel": 10
+    },
+    {
+      "name": "Guard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Guard_(Prifddinas)",
+      "icon": "/icons/monsters/guard.png",
+      "combatLevel": 108
+    },
+    {
+      "name": "Guard Bandit",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Guard_Bandit",
+      "icon": "/icons/monsters/guard-bandit.png",
+      "combatLevel": 22
+    },
+    {
+      "name": "Guard dog",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Guard_dog",
+      "icon": "/icons/monsters/guard-dog.png",
+      "combatLevel": 44
+    },
+    {
+      "name": "Guardian Drake",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Guardian_Drake",
+      "icon": "/icons/monsters/guardian-drake.png",
+      "combatLevel": 376
+    },
+    {
+      "name": "Harpie Bug Swarm",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Harpie_Bug_Swarm",
+      "icon": "/icons/monsters/harpie-bug-swarm.png",
+      "combatLevel": 46
+    },
+    {
+      "name": "Hellhound",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Hellhound",
+      "icon": "/icons/monsters/hellhound.png",
+      "combatLevel": 127
+    },
+    {
+      "name": "Hill Giant",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Hill_Giant",
+      "icon": "/icons/monsters/hill-giant.png",
+      "combatLevel": 28
+    },
+    {
+      "name": "Hobgoblin",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Hobgoblin_(The_Slug_Menace)",
+      "icon": "/icons/monsters/hobgoblin.png",
+      "combatLevel": 28
+    },
+    {
+      "name": "Hobgoblin",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Hobgoblin",
+      "icon": "/icons/monsters/hobgoblin.png",
+      "combatLevel": 47
+    },
+    {
+      "name": "Hydra",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Hydra",
+      "icon": "/icons/monsters/hydra.png",
+      "combatLevel": 194
+    },
+    {
+      "name": "Ice block",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Frost_Crab",
+      "icon": "/icons/monsters/ice-block.png",
+      "combatLevel": 15
+    },
+    {
+      "name": "Ice giant",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ice_giant",
+      "icon": "/icons/monsters/ice-giant.png",
+      "combatLevel": 53
+    },
+    {
+      "name": "Ice spider",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ice_spider",
+      "icon": "/icons/monsters/ice-spider.png",
+      "combatLevel": 61
+    },
+    {
+      "name": "Ice troll",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ice_troll",
+      "icon": "/icons/monsters/ice-troll.png",
+      "combatLevel": 124
+    },
+    {
+      "name": "Ice troll female",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ice_troll_female",
+      "icon": "/icons/monsters/ice-troll-female.png",
+      "combatLevel": 82
+    },
+    {
+      "name": "Ice troll grunt",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ice_troll_grunt",
+      "icon": "/icons/monsters/ice-troll-grunt.png",
+      "combatLevel": 100
+    },
+    {
+      "name": "Ice Troll King (hard)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ice_Troll_King_(Nightmare_Zone)",
+      "icon": "/icons/monsters/ice-troll-king-hard.png",
+      "combatLevel": 213
+    },
+    {
+      "name": "Ice troll male",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ice_troll_male",
+      "icon": "/icons/monsters/ice-troll-male.png",
+      "combatLevel": 82
+    },
+    {
+      "name": "Ice troll runt",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ice_troll_runt",
+      "icon": "/icons/monsters/ice-troll-runt.png",
+      "combatLevel": 74
+    },
+    {
+      "name": "Ice warrior",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ice_warrior",
+      "icon": "/icons/monsters/ice-warrior.png",
+      "combatLevel": 57
+    },
+    {
+      "name": "Ice wolf",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ice_wolf",
+      "icon": "/icons/monsters/ice-wolf.png",
+      "combatLevel": 132
+    },
+    {
+      "name": "Icefiend",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Icefiend",
+      "icon": "/icons/monsters/icefiend.png",
+      "combatLevel": 18
+    },
+    {
+      "name": "Icelord",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Icelord",
+      "icon": "/icons/monsters/icelord.png",
+      "combatLevel": 51
+    },
+    {
+      "name": "Infernal Mage",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Infernal_Mage",
+      "icon": "/icons/monsters/infernal-mage.png",
+      "combatLevel": 66
+    },
+    {
+      "name": "Infernal pyrelord",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Infernal_pyrelord",
+      "icon": "/icons/monsters/infernal-pyrelord.png",
+      "combatLevel": 134
+    },
+    {
+      "name": "Insatiable Bloodveld",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Insatiable_Bloodveld",
+      "icon": "/icons/monsters/insatiable-bloodveld.png",
+      "combatLevel": 202
+    },
+    {
+      "name": "Insatiable mutated Bloodveld",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Insatiable_mutated_Bloodveld",
+      "icon": "/icons/monsters/insatiable-mutated-bloodveld.png",
+      "combatLevel": 278
+    },
+    {
+      "name": "Iorwerth Archer",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Iorwerth_Archer",
+      "icon": "/icons/monsters/iorwerth-archer.png",
+      "combatLevel": 90
+    },
+    {
+      "name": "Iorwerth Warrior",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Iorwerth_Warrior",
+      "icon": "/icons/monsters/iorwerth-warrior.png",
+      "combatLevel": 108
+    },
+    {
+      "name": "Iron dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Iron_dragon",
+      "icon": "/icons/monsters/iron-dragon.png",
+      "combatLevel": 189
+    },
+    {
+      "name": "Jackal",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jackal",
+      "icon": "/icons/monsters/jackal.png",
+      "combatLevel": 21
+    },
+    {
+      "name": "Jal-Ak",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jal-Ak",
+      "icon": "/icons/monsters/jal-ak.png",
+      "combatLevel": 165
+    },
+    {
+      "name": "Jal-AkRek-Ket",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jal-AkRek-Ket",
+      "icon": "/icons/monsters/jal-akrek-ket.png",
+      "combatLevel": 70
+    },
+    {
+      "name": "Jal-AkRek-Mej",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jal-AkRek-Mej",
+      "icon": "/icons/monsters/jal-akrek-mej.png",
+      "combatLevel": 70
+    },
+    {
+      "name": "Jal-AkRek-Xil",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jal-AkRek-Xil",
+      "icon": "/icons/monsters/jal-akrek-xil.png",
+      "combatLevel": 70
+    },
+    {
+      "name": "Jal-ImKot",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jal-ImKot_(Deadman)",
+      "icon": "/icons/monsters/jal-imkot.png",
+      "combatLevel": 240
+    },
+    {
+      "name": "Jal-ImKot",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jal-ImKot",
+      "icon": "/icons/monsters/jal-imkot.png",
+      "combatLevel": 240
+    },
+    {
+      "name": "Jal-MejJak",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jal-MejJak",
+      "icon": "/icons/monsters/jal-mejjak.png",
+      "combatLevel": 250
+    },
+    {
+      "name": "Jal-MejRah",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jal-MejRah",
+      "icon": "/icons/monsters/jal-mejrah.png",
+      "combatLevel": 85
+    },
+    {
+      "name": "Jal-Nib",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jal-Nib",
+      "icon": "/icons/monsters/jal-nib.png",
+      "combatLevel": 32
+    },
+    {
+      "name": "Jal-Xil",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jal-Xil",
+      "icon": "/icons/monsters/jal-xil.png",
+      "combatLevel": 370
+    },
+    {
+      "name": "Jal-Zek",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jal-Zek",
+      "icon": "/icons/monsters/jal-zek.png",
+      "combatLevel": 490
+    },
+    {
+      "name": "JalTok-Jad",
+      "wikiLink": "https://oldschool.runescape.wiki/w/JalTok-Jad",
+      "icon": "/icons/monsters/jaltok-jad.png",
+      "combatLevel": 900
+    },
+    {
+      "name": "Jelly",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jelly",
+      "icon": "/icons/monsters/jelly.png",
+      "combatLevel": 78
+    },
+    {
+      "name": "Jungle horror",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jungle_horror",
+      "icon": "/icons/monsters/jungle-horror.png",
+      "combatLevel": 70
+    },
+    {
+      "name": "Jungle spider",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jungle_spider_(Ape_Atoll)",
+      "icon": "/icons/monsters/jungle-spider.png",
+      "combatLevel": 37
+    },
+    {
+      "name": "Jungle spider",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jungle_spider",
+      "icon": "/icons/monsters/jungle-spider.png",
+      "combatLevel": 44
+    },
+    {
+      "name": "Jungle Wolf",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jungle_Wolf",
+      "icon": "/icons/monsters/jungle-wolf.png",
+      "combatLevel": 64
+    },
+    {
+      "name": "Juvenile custodian stalker",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Juvenile_custodian_stalker",
+      "icon": "/icons/monsters/juvenile-custodian-stalker.png",
+      "combatLevel": 93
+    },
+    {
+      "name": "K'ril Tsutsaroth",
+      "wikiLink": "https://oldschool.runescape.wiki/w/K'ril_Tsutsaroth_(Deadman)",
+      "icon": "/icons/monsters/k-ril-tsutsaroth.png",
+      "combatLevel": 650
+    },
+    {
+      "name": "K'ril Tsutsaroth",
+      "wikiLink": "https://oldschool.runescape.wiki/w/K'ril_Tsutsaroth_(PvM_Arena)",
+      "icon": "/icons/monsters/k-ril-tsutsaroth.png",
+      "combatLevel": 650
+    },
+    {
+      "name": "Kalphite Guardian",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Kalphite_Guardian",
+      "icon": "/icons/monsters/kalphite-guardian.png",
+      "combatLevel": 141
+    },
+    {
+      "name": "Kalphite Queen",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Kalphite_Queen_(PvM_Arena)",
+      "icon": "/icons/monsters/kalphite-queen.png",
+      "combatLevel": 333
+    },
+    {
+      "name": "Kalphite Queen (Echo)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Kalphite_Queen_(Echo)",
+      "icon": "/icons/monsters/kalphite-queen-echo.png",
+      "combatLevel": 748
+    },
+    {
+      "name": "Kalphite Soldier",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Kalphite_Soldier",
+      "icon": "/icons/monsters/kalphite-soldier.png",
+      "combatLevel": 85
+    },
+    {
+      "name": "Kalphite Worker",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Kalphite_Worker",
+      "icon": "/icons/monsters/kalphite-worker.png",
+      "combatLevel": 28
+    },
+    {
+      "name": "Kamil (hard)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Kamil_(Nightmare_Zone)",
+      "icon": "/icons/monsters/kamil-hard.png",
+      "combatLevel": 273
+    },
+    {
+      "name": "Ket-Zek",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ket-Zek",
+      "icon": "/icons/monsters/ket-zek.png",
+      "combatLevel": 360
+    },
+    {
+      "name": "Killerwatt",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Killerwatt",
+      "icon": "/icons/monsters/killerwatt.png",
+      "combatLevel": 55
+    },
+    {
+      "name": "King Black Dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/King_Black_Dragon_(Deadman)",
+      "icon": "/icons/monsters/king-black-dragon.png",
+      "combatLevel": 318
+    },
+    {
+      "name": "King Black Dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/King_Black_Dragon_(PvM_Arena)",
+      "icon": "/icons/monsters/king-black-dragon.png",
+      "combatLevel": 276
+    },
+    {
+      "name": "King kurask",
+      "wikiLink": "https://oldschool.runescape.wiki/w/King_kurask",
+      "icon": "/icons/monsters/king-kurask.png",
+      "combatLevel": 295
+    },
+    {
+      "name": "King Scorpion",
+      "wikiLink": "https://oldschool.runescape.wiki/w/King_Scorpion",
+      "icon": "/icons/monsters/king-scorpion.png",
+      "combatLevel": 32
+    },
+    {
+      "name": "Kolodion",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Kolodion",
+      "icon": "/icons/monsters/kolodion.png",
+      "combatLevel": 112
+    },
+    {
+      "name": "Kraka",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Kraka",
+      "icon": "/icons/monsters/kraka.png",
+      "combatLevel": 91
+    },
+    {
+      "name": "Kree'arra",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Kree'arra_(Deadman)",
+      "icon": "/icons/monsters/kree-arra.png",
+      "combatLevel": 580
+    },
+    {
+      "name": "Kree'arra",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Kree'arra_(PvM_Arena)",
+      "icon": "/icons/monsters/kree-arra.png",
+      "combatLevel": 580
+    },
+    {
+      "name": "Kroy",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Kroy",
+      "icon": "/icons/monsters/kroy.png",
+      "combatLevel": 133
+    },
+    {
+      "name": "Kurask",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Kurask",
+      "icon": "/icons/monsters/kurask.png",
+      "combatLevel": 106
+    },
+    {
+      "name": "Large chicken",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Large_chicken",
+      "icon": "/icons/monsters/large-chicken.png",
+      "combatLevel": 16
+    },
+    {
+      "name": "Lava dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Lava_dragon",
+      "icon": "/icons/monsters/lava-dragon.png",
+      "combatLevel": 252
+    },
+    {
+      "name": "Lava Strykewyrm",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Lava_Strykewyrm",
+      "icon": "/icons/monsters/lava-strykewyrm.png",
+      "combatLevel": 116
+    },
+    {
+      "name": "Lesser demon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Lesser_demon_(Melzar's_Maze)",
+      "icon": "/icons/monsters/lesser-demon.png",
+      "combatLevel": 82
+    },
+    {
+      "name": "Lesser demon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Lesser_demon_(The_Scar)",
+      "icon": "/icons/monsters/lesser-demon.png",
+      "combatLevel": 39
+    },
+    {
+      "name": "Lesser demon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Lesser_demon",
+      "icon": "/icons/monsters/lesser-demon.png",
+      "combatLevel": 87
+    },
+    {
+      "name": "Lizard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Lizard",
+      "icon": "/icons/monsters/lizard.png",
+      "combatLevel": 42
+    },
+    {
+      "name": "Lizardman",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Lizardman",
+      "icon": "/icons/monsters/lizardman.png",
+      "combatLevel": 53
+    },
+    {
+      "name": "Lizardman brute",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Lizardman_brute",
+      "icon": "/icons/monsters/lizardman-brute.png",
+      "combatLevel": 75
+    },
+    {
+      "name": "Lizardman shaman",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Lizardman_shaman_(Chambers_of_Xeric)",
+      "icon": "/icons/monsters/lizardman-shaman.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Lizardman shaman",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Lizardman_shaman",
+      "icon": "/icons/monsters/lizardman-shaman.png",
+      "combatLevel": 150
+    },
+    {
+      "name": "Loar Shade",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Loar_Shade",
+      "icon": "/icons/monsters/loar-shade.png",
+      "combatLevel": 40
+    },
+    {
+      "name": "Lobstrosity",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Lobstrosity",
+      "icon": "/icons/monsters/lobstrosity.png",
+      "combatLevel": 68
+    },
+    {
+      "name": "Locust rider",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Locust_rider",
+      "icon": "/icons/monsters/locust-rider.png",
+      "combatLevel": 106
+    },
+    {
+      "name": "Long-tailed Wyvern",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Long-tailed_Wyvern",
+      "icon": "/icons/monsters/long-tailed-wyvern.png",
+      "combatLevel": 152
+    },
+    {
+      "name": "Magic axe",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Magic_axe",
+      "icon": "/icons/monsters/magic-axe.png",
+      "combatLevel": 42
+    },
+    {
+      "name": "Magma strykewyrm",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Magma_strykewyrm",
+      "icon": "/icons/monsters/magma-strykewyrm.png",
+      "combatLevel": 249
+    },
+    {
+      "name": "Malevolent Mage",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Malevolent_Mage",
+      "icon": "/icons/monsters/malevolent-mage.png",
+      "combatLevel": 162
+    },
+    {
+      "name": "Mammoth",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mammoth",
+      "icon": "/icons/monsters/mammoth.png",
+      "combatLevel": 80
+    },
+    {
+      "name": "Maniacal monkey",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Maniacal_monkey",
+      "icon": "/icons/monsters/maniacal-monkey.png",
+      "combatLevel": 140
+    },
+    {
+      "name": "Maniacal Monkey Archer",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Maniacal_Monkey_Archer",
+      "icon": "/icons/monsters/maniacal-monkey-archer.png",
+      "combatLevel": 132
+    },
+    {
+      "name": "Marble gargoyle",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Marble_gargoyle",
+      "icon": "/icons/monsters/marble-gargoyle.png",
+      "combatLevel": 349
+    },
+    {
+      "name": "Mature custodian stalker",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mature_custodian_stalker",
+      "icon": "/icons/monsters/mature-custodian-stalker.png",
+      "combatLevel": 117
+    },
+    {
+      "name": "Minotaur",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Minotaur",
+      "icon": "/icons/monsters/minotaur.png",
+      "combatLevel": 19
+    },
+    {
+      "name": "Mirrorback Araxyte",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mirrorback_Araxyte",
+      "icon": "/icons/monsters/mirrorback-araxyte.png",
+      "combatLevel": 114
+    },
+    {
+      "name": "Mithril dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mithril_dragon",
+      "icon": "/icons/monsters/mithril-dragon.png",
+      "combatLevel": 304
+    },
+    {
+      "name": "Mogre",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mogre_(sea)",
+      "icon": "/icons/monsters/mogre.png",
+      "combatLevel": 54
+    },
+    {
+      "name": "Mogre",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mogre",
+      "icon": "/icons/monsters/mogre.png",
+      "combatLevel": 60
+    },
+    {
+      "name": "Molanisk",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Molanisk",
+      "icon": "/icons/monsters/molanisk.png",
+      "combatLevel": 51
+    },
+    {
+      "name": "Monkey",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Monkey_(monster)",
+      "icon": "/icons/monsters/monkey.png",
+      "combatLevel": 3
+    },
+    {
+      "name": "Monkey Archer",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Monkey_Archer",
+      "icon": "/icons/monsters/monkey-archer.png",
+      "combatLevel": 86
+    },
+    {
+      "name": "Monkey Guard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Monkey_Guard_(ninja)",
+      "icon": "/icons/monsters/monkey-guard.png",
+      "combatLevel": 149
+    },
+    {
+      "name": "Monkey Guard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Monkey_Guard",
+      "icon": "/icons/monsters/monkey-guard.png",
+      "combatLevel": 167
+    },
+    {
+      "name": "Monkey Zombie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Monkey_Zombie",
+      "icon": "/icons/monsters/monkey-zombie.png",
+      "combatLevel": 129
+    },
+    {
+      "name": "Monstrous basilisk",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Monstrous_basilisk",
+      "icon": null,
+      "combatLevel": 135
+    },
+    {
+      "name": "Monstrous Basilisk",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Monstrous_Basilisk_(The_Fremennik_Exiles)",
+      "icon": "/icons/monsters/monstrous-basilisk.png",
+      "combatLevel": 135
+    },
+    {
+      "name": "Moonlight Cockatrice",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Moonlight_Cockatrice",
+      "icon": "/icons/monsters/moonlight-cockatrice.png",
+      "combatLevel": 49
+    },
+    {
+      "name": "Moss giant",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Moss_giant",
+      "icon": null,
+      "combatLevel": 42
+    },
+    {
+      "name": "Moss Giant",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Moss_Giant_(Iorwerth_Dungeon)",
+      "icon": "/icons/monsters/moss-giant.png",
+      "combatLevel": 84
+    },
+    {
+      "name": "Mosschin",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mosschin",
+      "icon": "/icons/monsters/mosschin.png",
+      "combatLevel": 88
+    },
+    {
+      "name": "Mountain troll",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mountain_troll",
+      "icon": "/icons/monsters/mountain-troll.png",
+      "combatLevel": 71
+    },
+    {
+      "name": "Mounted terrorbird gnome",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mounted_terrorbird_gnome",
+      "icon": "/icons/monsters/mounted-terrorbird-gnome.png",
+      "combatLevel": 31
+    },
+    {
+      "name": "Mourner",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mourner",
+      "icon": "/icons/monsters/mourner.png",
+      "combatLevel": 11
+    },
+    {
+      "name": "Mutated Bloodveld",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mutated_Bloodveld",
+      "icon": "/icons/monsters/mutated-bloodveld.png",
+      "combatLevel": 123
+    },
+    {
+      "name": "Mutated Terrorbird",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mutated_Terrorbird",
+      "icon": "/icons/monsters/mutated-terrorbird.png",
+      "combatLevel": 178
+    },
+    {
+      "name": "Mutated Tortoise",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mutated_Tortoise",
+      "icon": "/icons/monsters/mutated-tortoise.png",
+      "combatLevel": 247
+    },
+    {
+      "name": "Nazastarool",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Nazastarool",
+      "icon": "/icons/monsters/nazastarool.png",
+      "combatLevel": 93
+    },
+    {
+      "name": "Nechryael",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Nechryael",
+      "icon": "/icons/monsters/nechryael.png",
+      "combatLevel": 115
+    },
+    {
+      "name": "Nechryarch",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Nechryarch",
+      "icon": "/icons/monsters/nechryarch.png",
+      "combatLevel": 300
+    },
+    {
+      "name": "Night beast",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Night_beast_(Deadman)",
+      "icon": "/icons/monsters/night-beast.png",
+      "combatLevel": 457
+    },
+    {
+      "name": "Night beast",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Night_beast",
+      "icon": "/icons/monsters/night-beast.png",
+      "combatLevel": 374
+    },
+    {
+      "name": "Nuclear smoke devil",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Nuclear_smoke_devil",
+      "icon": "/icons/monsters/nuclear-smoke-devil.png",
+      "combatLevel": 280
+    },
+    {
+      "name": "Ogre",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ogre",
+      "icon": "/icons/monsters/ogre.png",
+      "combatLevel": 53
+    },
+    {
+      "name": "Ogre chieftain",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ogre_chieftain",
+      "icon": "/icons/monsters/ogre-chieftain.png",
+      "combatLevel": 81
+    },
+    {
+      "name": "Ogress Shaman",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ogress_Shaman",
+      "icon": "/icons/monsters/ogress-shaman.png",
+      "combatLevel": 82
+    },
+    {
+      "name": "Ogress Warrior",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ogress_Warrior",
+      "icon": "/icons/monsters/ogress-warrior.png",
+      "combatLevel": 82
+    },
+    {
+      "name": "Oipuis",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Oipuis",
+      "icon": "/icons/monsters/oipuis.png",
+      "combatLevel": 149
+    },
+    {
+      "name": "Oomlie bird",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Oomlie_bird",
+      "icon": "/icons/monsters/oomlie-bird.png",
+      "combatLevel": 46
+    },
+    {
+      "name": "Otherworldly being",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Otherworldly_being",
+      "icon": "/icons/monsters/otherworldly-being.png",
+      "combatLevel": 64
+    },
+    {
+      "name": "Ouhai",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ouhai",
+      "icon": "/icons/monsters/ouhai.png",
+      "combatLevel": 149
+    },
+    {
+      "name": "Pee Hat",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Pee_Hat",
+      "icon": "/icons/monsters/pee-hat.png",
+      "combatLevel": 91
+    },
+    {
+      "name": "Penguin",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Penguin_(monster)",
+      "icon": "/icons/monsters/penguin.png",
+      "combatLevel": 2
+    },
+    {
+      "name": "Phrin Shade",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Phrin_Shade",
+      "icon": "/icons/monsters/phrin-shade.png",
+      "combatLevel": 60
+    },
+    {
+      "name": "Pirate",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Pirate",
+      "icon": "/icons/monsters/pirate.png",
+      "combatLevel": 23
+    },
+    {
+      "name": "Pit Scorpion",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Pit_Scorpion",
+      "icon": "/icons/monsters/pit-scorpion.png",
+      "combatLevel": 28
+    },
+    {
+      "name": "Poison Scorpion",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Poison_Scorpion",
+      "icon": "/icons/monsters/poison-scorpion.png",
+      "combatLevel": 20
+    },
+    {
+      "name": "Poison spider",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Poison_spider_(Escape_Caves)",
+      "icon": "/icons/monsters/poison-spider.png",
+      "combatLevel": 48
+    },
+    {
+      "name": "Poison spider",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Poison_spider",
+      "icon": "/icons/monsters/poison-spider.png",
+      "combatLevel": 31
+    },
+    {
+      "name": "Porazdir",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Porazdir_(Deadman)",
+      "icon": "/icons/monsters/porazdir.png",
+      "combatLevel": 655
+    },
+    {
+      "name": "Porazdir",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Porazdir",
+      "icon": "/icons/monsters/porazdir.png",
+      "combatLevel": 235
+    },
+    {
+      "name": "Pyrefiend",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Pyrefiend",
+      "icon": "/icons/monsters/pyrefiend.png",
+      "combatLevel": 43
+    },
+    {
+      "name": "Pyrelord",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Pyrelord",
+      "icon": "/icons/monsters/pyrelord.png",
+      "combatLevel": 60
+    },
+    {
+      "name": "Ranis Drakan",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ranis_Drakan",
+      "icon": "/icons/monsters/ranis-drakan.png",
+      "combatLevel": 233
+    },
+    {
+      "name": "Rat",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Rat",
+      "icon": "/icons/monsters/rat.png",
+      "combatLevel": 1
+    },
+    {
+      "name": "Reanimated abyssal",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_abyssal",
+      "icon": "/icons/monsters/reanimated-abyssal.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated aviansie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_aviansie",
+      "icon": "/icons/monsters/reanimated-aviansie.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated bear",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_bear",
+      "icon": "/icons/monsters/reanimated-bear.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated bloodveld",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_bloodveld",
+      "icon": "/icons/monsters/reanimated-bloodveld.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated chaos druid",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_chaos_druid",
+      "icon": "/icons/monsters/reanimated-chaos-druid.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated dagannoth",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_dagannoth",
+      "icon": "/icons/monsters/reanimated-dagannoth.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated demon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_demon",
+      "icon": "/icons/monsters/reanimated-demon.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated dog",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_dog",
+      "icon": "/icons/monsters/reanimated-dog.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated elf",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_elf",
+      "icon": "/icons/monsters/reanimated-elf.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated giant",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_giant",
+      "icon": "/icons/monsters/reanimated-giant.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated goblin",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_goblin",
+      "icon": "/icons/monsters/reanimated-goblin.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated hellhound",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_hellhound",
+      "icon": "/icons/monsters/reanimated-hellhound.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated horror",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_horror",
+      "icon": "/icons/monsters/reanimated-horror.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated kalphite",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_kalphite",
+      "icon": "/icons/monsters/reanimated-kalphite.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated minotaur",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_minotaur",
+      "icon": "/icons/monsters/reanimated-minotaur.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated monkey",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_monkey",
+      "icon": "/icons/monsters/reanimated-monkey.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated ogre",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_ogre",
+      "icon": "/icons/monsters/reanimated-ogre.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated scorpion",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_scorpion",
+      "icon": "/icons/monsters/reanimated-scorpion.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated troll",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_troll",
+      "icon": "/icons/monsters/reanimated-troll.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Reanimated TzHaar",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Reanimated_TzHaar",
+      "icon": "/icons/monsters/reanimated-tzhaar.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Red dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Red_dragon",
+      "icon": "/icons/monsters/red-dragon.png",
+      "combatLevel": 152
+    },
+    {
+      "name": "Redeyes",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Redeyes",
+      "icon": "/icons/monsters/redeyes.png",
+      "combatLevel": 121
+    },
+    {
+      "name": "Repugnant spectre",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Repugnant_spectre",
+      "icon": "/icons/monsters/repugnant-spectre.png",
+      "combatLevel": 335
+    },
+    {
+      "name": "Respiratory system",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Respiratory_system",
+      "icon": "/icons/monsters/respiratory-system.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Revenant cyclops",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Revenant_cyclops",
+      "icon": "/icons/monsters/revenant-cyclops.png",
+      "combatLevel": 82
+    },
+    {
+      "name": "Revenant dark beast",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Revenant_dark_beast",
+      "icon": "/icons/monsters/revenant-dark-beast.png",
+      "combatLevel": 120
+    },
+    {
+      "name": "Revenant demon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Revenant_demon",
+      "icon": "/icons/monsters/revenant-demon.png",
+      "combatLevel": 98
+    },
+    {
+      "name": "Revenant dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Revenant_dragon",
+      "icon": "/icons/monsters/revenant-dragon.png",
+      "combatLevel": 135
+    },
+    {
+      "name": "Revenant goblin",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Revenant_goblin",
+      "icon": "/icons/monsters/revenant-goblin.png",
+      "combatLevel": 15
+    },
+    {
+      "name": "Revenant hellhound",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Revenant_hellhound",
+      "icon": "/icons/monsters/revenant-hellhound.png",
+      "combatLevel": 90
+    },
+    {
+      "name": "Revenant hobgoblin",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Revenant_hobgoblin",
+      "icon": "/icons/monsters/revenant-hobgoblin.png",
+      "combatLevel": 60
+    },
+    {
+      "name": "Revenant imp",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Revenant_imp",
+      "icon": "/icons/monsters/revenant-imp.png",
+      "combatLevel": 7
+    },
+    {
+      "name": "Revenant knight",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Revenant_knight",
+      "icon": "/icons/monsters/revenant-knight.png",
+      "combatLevel": 126
+    },
+    {
+      "name": "Revenant ork",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Revenant_ork",
+      "icon": "/icons/monsters/revenant-ork.png",
+      "combatLevel": 105
+    },
+    {
+      "name": "Revenant pyrefiend",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Revenant_pyrefiend",
+      "icon": "/icons/monsters/revenant-pyrefiend.png",
+      "combatLevel": 52
+    },
+    {
+      "name": "River troll",
+      "wikiLink": "https://oldschool.runescape.wiki/w/River_troll_(random_event)",
+      "icon": "/icons/monsters/river-troll.png",
+      "combatLevel": 79
+    },
+    {
+      "name": "River troll",
+      "wikiLink": "https://oldschool.runescape.wiki/w/River_troll",
+      "icon": "/icons/monsters/river-troll.png",
+      "combatLevel": 79
+    },
+    {
+      "name": "Riyl Shade",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Riyl_Shade",
+      "icon": "/icons/monsters/riyl-shade.png",
+      "combatLevel": 80
+    },
+    {
+      "name": "Riyl shadow",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Riyl_shadow_(Temple_Trekking)",
+      "icon": "/icons/monsters/riyl-shadow.png",
+      "combatLevel": 80
+    },
+    {
+      "name": "Rock",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Rock_(Troll)",
+      "icon": "/icons/monsters/rock.png",
+      "combatLevel": 111
+    },
+    {
+      "name": "Rocks",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Rock_Crab",
+      "icon": "/icons/monsters/rocks.png",
+      "combatLevel": 13
+    },
+    {
+      "name": "Rockslug",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Rockslug",
+      "icon": "/icons/monsters/rockslug.png",
+      "combatLevel": 29
+    },
+    {
+      "name": "Rogue",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Rogue",
+      "icon": "/icons/monsters/rogue.png",
+      "combatLevel": 135
+    },
+    {
+      "name": "Rooster",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Rooster",
+      "icon": "/icons/monsters/rooster.png",
+      "combatLevel": 3
+    },
+    {
+      "name": "Rune dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Rune_dragon",
+      "icon": "/icons/monsters/rune-dragon.png",
+      "combatLevel": 380
+    },
+    {
+      "name": "Ruptura Araxyte",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ruptura_Araxyte",
+      "icon": "/icons/monsters/ruptura-araxyte.png",
+      "combatLevel": 114
+    },
+    {
+      "name": "Sandy Boulder",
+      "wikiLink": "https://oldschool.runescape.wiki/w/King_Sand_Crab",
+      "icon": "/icons/monsters/sandy-boulder.png",
+      "combatLevel": 107
+    },
+    {
+      "name": "Sandy rocks",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sand_Crab",
+      "icon": "/icons/monsters/sandy-rocks.png",
+      "combatLevel": 15
+    },
+    {
+      "name": "Scarab Mage",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Scarab_Mage",
+      "icon": "/icons/monsters/scarab-mage.png",
+      "combatLevel": 66
+    },
+    {
+      "name": "Scarab Swarm",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Scarab_Swarm",
+      "icon": "/icons/monsters/scarab-swarm.png",
+      "combatLevel": 98
+    },
+    {
+      "name": "Scarabs",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Scarabs",
+      "icon": "/icons/monsters/scarabs.png",
+      "combatLevel": 92
+    },
+    {
+      "name": "Scorpia's guardian",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Scorpia's_guardian",
+      "icon": "/icons/monsters/scorpia-s-guardian.png",
+      "combatLevel": 47
+    },
+    {
+      "name": "Scorpia's offspring",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Scorpia's_offspring_(monster)",
+      "icon": "/icons/monsters/scorpia-s-offspring.png",
+      "combatLevel": 15
+    },
+    {
+      "name": "Scorpion",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Scorpion",
+      "icon": "/icons/monsters/scorpion.png",
+      "combatLevel": 37
+    },
+    {
+      "name": "Screaming banshee",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Screaming_banshee",
+      "icon": "/icons/monsters/screaming-banshee.png",
+      "combatLevel": 70
+    },
+    {
+      "name": "Screaming twisted banshee",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Screaming_twisted_banshee",
+      "icon": "/icons/monsters/screaming-twisted-banshee.png",
+      "combatLevel": 144
+    },
+    {
+      "name": "Sea Snake Hatchling",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sea_Snake_Hatchling",
+      "icon": "/icons/monsters/sea-snake-hatchling.png",
+      "combatLevel": 62
+    },
+    {
+      "name": "Sea Snake Young",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sea_Snake_Young",
+      "icon": "/icons/monsters/sea-snake-young.png",
+      "combatLevel": 90
+    },
+    {
+      "name": "Seagull",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Seagull_(Icyene_Graveyard)",
+      "icon": "/icons/monsters/seagull.png",
+      "combatLevel": 3
+    },
+    {
+      "name": "Seagull",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Seagull",
+      "icon": "/icons/monsters/seagull.png",
+      "combatLevel": 3
+    },
+    {
+      "name": "Sergeant Grimspike",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sergeant_Grimspike",
+      "icon": "/icons/monsters/sergeant-grimspike.png",
+      "combatLevel": 142
+    },
+    {
+      "name": "Sergeant Steelwill",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sergeant_Steelwill",
+      "icon": "/icons/monsters/sergeant-steelwill.png",
+      "combatLevel": 142
+    },
+    {
+      "name": "Sergeant Strongstack",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sergeant_Strongstack",
+      "icon": "/icons/monsters/sergeant-strongstack.png",
+      "combatLevel": 141
+    },
+    {
+      "name": "Shade",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Shade_(Temple_Trekking)",
+      "icon": "/icons/monsters/shade.png",
+      "combatLevel": 140
+    },
+    {
+      "name": "Shade",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Shade",
+      "icon": "/icons/monsters/shade.png",
+      "combatLevel": 159
+    },
+    {
+      "name": "Shadow Hound",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Shadow_Hound",
+      "icon": "/icons/monsters/shadow-hound.png",
+      "combatLevel": 63
+    },
+    {
+      "name": "Shadow spider",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Shadow_spider",
+      "icon": "/icons/monsters/shadow-spider.png",
+      "combatLevel": 52
+    },
+    {
+      "name": "Shadow warrior",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Shadow_warrior",
+      "icon": "/icons/monsters/shadow-warrior.png",
+      "combatLevel": 48
+    },
+    {
+      "name": "Shadow Wyrm",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Shadow_Wyrm",
+      "icon": "/icons/monsters/shadow-wyrm.png",
+      "combatLevel": 259
+    },
+    {
+      "name": "Skeletal miner",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeletal_miner",
+      "icon": "/icons/monsters/skeletal-miner.png",
+      "combatLevel": 42
+    },
+    {
+      "name": "Skeletal Mystic",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeletal_Mystic",
+      "icon": "/icons/monsters/skeletal-mystic.png",
+      "combatLevel": null
+    },
+    {
+      "name": "Skeletal Wyvern",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeletal_Wyvern",
+      "icon": "/icons/monsters/skeletal-wyvern.png",
+      "combatLevel": 140
+    },
+    {
+      "name": "Skeleton",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_(Ape_Atoll)",
+      "icon": "/icons/monsters/skeleton.png",
+      "combatLevel": 142
+    },
+    {
+      "name": "Skeleton",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_(Barrows)",
+      "icon": "/icons/monsters/skeleton.png",
+      "combatLevel": 77
+    },
+    {
+      "name": "Skeleton",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_(Catacombs_of_Kourend)",
+      "icon": "/icons/monsters/skeleton.png",
+      "combatLevel": 22
+    },
+    {
+      "name": "Skeleton",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_(Draynor_Manor)",
+      "icon": "/icons/monsters/skeleton.png",
+      "combatLevel": 22
+    },
+    {
+      "name": "Skeleton",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_(Forthos_Ruin)",
+      "icon": "/icons/monsters/skeleton.png",
+      "combatLevel": 25
+    },
+    {
+      "name": "Skeleton",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_(Lucien's_camp)",
+      "icon": "/icons/monsters/skeleton.png",
+      "combatLevel": 132
+    },
+    {
+      "name": "Skeleton",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_(mage)",
+      "icon": "/icons/monsters/skeleton.png",
+      "combatLevel": 94
+    },
+    {
+      "name": "Skeleton",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_(Melzar's_Maze)",
+      "icon": "/icons/monsters/skeleton.png",
+      "combatLevel": 22
+    },
+    {
+      "name": "Skeleton",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_(Shayzien_Crypts)",
+      "icon": "/icons/monsters/skeleton.png",
+      "combatLevel": 132
+    },
+    {
+      "name": "Skeleton",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_(Stronghold_of_Security)",
+      "icon": "/icons/monsters/skeleton.png",
+      "combatLevel": 60
+    },
+    {
+      "name": "Skeleton",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_(Tarn's_Lair)",
+      "icon": "/icons/monsters/skeleton.png",
+      "combatLevel": 87
+    },
+    {
+      "name": "Skeleton",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_(The_Restless_Ghost)",
+      "icon": "/icons/monsters/skeleton.png",
+      "combatLevel": 13
+    },
+    {
+      "name": "Skeleton",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_(Wilderness_Agility_Course)",
+      "icon": "/icons/monsters/skeleton.png",
+      "combatLevel": 18
+    },
+    {
+      "name": "Skeleton",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton",
+      "icon": "/icons/monsters/skeleton.png",
+      "combatLevel": 21
+    },
+    {
+      "name": "Skeleton brute",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_brute",
+      "icon": "/icons/monsters/skeleton-brute.png",
+      "combatLevel": 132
+    },
+    {
+      "name": "Skeleton fremennik",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_fremennik",
+      "icon": "/icons/monsters/skeleton-fremennik.png",
+      "combatLevel": 60
+    },
+    {
+      "name": "Skeleton heavy",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_heavy",
+      "icon": "/icons/monsters/skeleton-heavy.png",
+      "combatLevel": 130
+    },
+    {
+      "name": "Skeleton Hellhound",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_Hellhound_(Calvar'ion)",
+      "icon": "/icons/monsters/skeleton-hellhound.png",
+      "combatLevel": 115
+    },
+    {
+      "name": "Skeleton Hellhound",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_Hellhound_(Vet'ion)",
+      "icon": "/icons/monsters/skeleton-hellhound.png",
+      "combatLevel": 194
+    },
+    {
+      "name": "Skeleton Hellhound",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_Hellhound",
+      "icon": "/icons/monsters/skeleton-hellhound.png",
+      "combatLevel": 97
+    },
+    {
+      "name": "Skeleton hero",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_hero",
+      "icon": "/icons/monsters/skeleton-hero.png",
+      "combatLevel": 146
+    },
+    {
+      "name": "Skeleton Mage",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_Mage",
+      "icon": "/icons/monsters/skeleton-mage.png",
+      "combatLevel": 83
+    },
+    {
+      "name": "Skeleton thug",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_thug",
+      "icon": "/icons/monsters/skeleton-thug.png",
+      "combatLevel": 130
+    },
+    {
+      "name": "Skeleton warlord",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skeleton_warlord",
+      "icon": "/icons/monsters/skeleton-warlord.png",
+      "combatLevel": 132
+    },
+    {
+      "name": "Skoblin",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skoblin",
+      "icon": "/icons/monsters/skoblin.png",
+      "combatLevel": 29
+    },
+    {
+      "name": "Skogre",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Skogre",
+      "icon": "/icons/monsters/skogre.png",
+      "combatLevel": 44
+    },
+    {
+      "name": "Small Lizard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Small_Lizard",
+      "icon": "/icons/monsters/small-lizard.png",
+      "combatLevel": 12
+    },
+    {
+      "name": "Small scarab",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Small_scarab",
+      "icon": "/icons/monsters/small-scarab.png",
+      "combatLevel": 41
+    },
+    {
+      "name": "Smoke devil",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Smoke_devil",
+      "icon": "/icons/monsters/smoke-devil.png",
+      "combatLevel": 160
+    },
+    {
+      "name": "Snailfeet",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Snailfeet",
+      "icon": "/icons/monsters/snailfeet.png",
+      "combatLevel": 56
+    },
+    {
+      "name": "Snothead",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Snothead",
+      "icon": "/icons/monsters/snothead.png",
+      "combatLevel": 32
+    },
+    {
+      "name": "Sorebones",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sorebones",
+      "icon": "/icons/monsters/sorebones.png",
+      "combatLevel": 57
+    },
+    {
+      "name": "Sourhog",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sourhog",
+      "icon": "/icons/monsters/sourhog.png",
+      "combatLevel": 37
+    },
+    {
+      "name": "Spawn of Sarachnis",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Spawn_of_Sarachnis",
+      "icon": "/icons/monsters/spawn-of-sarachnis.png",
+      "combatLevel": 107
+    },
+    {
+      "name": "Speedy Keith",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Speedy_Keith",
+      "icon": "/icons/monsters/speedy-keith.png",
+      "combatLevel": 34
+    },
+    {
+      "name": "Spider",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Spider_(Ape_Atoll)",
+      "icon": "/icons/monsters/spider.png",
+      "combatLevel": 1
+    },
+    {
+      "name": "Spider",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Spider_(Ungael)",
+      "icon": "/icons/monsters/spider.png",
+      "combatLevel": 35
+    },
+    {
+      "name": "Spider",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Spider",
+      "icon": "/icons/monsters/spider.png",
+      "combatLevel": 24
+    },
+    {
+      "name": "Spiked Turoth",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Spiked_Turoth",
+      "icon": "/icons/monsters/spiked-turoth.png",
+      "combatLevel": 244
+    },
+    {
+      "name": "Spiritual Mage",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Spiritual_mage",
+      "icon": "/icons/monsters/spiritual-mage.png",
+      "combatLevel": 182
+    },
+    {
+      "name": "Spiritual Ranger",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Spiritual_ranger",
+      "icon": "/icons/monsters/spiritual-ranger.png",
+      "combatLevel": 158
+    },
+    {
+      "name": "Spiritual Warrior",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Spiritual_warrior",
+      "icon": "/icons/monsters/spiritual-warrior.png",
+      "combatLevel": 158
+    },
+    {
+      "name": "Spitting Wyvern",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Spitting_Wyvern",
+      "icon": "/icons/monsters/spitting-wyvern.png",
+      "combatLevel": 139
+    },
+    {
+      "name": "Steel dragon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Steel_dragon",
+      "icon": "/icons/monsters/steel-dragon.png",
+      "combatLevel": 246
+    },
+    {
+      "name": "Stick",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Stick",
+      "icon": "/icons/monsters/stick.png",
+      "combatLevel": 104
+    },
+    {
+      "name": "Strange creature",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Strange_creature_(Shadows_of_Custodia)",
+      "icon": "/icons/monsters/strange-creature.png",
+      "combatLevel": 93
+    },
+    {
+      "name": "Strongbones",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Strongbones",
+      "icon": "/icons/monsters/strongbones.png",
+      "combatLevel": 184
+    },
+    {
+      "name": "Sulphur Lizard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sulphur_Lizard_(Deadman)",
+      "icon": "/icons/monsters/sulphur-lizard.png",
+      "combatLevel": 757
+    },
+    {
+      "name": "Sulphur Lizard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sulphur_Lizard",
+      "icon": "/icons/monsters/sulphur-lizard.png",
+      "combatLevel": 50
+    },
+    {
+      "name": "Sulphur Nagua",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sulphur_Nagua_(Perilous_Moons)",
+      "icon": "/icons/monsters/sulphur-nagua.png",
+      "combatLevel": 98
+    },
+    {
+      "name": "Sulphur Nagua",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sulphur_Nagua",
+      "icon": "/icons/monsters/sulphur-nagua.png",
+      "combatLevel": 98
+    },
+    {
+      "name": "Summoned Zombie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Summoned_Zombie",
+      "icon": "/icons/monsters/summoned-zombie.png",
+      "combatLevel": 13
+    },
+    {
+      "name": "Suqah",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Suqah",
+      "icon": "/icons/monsters/suqah.png",
+      "combatLevel": 111
+    },
+    {
+      "name": "Swamp Crab",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Swamp_Crab",
+      "icon": "/icons/monsters/swamp-crab.png",
+      "combatLevel": 55
+    },
+    {
+      "name": "Taloned Wyvern",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Taloned_Wyvern",
+      "icon": "/icons/monsters/taloned-wyvern.png",
+      "combatLevel": 147
+    },
+    {
+      "name": "Temple Guardian",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Temple_Guardian",
+      "icon": "/icons/monsters/temple-guardian.png",
+      "combatLevel": 30
+    },
+    {
+      "name": "Temple Spider",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Temple_Spider",
+      "icon": "/icons/monsters/temple-spider.png",
+      "combatLevel": 75
+    },
+    {
+      "name": "Terror dog",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Terror_dog",
+      "icon": "/icons/monsters/terror-dog.png",
+      "combatLevel": 100
+    },
+    {
+      "name": "Terrorbird",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Terrorbird",
+      "icon": "/icons/monsters/terrorbird.png",
+      "combatLevel": 28
+    },
+    {
+      "name": "The Jormungand",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Jormungand",
+      "icon": "/icons/monsters/the-jormungand.png",
+      "combatLevel": 363
+    },
+    {
+      "name": "The rocks",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_rocks",
+      "icon": "/icons/monsters/the-rocks.png",
+      "combatLevel": 154
+    },
+    {
+      "name": "Thermonuclear smoke devil",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Thermonuclear_smoke_devil_(Deadman)",
+      "icon": "/icons/monsters/thermonuclear-smoke-devil.png",
+      "combatLevel": 563
+    },
+    {
+      "name": "Thermonuclear smoke devil (Echo)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Thermonuclear_smoke_devil_(Echo)",
+      "icon": "/icons/monsters/thermonuclear-smoke-devil-echo.png",
+      "combatLevel": 602
+    },
+    {
+      "name": "Thrower troll",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Thrower_troll_(Trollheim)",
+      "icon": "/icons/monsters/thrower-troll.png",
+      "combatLevel": 68
+    },
+    {
+      "name": "Thrower Troll",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Thrower_Troll",
+      "icon": null,
+      "combatLevel": 67
+    },
+    {
+      "name": "Tok-Xil",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Tok-Xil",
+      "icon": "/icons/monsters/tok-xil.png",
+      "combatLevel": 90
+    },
+    {
+      "name": "Tormented Demon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Tormented_Demon",
+      "icon": "/icons/monsters/tormented-demon.png",
+      "combatLevel": 450
+    },
+    {
+      "name": "Tortured gorilla",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Tortured_gorilla",
+      "icon": "/icons/monsters/tortured-gorilla.png",
+      "combatLevel": 141
+    },
+    {
+      "name": "Tortured soul",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Tortured_soul",
+      "icon": "/icons/monsters/tortured-soul.png",
+      "combatLevel": 59
+    },
+    {
+      "name": "Troll general",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Troll_general",
+      "icon": "/icons/monsters/troll-general.png",
+      "combatLevel": 113
+    },
+    {
+      "name": "Troll spectator",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Troll_spectator",
+      "icon": "/icons/monsters/troll-spectator.png",
+      "combatLevel": 71
+    },
+    {
+      "name": "Tstanon Karlak",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Tstanon_Karlak",
+      "icon": "/icons/monsters/tstanon-karlak.png",
+      "combatLevel": 145
+    },
+    {
+      "name": "Turoth",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Turoth",
+      "icon": "/icons/monsters/turoth.png",
+      "combatLevel": 85
+    },
+    {
+      "name": "Twig",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Twig",
+      "icon": "/icons/monsters/twig.png",
+      "combatLevel": 71
+    },
+    {
+      "name": "Twisted Banshee",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Twisted_Banshee",
+      "icon": "/icons/monsters/twisted-banshee.png",
+      "combatLevel": 89
+    },
+    {
+      "name": "Typhor",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Typhor",
+      "icon": "/icons/monsters/typhor.png",
+      "combatLevel": 218
+    },
+    {
+      "name": "Tz-Kek",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Tz-Kek",
+      "icon": "/icons/monsters/tz-kek.png",
+      "combatLevel": 22
+    },
+    {
+      "name": "Tz-Kih",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Tz-Kih",
+      "icon": "/icons/monsters/tz-kih.png",
+      "combatLevel": 22
+    },
+    {
+      "name": "TzHaar-Hur",
+      "wikiLink": "https://oldschool.runescape.wiki/w/TzHaar-Hur",
+      "icon": "/icons/monsters/tzhaar-hur.png",
+      "combatLevel": 74
+    },
+    {
+      "name": "TzHaar-Ket",
+      "wikiLink": "https://oldschool.runescape.wiki/w/TzHaar-Ket",
+      "icon": "/icons/monsters/tzhaar-ket.png",
+      "combatLevel": 149
+    },
+    {
+      "name": "TzHaar-Mej",
+      "wikiLink": "https://oldschool.runescape.wiki/w/TzHaar-Mej",
+      "icon": "/icons/monsters/tzhaar-mej.png",
+      "combatLevel": 103
+    },
+    {
+      "name": "TzHaar-Xil",
+      "wikiLink": "https://oldschool.runescape.wiki/w/TzHaar-Xil",
+      "icon": "/icons/monsters/tzhaar-xil.png",
+      "combatLevel": 133
+    },
+    {
+      "name": "TzTok-Jad",
+      "wikiLink": "https://oldschool.runescape.wiki/w/TzTok-Jad_(PvM_Arena)",
+      "icon": "/icons/monsters/tztok-jad.png",
+      "combatLevel": 702
+    },
+    {
+      "name": "Undead chicken",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Undead_chicken",
+      "icon": "/icons/monsters/undead-chicken.png",
+      "combatLevel": 1
+    },
+    {
+      "name": "Undead cow",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Undead_cow",
+      "icon": "/icons/monsters/undead-cow.png",
+      "combatLevel": 2
+    },
+    {
+      "name": "Undead Druid",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Undead_Druid",
+      "icon": "/icons/monsters/undead-druid.png",
+      "combatLevel": 105
+    },
+    {
+      "name": "Undead Lumberjack",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Undead_Lumberjack",
+      "icon": "/icons/monsters/undead-lumberjack.png",
+      "combatLevel": 30
+    },
+    {
+      "name": "Undead one",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Undead_one",
+      "icon": "/icons/monsters/undead-one.png",
+      "combatLevel": 61
+    },
+    {
+      "name": "Uodai",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Uodai",
+      "icon": "/icons/monsters/uodai.png",
+      "combatLevel": 149
+    },
+    {
+      "name": "Urium Shade",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Urium_Shade",
+      "icon": "/icons/monsters/urium-shade.png",
+      "combatLevel": 140
+    },
+    {
+      "name": "Uyoro",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Uyoro",
+      "icon": "/icons/monsters/uyoro.png",
+      "combatLevel": 149
+    },
+    {
+      "name": "Vampyre Juvenile",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Vampyre_Juvenile",
+      "icon": "/icons/monsters/vampyre-juvenile.png",
+      "combatLevel": 45
+    },
+    {
+      "name": "Vampyre Juvinate",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Vampyre_Juvinate",
+      "icon": "/icons/monsters/vampyre-juvinate.png",
+      "combatLevel": 119
+    },
+    {
+      "name": "Vanstrom Klause",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Vanstrom_Klause",
+      "icon": "/icons/monsters/vanstrom-klause.png",
+      "combatLevel": 169
+    },
+    {
+      "name": "Vardorvis",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Vardorvis_(Deadman)",
+      "icon": "/icons/monsters/vardorvis.png",
+      "combatLevel": 777
+    },
+    {
+      "name": "Venator",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Venator",
+      "icon": "/icons/monsters/venator.png",
+      "combatLevel": 246
+    },
+    {
+      "name": "Venenatis",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Venenatis_(PvM_Arena)",
+      "icon": "/icons/monsters/venenatis.png",
+      "combatLevel": 464
+    },
+    {
+      "name": "Vitreous Chilled Jelly",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Vitreous_Chilled_Jelly",
+      "icon": "/icons/monsters/vitreous-chilled-jelly.png",
+      "combatLevel": 241
+    },
+    {
+      "name": "Vitreous Jelly",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Vitreous_Jelly",
+      "icon": "/icons/monsters/vitreous-jelly.png",
+      "combatLevel": 206
+    },
+    {
+      "name": "Vitreous Warped Jelly",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Vitreous_Warped_Jelly",
+      "icon": "/icons/monsters/vitreous-warped-jelly.png",
+      "combatLevel": 241
+    },
+    {
+      "name": "Vulture",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Vulture",
+      "icon": "/icons/monsters/vulture.png",
+      "combatLevel": 31
+    },
+    {
+      "name": "Vyrewatch",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Vyrewatch",
+      "icon": "/icons/monsters/vyrewatch.png",
+      "combatLevel": 87
+    },
+    {
+      "name": "Vyrewatch Sentinel",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Vyrewatch_Sentinel",
+      "icon": "/icons/monsters/vyrewatch-sentinel.png",
+      "combatLevel": 151
+    },
+    {
+      "name": "Wall beast",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Wall_beast",
+      "icon": "/icons/monsters/wall-beast.png",
+      "combatLevel": 49
+    },
+    {
+      "name": "Warped Jelly",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Warped_Jelly",
+      "icon": "/icons/monsters/warped-jelly.png",
+      "combatLevel": 112
+    },
+    {
+      "name": "Warped Terrorbird",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Warped_Terrorbird",
+      "icon": "/icons/monsters/warped-terrorbird.png",
+      "combatLevel": 138
+    },
+    {
+      "name": "Warped Tortoise",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Warped_Tortoise",
+      "icon": "/icons/monsters/warped-tortoise.png",
+      "combatLevel": 121
+    },
+    {
+      "name": "Waterfiend",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Waterfiend",
+      "icon": "/icons/monsters/waterfiend.png",
+      "combatLevel": 115
+    },
+    {
+      "name": "Werewolf",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Werewolf",
+      "icon": "/icons/monsters/werewolf.png",
+      "combatLevel": 88
+    },
+    {
+      "name": "White wolf",
+      "wikiLink": "https://oldschool.runescape.wiki/w/White_wolf",
+      "icon": "/icons/monsters/white-wolf.png",
+      "combatLevel": 25
+    },
+    {
+      "name": "Wild dog",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Wild_dog",
+      "icon": "/icons/monsters/wild-dog.png",
+      "combatLevel": 63
+    },
+    {
+      "name": "Wingman Skree",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Wingman_Skree",
+      "icon": "/icons/monsters/wingman-skree.png",
+      "combatLevel": 143
+    },
+    {
+      "name": "Wolf",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Wolf",
+      "icon": "/icons/monsters/wolf.png",
+      "combatLevel": 64
+    },
+    {
+      "name": "Wormbrain",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Wormbrain",
+      "icon": "/icons/monsters/wormbrain.png",
+      "combatLevel": 2
+    },
+    {
+      "name": "Wyrm",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Wyrm",
+      "icon": "/icons/monsters/wyrm.png",
+      "combatLevel": 97
+    },
+    {
+      "name": "Wyrmling",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Wyrmling",
+      "icon": "/icons/monsters/wyrmling.png",
+      "combatLevel": 55
+    },
+    {
+      "name": "Yt-HurKot",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Yt-HurKot",
+      "icon": "/icons/monsters/yt-hurkot.png",
+      "combatLevel": 141
+    },
+    {
+      "name": "Yt-MejKot",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Yt-MejKot",
+      "icon": "/icons/monsters/yt-mejkot.png",
+      "combatLevel": 180
+    },
+    {
+      "name": "Zakl'n Gritch",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zakl'n_Gritch",
+      "icon": "/icons/monsters/zakl-n-gritch.png",
+      "combatLevel": 142
+    },
+    {
+      "name": "Zogre",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zogre",
+      "icon": "/icons/monsters/zogre.png",
+      "combatLevel": 44
+    },
+    {
+      "name": "Zombie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zombie_(Entrana_Dungeon)",
+      "icon": "/icons/monsters/zombie.png",
+      "combatLevel": 25
+    },
+    {
+      "name": "Zombie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zombie_(Kourend)",
+      "icon": "/icons/monsters/zombie.png",
+      "combatLevel": 70
+    },
+    {
+      "name": "Zombie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zombie_(Melzar's_Maze)",
+      "icon": "/icons/monsters/zombie.png",
+      "combatLevel": 24
+    },
+    {
+      "name": "Zombie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zombie_(Sepulchre_of_Death)",
+      "icon": "/icons/monsters/zombie.png",
+      "combatLevel": 159
+    },
+    {
+      "name": "Zombie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zombie_(Shayzien_Crypts)",
+      "icon": "/icons/monsters/zombie.png",
+      "combatLevel": 132
+    },
+    {
+      "name": "Zombie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zombie_(Stronghold_of_Security)",
+      "icon": "/icons/monsters/zombie.png",
+      "combatLevel": 30
+    },
+    {
+      "name": "Zombie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zombie_(Tarn's_Lair)",
+      "icon": "/icons/monsters/zombie.png",
+      "combatLevel": 47
+    },
+    {
+      "name": "Zombie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zombie_(Temple_Trekking)",
+      "icon": "/icons/monsters/zombie.png",
+      "combatLevel": 23
+    },
+    {
+      "name": "Zombie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zombie_(Wilderness)",
+      "icon": "/icons/monsters/zombie.png",
+      "combatLevel": 18
+    },
+    {
+      "name": "Zombie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zombie_(Zogre_Flesh_Eaters)",
+      "icon": "/icons/monsters/zombie.png",
+      "combatLevel": 39
+    },
+    {
+      "name": "Zombie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zombie",
+      "icon": "/icons/monsters/zombie.png",
+      "combatLevel": 13
+    },
+    {
+      "name": "Zombie pirate",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zombie_pirate_(Braindeath_Island)",
+      "icon": "/icons/monsters/zombie-pirate.png",
+      "combatLevel": 57
+    },
+    {
+      "name": "Zombie pirate",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zombie_pirate_(Harmony_Island)",
+      "icon": "/icons/monsters/zombie-pirate.png",
+      "combatLevel": 57
+    },
+    {
+      "name": "Zombie pirate",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zombie_pirate",
+      "icon": "/icons/monsters/zombie-pirate.png",
+      "combatLevel": 22
+    },
+    {
+      "name": "Zombie rat",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zombie_rat",
+      "icon": "/icons/monsters/zombie-rat.png",
+      "combatLevel": 3
+    },
+    {
+      "name": "Zombie swab",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zombie_swab",
+      "icon": "/icons/monsters/zombie-swab.png",
+      "combatLevel": 55
+    },
+    {
+      "name": "Zygomite",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zygomite",
+      "icon": "/icons/monsters/zygomite.png",
+      "combatLevel": 74
+    }
+  ],
   "items": [
     {
       "name": "??? mixture",
@@ -1841,6 +5498,11 @@
       "icon": "/icons/items/adamant-arrow-pack.png"
     },
     {
+      "name": "Adamant arrow(p+)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Adamant_arrow(p%2B)",
+      "icon": null
+    },
+    {
       "name": "Adamant arrow(p++)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Adamant_arrow(p%2B%2B)",
       "icon": null
@@ -1939,6 +5601,11 @@
       "name": "Adamant dart tip",
       "wikiLink": "https://oldschool.runescape.wiki/w/Adamant_dart_tip",
       "icon": "/icons/items/adamant-dart-tip.png"
+    },
+    {
+      "name": "Adamant dart(p)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Adamant_dart(p)",
+      "icon": null
     },
     {
       "name": "Adamant defender",
@@ -2666,6 +6333,11 @@
       "icon": "/icons/items/agility-potion.png"
     },
     {
+      "name": "Agility potion(2)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Agility_potion(2)",
+      "icon": null
+    },
+    {
       "name": "Agility potion(3)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Agility_potion(3)",
       "icon": "/icons/items/agility-potion-3.png"
@@ -2739,6 +6411,11 @@
       "name": "Air block",
       "wikiLink": "https://oldschool.runescape.wiki/w/Air_block",
       "icon": "/icons/items/air-block.png"
+    },
+    {
+      "name": "Air diamond",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Air_diamond",
+      "icon": null
     },
     {
       "name": "Air nerve",
@@ -3006,6 +6683,11 @@
       "icon": "/icons/items/amulet-of-accuracy.png"
     },
     {
+      "name": "Amulet of air",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Amulet_of_air",
+      "icon": "/icons/items/amulet-of-air.png"
+    },
+    {
       "name": "Amulet of avarice",
       "wikiLink": "https://oldschool.runescape.wiki/w/Amulet_of_avarice",
       "icon": "/icons/items/amulet-of-avarice.png"
@@ -3046,9 +6728,19 @@
       "icon": "/icons/items/amulet-of-duplication.png"
     },
     {
+      "name": "Amulet of earth",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Amulet_of_earth",
+      "icon": "/icons/items/amulet-of-earth.png"
+    },
+    {
       "name": "Amulet of eternal glory",
       "wikiLink": "https://oldschool.runescape.wiki/w/Amulet_of_eternal_glory",
       "icon": "/icons/items/amulet-of-eternal-glory.png"
+    },
+    {
+      "name": "Amulet of fire",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Amulet_of_fire",
+      "icon": "/icons/items/amulet-of-fire.png"
     },
     {
       "name": "Amulet of fury",
@@ -3174,6 +6866,11 @@
       "name": "Amulet of torture (or)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Amulet_of_torture_(or)",
       "icon": "/icons/items/amulet-of-torture-or.png"
+    },
+    {
+      "name": "Amulet of water",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Amulet_of_water",
+      "icon": "/icons/items/amulet-of-water.png"
     },
     {
       "name": "Amur leopard toy",
@@ -4116,6 +7813,11 @@
       "icon": "/icons/items/antipoison-potion-4.png"
     },
     {
+      "name": "Antipoison(2)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Antipoison(2)",
+      "icon": null
+    },
+    {
       "name": "Antipoison(3)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Antipoison(3)",
       "icon": "/icons/items/antipoison-3.png"
@@ -4509,6 +8211,11 @@
       "name": "Archaic emblem (discontinued)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Archaic_emblem_(discontinued)",
       "icon": "/icons/items/archaic-emblem-discontinued.png"
+    },
+    {
+      "name": "Archaic emblem (tier 5)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Archaic_emblem_(tier_5)",
+      "icon": null
     },
     {
       "name": "Archer helm",
@@ -7381,6 +11088,11 @@
       "icon": "/icons/items/black-dagger.png"
     },
     {
+      "name": "Black dagger(p)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Black_dagger(p)",
+      "icon": null
+    },
+    {
       "name": "Black dart",
       "wikiLink": "https://oldschool.runescape.wiki/w/Black_dart",
       "icon": "/icons/items/black-dart.png"
@@ -7604,6 +11316,11 @@
       "name": "Black mask",
       "wikiLink": "https://oldschool.runescape.wiki/w/Black_mask",
       "icon": "/icons/items/black-mask.png"
+    },
+    {
+      "name": "Black mask (10)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Black_mask_(10)",
+      "icon": null
     },
     {
       "name": "Black mask (i)",
@@ -10826,6 +14543,11 @@
       "icon": "/icons/items/bronze-arrow-barbarian-assault.png"
     },
     {
+      "name": "Bronze arrow(p+)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bronze_arrow(p%2B)",
+      "icon": null
+    },
+    {
       "name": "Bronze arrowtips",
       "wikiLink": "https://oldschool.runescape.wiki/w/Bronze_arrowtips",
       "icon": "/icons/items/bronze-arrowtips.png"
@@ -11089,6 +14811,11 @@
       "name": "Bronze knife",
       "wikiLink": "https://oldschool.runescape.wiki/w/Bronze_knife",
       "icon": "/icons/items/bronze-knife.png"
+    },
+    {
+      "name": "Bronze knife(p)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bronze_knife(p)",
+      "icon": null
     },
     {
       "name": "Bronze limbs",
@@ -24561,6 +28288,11 @@
       "icon": "/icons/items/drygore-blowpipe.png"
     },
     {
+      "name": "Drygore blowpipe (empty)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Drygore_blowpipe_(empty)",
+      "icon": null
+    },
+    {
       "name": "Dual macuahuitl",
       "wikiLink": "https://oldschool.runescape.wiki/w/Dual_macuahuitl",
       "icon": "/icons/items/dual-macuahuitl.png"
@@ -24859,6 +28591,11 @@
       "name": "Earth block",
       "wikiLink": "https://oldschool.runescape.wiki/w/Earth_block",
       "icon": "/icons/items/earth-block.png"
+    },
+    {
+      "name": "Earth emerald",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Earth_emerald",
+      "icon": null
     },
     {
       "name": "Earth impling jar",
@@ -25494,6 +29231,11 @@
       "name": "Elem longsword (RuneScape 2 Beta)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Elem_longsword_(RuneScape_2_Beta)",
       "icon": "/icons/items/elem-longsword-runescape-2-beta.png"
+    },
+    {
+      "name": "Elemental amulet",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Elemental_amulet",
+      "icon": "/icons/items/elemental-amulet.png"
     },
     {
       "name": "Elemental guardian stone",
@@ -26236,9 +29978,24 @@
       "icon": "/icons/items/energy-potion.png"
     },
     {
+      "name": "Energy potion(1)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Energy_potion(1)",
+      "icon": null
+    },
+    {
+      "name": "Energy potion(2)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Energy_potion(2)",
+      "icon": null
+    },
+    {
       "name": "Energy potion(3)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Energy_potion(3)",
       "icon": "/icons/items/energy-potion-3.png"
+    },
+    {
+      "name": "Energy potion(4)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Energy_potion(4)",
+      "icon": null
     },
     {
       "name": "Engine",
@@ -27601,6 +31358,11 @@
       "icon": "/icons/items/fire-orb.png"
     },
     {
+      "name": "Fire ruby",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Fire_ruby",
+      "icon": null
+    },
+    {
       "name": "Fire rune",
       "wikiLink": "https://oldschool.runescape.wiki/w/Fire_rune",
       "icon": "/icons/items/fire-rune.png"
@@ -27791,6 +31553,11 @@
       "icon": "/icons/items/fishbowl-helmet.png"
     },
     {
+      "name": "Fishbowl#Water",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Fishbowl%23Water",
+      "icon": null
+    },
+    {
       "name": "Fishing bait",
       "wikiLink": "https://oldschool.runescape.wiki/w/Fishing_bait",
       "icon": "/icons/items/fishing-bait.png"
@@ -27849,6 +31616,11 @@
       "name": "Fishing potion",
       "wikiLink": "https://oldschool.runescape.wiki/w/Fishing_potion",
       "icon": "/icons/items/fishing-potion.png"
+    },
+    {
+      "name": "Fishing potion(1)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Fishing_potion(1)",
+      "icon": null
     },
     {
       "name": "Fishing potion(3)",
@@ -28804,6 +32576,11 @@
       "name": "Games necklace",
       "wikiLink": "https://oldschool.runescape.wiki/w/Games_necklace",
       "icon": "/icons/items/games-necklace.png"
+    },
+    {
+      "name": "Games necklace(2)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Games_necklace(2)",
+      "icon": null
     },
     {
       "name": "Games necklace(8)",
@@ -33556,6 +37333,11 @@
       "icon": "/icons/items/horn-of-plenty.png"
     },
     {
+      "name": "Horn of Plenty (empty)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Horn_of_Plenty_(empty)",
+      "icon": null
+    },
+    {
       "name": "Hornwood helm",
       "wikiLink": "https://oldschool.runescape.wiki/w/Hornwood_helm",
       "icon": "/icons/items/hornwood-helm.png"
@@ -34921,9 +38703,19 @@
       "icon": "/icons/items/iron-dagger.png"
     },
     {
+      "name": "Iron dagger(p)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Iron_dagger(p)",
+      "icon": null
+    },
+    {
       "name": "Iron dart",
       "wikiLink": "https://oldschool.runescape.wiki/w/Iron_dart",
       "icon": "/icons/items/iron-dart.png"
+    },
+    {
+      "name": "Iron dart (p)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Iron_dart_(p)",
+      "icon": null
     },
     {
       "name": "Iron dart tip",
@@ -37941,6 +41733,11 @@
       "icon": "/icons/items/lit-strange-object.png"
     },
     {
+      "name": "Lit torch",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Lit_torch",
+      "icon": null
+    },
+    {
       "name": "Lithic sceptre",
       "wikiLink": "https://oldschool.runescape.wiki/w/Lithic_sceptre",
       "icon": "/icons/items/lithic-sceptre.png"
@@ -40906,6 +44703,11 @@
       "icon": "/icons/items/mithril-arrow-barbarian-assault.png"
     },
     {
+      "name": "Mithril arrow(p+)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mithril_arrow(p%2B)",
+      "icon": null
+    },
+    {
       "name": "Mithril arrowtips",
       "wikiLink": "https://oldschool.runescape.wiki/w/Mithril_arrowtips",
       "icon": "/icons/items/mithril-arrowtips.png"
@@ -41249,6 +45051,11 @@
       "name": "Mithril spear",
       "wikiLink": "https://oldschool.runescape.wiki/w/Mithril_spear",
       "icon": "/icons/items/mithril-spear.png"
+    },
+    {
+      "name": "Mithril spear(p)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mithril_spear(p)",
+      "icon": null
     },
     {
       "name": "Mithril sq shield",
@@ -42929,6 +46736,11 @@
       "name": "Necklace of faith",
       "wikiLink": "https://oldschool.runescape.wiki/w/Necklace_of_faith",
       "icon": "/icons/items/necklace-of-faith.png"
+    },
+    {
+      "name": "Necklace of fangs",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Necklace_of_fangs",
+      "icon": null
     },
     {
       "name": "Necklace of passage",
@@ -47116,6 +50928,11 @@
       "icon": "/icons/items/prayer-potion-last-man-standing.png"
     },
     {
+      "name": "Prayer potion(1)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Prayer_potion(1)",
+      "icon": null
+    },
+    {
       "name": "Prayer potion(2)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Prayer_potion(2)",
       "icon": null
@@ -50141,6 +53958,11 @@
       "icon": "/icons/items/ring-of-dueling.png"
     },
     {
+      "name": "Ring of dueling(3)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ring_of_dueling(3)",
+      "icon": null
+    },
+    {
       "name": "Ring of dueling(8)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Ring_of_dueling(8)",
       "icon": "/icons/items/ring-of-dueling-8.png"
@@ -51216,6 +55038,11 @@
       "icon": "/icons/items/rune-dagger.png"
     },
     {
+      "name": "Rune dagger(p+)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Rune_dagger(p%2B)",
+      "icon": null
+    },
+    {
       "name": "Rune dart",
       "wikiLink": "https://oldschool.runescape.wiki/w/Rune_dart",
       "icon": "/icons/items/rune-dart.png"
@@ -51224,6 +55051,11 @@
       "name": "Rune dart tip",
       "wikiLink": "https://oldschool.runescape.wiki/w/Rune_dart_tip",
       "icon": "/icons/items/rune-dart-tip.png"
+    },
+    {
+      "name": "Rune dart(p)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Rune_dart(p)",
+      "icon": null
     },
     {
       "name": "Rune defender",
@@ -52579,6 +56411,11 @@
       "name": "Saradomin brew (Last Man Standing)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Saradomin_brew_(Last_Man_Standing)",
       "icon": "/icons/items/saradomin-brew-last-man-standing.png"
+    },
+    {
+      "name": "Saradomin brew(2)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Saradomin_brew(2)",
+      "icon": null
     },
     {
       "name": "Saradomin brew(3)",
@@ -57751,6 +61588,11 @@
       "icon": "/icons/items/steel-bolts.png"
     },
     {
+      "name": "Steel bolts (p+)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Steel_bolts_(p%2B)",
+      "icon": null
+    },
+    {
       "name": "Steel bolts (unf)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Steel_bolts_(unf)",
       "icon": "/icons/items/steel-bolts-unf.png"
@@ -58036,6 +61878,11 @@
       "icon": "/icons/items/steel-javelin-tips.png"
     },
     {
+      "name": "Steel javelin(p+)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Steel_javelin(p%2B)",
+      "icon": null
+    },
+    {
       "name": "Steel keel",
       "wikiLink": "https://oldschool.runescape.wiki/w/Steel_keel",
       "icon": "/icons/items/steel-keel.png"
@@ -58304,6 +62151,11 @@
       "name": "Steel spear",
       "wikiLink": "https://oldschool.runescape.wiki/w/Steel_spear",
       "icon": "/icons/items/steel-spear.png"
+    },
+    {
+      "name": "Steel spear(p++)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Steel_spear(p%2B%2B)",
+      "icon": null
     },
     {
       "name": "Steel sq shield",
@@ -58806,6 +62658,11 @@
       "icon": "/icons/items/strength-potion.png"
     },
     {
+      "name": "Strength potion(2)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Strength_potion(2)",
+      "icon": null
+    },
+    {
       "name": "Strength potion(3)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Strength_potion(3)",
       "icon": "/icons/items/strength-potion-3.png"
@@ -59296,6 +63153,11 @@
       "icon": "/icons/items/super-attack.png"
     },
     {
+      "name": "Super attack(1)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Super_attack(1)",
+      "icon": null
+    },
+    {
       "name": "Super attack(2)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Super_attack(2)",
       "icon": null
@@ -59449,6 +63311,11 @@
       "name": "Super restore mix(2)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Super_restore_mix(2)",
       "icon": "/icons/items/super-restore-mix-2.png"
+    },
+    {
+      "name": "Super restore(1)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Super_restore(1)",
+      "icon": null
     },
     {
       "name": "Super restore(3)",
@@ -61169,6 +65036,11 @@
       "name": "Teleport crystal",
       "wikiLink": "https://oldschool.runescape.wiki/w/Teleport_crystal",
       "icon": "/icons/items/teleport-crystal.png"
+    },
+    {
+      "name": "Teleport crystal (1)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Teleport_crystal_(1)",
+      "icon": null
     },
     {
       "name": "Teleport crystal (The Gauntlet)",
@@ -63081,6 +66953,11 @@
       "icon": "/icons/items/trinket-of-fortuity.png"
     },
     {
+      "name": "Trinket of fortuity (inactive)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Trinket_of_fortuity_(inactive)",
+      "icon": null
+    },
+    {
       "name": "Trinket of undead",
       "wikiLink": "https://oldschool.runescape.wiki/w/Trinket_of_undead",
       "icon": "/icons/items/trinket-of-undead.png"
@@ -63721,6 +67598,11 @@
       "icon": "/icons/items/uncharged-toxic-trident-e.png"
     },
     {
+      "name": "Uncharged trident",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Uncharged_trident",
+      "icon": null
+    },
+    {
       "name": "Uncleaned find",
       "wikiLink": "https://oldschool.runescape.wiki/w/Uncleaned_find",
       "icon": "/icons/items/uncleaned-find.png"
@@ -64229,6 +68111,11 @@
       "name": "Unknown print",
       "wikiLink": "https://oldschool.runescape.wiki/w/Unknown_print",
       "icon": "/icons/items/unknown-print.png"
+    },
+    {
+      "name": "Unlit torch",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Unlit_torch",
+      "icon": null
     },
     {
       "name": "Unpainted fake magic egg",
@@ -65561,6 +69448,11 @@
       "icon": "/icons/items/warped-sceptre.png"
     },
     {
+      "name": "Warped sceptre (uncharged)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Warped_sceptre_(uncharged)",
+      "icon": null
+    },
+    {
       "name": "Warped Terrorbird (interface item)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Warped_Terrorbird_(interface_item)",
       "icon": "/icons/items/warped-terrorbird-interface-item.png"
@@ -65711,6 +69603,11 @@
       "icon": "/icons/items/water-rune-pack.png"
     },
     {
+      "name": "Water sapphire",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Water_sapphire",
+      "icon": null
+    },
+    {
       "name": "Water talisman",
       "wikiLink": "https://oldschool.runescape.wiki/w/Water_talisman",
       "icon": "/icons/items/water-talisman.png"
@@ -65774,6 +69671,16 @@
       "name": "Waterskin",
       "wikiLink": "https://oldschool.runescape.wiki/w/Waterskin",
       "icon": "/icons/items/waterskin.png"
+    },
+    {
+      "name": "Waterskin(0)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Waterskin(0)",
+      "icon": null
+    },
+    {
+      "name": "Waterskin(4)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Waterskin(4)",
+      "icon": null
     },
     {
       "name": "Watson teleport",
@@ -67321,6 +71228,11 @@
       "icon": "/icons/items/xeric-s-talisman.png"
     },
     {
+      "name": "Xeric's talisman (inert)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Xeric's_talisman_(inert)",
+      "icon": null
+    },
+    {
       "name": "Xeric's warrior",
       "wikiLink": "https://oldschool.runescape.wiki/w/Xeric's_warrior",
       "icon": "/icons/items/xeric-s-warrior.png"
@@ -68109,6 +72021,11 @@
       "name": "Zombie bone",
       "wikiLink": "https://oldschool.runescape.wiki/w/Zombie_bone",
       "icon": "/icons/items/zombie-bone.png"
+    },
+    {
+      "name": "Zombie bone#Unpolished",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zombie_bone%23Unpolished",
+      "icon": null
     },
     {
       "name": "Zombie boots",

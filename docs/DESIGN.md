@@ -214,6 +214,7 @@ src/lib/data/catalog.json          (imported as $lib/data/catalog.json)
   "generatedAt": "...", "source": "...", "counts": { ... },
   "skills":    [{ "name": "Crafting",      "wikiLink": "...", "icon": "/icons/skills/crafting.png" }],
   "bosses":    [{ "name": "Dagannoth Rex",  "wikiLink": "...", "icon": "/icons/bosses/dagannoth-rex.png", "combatLevel": 303 }],
+  "monsters":  [{ "name": "Lizardman shaman", "wikiLink": "...", "icon": "/icons/monsters/lizardman-shaman.png", "combatLevel": 150 }],
   "items":     [{ "name": "Berserker ring", "wikiLink": "...", "icon": "/icons/items/berserker-ring.png" }],
   "minigames": []
 }
@@ -223,13 +224,59 @@ src/lib/data/catalog.json          (imported as $lib/data/catalog.json)
 downloaded (frontend shows a placeholder — no wiki hotlinking at runtime).
 
 `skills` is a static hand-written list of all 24 (includes Sailing).
-`bosses` comes from `Category:Bosses` + `Infobox_monster`. `items` is the
-deduped union of every source: drop tables, collection-log-source,
-`Bucket:Recipe`, and (added 2026-09-02) the full `Infobox_item` table
-itself — see the item-count note under Roadmap step 1's stage 2c bullet.
-`minigames` source is still TBD.
+`bosses` comes from `Category:Bosses` + `Infobox_monster`. `monsters` is
+regular (non-boss) Slayer-assignable monsters — see "Slayer-task monsters"
+below. `items` is the deduped union of every source: drop tables,
+collection-log-source, `Bucket:Recipe`, and (added 2026-09-02) the full
+`Infobox_item` table itself — see the item-count note under Roadmap step
+1's stage 2c bullet. `minigames` source is still TBD.
 Icon files are downloaded to the paths shown, filenames normalized to
 kebab-case (not the wiki's raw "Dagannoth Rex.png" with spaces/casing).
+
+**Slayer-task monsters (added 2026-09-03).** A regular monster like
+Lizardman shaman was previously invisible to search entirely — `bosses`
+only covers `Category:Bosses` (173 real articles once non-namespace-0
+category members are filtered out - see `fetchAllCategoryMembers`), and
+`Category:Monsters` was ruled out early on as too broad
+(see Scope above). `Category:Slayer monsters` turned out to be the right
+middle ground: a curated, wiki-maintained list of exactly the monsters
+worth tracking as grind targets (686 pages), small enough to enumerate the
+same way as bosses. Stages 0-1 now union `Category:Bosses` and
+`Category:Slayer monsters` into one shared fetch (a page in both, e.g.
+Vorkath, is only fetched once, tagged `source: ["boss", "slayer"]`) —
+see `scripts/lib/monster-categories.mjs`. Stage 4 keeps `bosses` exactly
+as `Category:Bosses` and puts everything else in `monsters`, so a
+dual-category page shows up once, as a boss, not twice. A page with no
+`Infobox_monster` row at all (category-overview articles like "Slayer
+monsters" itself, task-tip guide pages) is skipped outright rather than
+written as a stub.
+
+Two bugs surfaced going from ~173 to ~786 candidate pages, both fixed the
+same day:
+
+- **Slug collisions.** Two distinct, real, non-redirect wiki pages can
+  kebab-slugify to the same string — "Skeleton (mage)" and "Skeleton
+  Mage" both -> `skeleton-mage`. Stage 1 names each cache file
+  `raw/<slug>.json`, so an undetected collision meant one page's data
+  silently overwrote the other's on disk (lost the entry, not just its
+  icon). Stage 0 now assigns every title a unique slug up front,
+  disambiguating with a numeric suffix (`skeleton-mage-2`) rather than
+  dropping either page — recall over precision, same stance as the item
+  catalog. Stage 1 also checks title (not just revision timestamp) before
+  reclaiming a cached file, so a slug that gets reassigned between runs
+  can't reclaim the wrong page's data.
+- **Duplicate display names crashed the search UI.** Unlike items, the
+  bosses/monsters catalog doesn't dedupe by display name — genuinely
+  distinct wiki pages (location variants like the 14 different "Skeleton"
+  pages, or mode variants like "Dagannoth Rex (Deadman)") can share the
+  same in-game name. `EntryModal.svelte`'s results list was keyed on
+  `type + name`, which crashed Svelte's keyed `{#each}` outright
+  (`each_key_duplicate`) once two monster results shared a name — not
+  just cosmetic duplication, a fatal render error that broke search
+  entirely. Fixed by keying on `type + wikiLink` instead, which is always
+  unique. Whether to actually dedupe same-named catalog entries (currently
+  57 names, ~100 extra rows) is tabled, not decided — search still works
+  either way now, it just shows every variant.
 
 **Icons: served from `static/`, regenerated not committed (revised
 2026-09-01).** SvelteKit serves `static/` automatically in both `npm run

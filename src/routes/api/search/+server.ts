@@ -10,6 +10,7 @@ import catalog from '$lib/data/catalog.json';
 //   GET /api/search?q=berserker
 //   GET /api/search?q=ring&type=item&limit=10
 //   GET /api/search?q=dagannoth&type=boss,item
+//   GET /api/search?q=lizardman&type=monster
 
 interface CatalogEntry {
 	name: string;
@@ -33,7 +34,7 @@ function index(entries: CatalogEntry[], type: EntryType): Indexed[] {
 		name: e.name,
 		wikiLink: e.wikiLink,
 		icon: e.icon,
-		...(type === 'boss' ? { combatLevel: e.combatLevel ?? null } : {}),
+		...(type === 'boss' || type === 'monster' ? { combatLevel: e.combatLevel ?? null } : {}),
 		lower: e.name.toLowerCase()
 	}));
 }
@@ -42,11 +43,12 @@ function index(entries: CatalogEntry[], type: EntryType): Indexed[] {
 const ENTRIES: Indexed[] = [
 	...index(catalog.skills, 'skill'),
 	...index(catalog.bosses, 'boss'),
+	...index(catalog.monsters, 'monster'),
 	...index(catalog.items, 'item'),
 	...index(catalog.minigames, 'minigame')
 ];
 
-const ALL_TYPES: EntryType[] = ['skill', 'boss', 'item', 'minigame'];
+const ALL_TYPES: EntryType[] = ['skill', 'boss', 'monster', 'item', 'minigame'];
 const MAX_LIMIT = 100;
 const DEFAULT_LIMIT = 20;
 

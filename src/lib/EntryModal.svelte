@@ -117,7 +117,7 @@
 		autofocus
 	/>
 	<ul class="results">
-		{#each results as r (r.type + '/' + r.name)}
+		{#each results as r (r.type + '/' + r.wikiLink)}
 			<li>
 				<button type="button" onclick={() => pick(r)}>
 					{#if r.icon}<img src={r.icon} alt="" />{/if}
