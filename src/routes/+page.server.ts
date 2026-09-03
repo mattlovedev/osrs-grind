@@ -14,9 +14,23 @@ const generateBoardId = customAlphabet(
 export const actions: Actions = {
 	createBoard: async () => {
 		const boardId = generateBoardId();
-		await adminDb
-			.doc(`boards/${boardId}`)
-			.set({ updatedAt: FieldValue.serverTimestamp(), name: '', flowOrder: [], flows: {} });
+		const shareId = generateBoardId();
+
+		const batch = adminDb.batch();
+		batch.set(adminDb.doc(`boards/${boardId}`), {
+			updatedAt: FieldValue.serverTimestamp(),
+			name: '',
+			flowOrder: [],
+			flows: {},
+			shareId
+		});
+		// Every board is shareable from creation (see DESIGN.md's read-only
+		// sharing notes) - this mapping is what actually makes /s/[shareId]
+		// resolve. Regenerating later replaces this doc rather than adding
+		// another, so a board only ever has one working share link.
+		batch.set(adminDb.doc(`shareLinks/${shareId}`), { boardId });
+		await batch.commit();
+
 		redirect(303, `/b/${boardId}`);
 	}
 };

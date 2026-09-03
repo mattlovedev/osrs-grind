@@ -75,6 +75,15 @@
 		}
 	}
 
+	let shareLinkCopied = $state(false);
+
+	async function copyShareLink() {
+		const url = `${location.origin}/s/${board.shareId}`;
+		await navigator.clipboard.writeText(url);
+		shareLinkCopied = true;
+		setTimeout(() => (shareLinkCopied = false), 1500);
+	}
+
 	$effect(() => {
 		liveBoard = null;
 		const ref = doc(db, 'boards', data.boardId);
@@ -84,7 +93,8 @@
 				liveBoard = {
 					name: snapData.name ?? '',
 					flowOrder: snapData.flowOrder ?? [],
-					flows: snapData.flows ?? {}
+					flows: snapData.flows ?? {},
+					shareId: snapData.shareId
 				};
 			}
 		});
@@ -314,6 +324,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>{board.name || `Board ${data.boardId}`}</title>
+</svelte:head>
+
 {#if modalOpen}
 	<EntryModal
 		initial={editInitial}
@@ -362,11 +376,16 @@
 </h1>
 
 <div class="top-right-actions">
+	{#if !editMode}
+		<button class="share-board" onclick={copyShareLink}>
+			{shareLinkCopied ? 'Copied!' : 'Share'}
+		</button>
+	{/if}
 	<button class="edit-board" onclick={toggleEditMode}
-		>{editMode ? 'Exit edit' : 'Edit board'}</button
+		>{editMode ? 'Exit' : 'Edit'}</button
 	>
 	{#if editMode}
-		<button class="delete-board" onclick={askDeleteBoard}>Delete board</button>
+		<button class="delete-board" onclick={askDeleteBoard}>Delete</button>
 	{/if}
 </div>
 
