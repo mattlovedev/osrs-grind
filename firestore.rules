@@ -8,13 +8,24 @@ service cloud.firestore {
       allow create, update: if isValidBoard(request.resource.data);
       allow delete: if true;
     }
+
+    // Read-only share link lookup (shareId -> boardId). The client never
+    // reads this directly - only the server (Admin SDK, which bypasses
+    // rules entirely) resolves it, for /s/[shareId]. Explicit deny here
+    // for the same reason the rest of this file is explicit rather than
+    // relying on Firestore's default-deny: self-documenting, and this is
+    // exactly the kind of rule that's easy to forget to lock down later.
+    match /shareLinks/{shareId} {
+      allow read, write: if false;
+    }
   }
 }
 
 function isValidBoard(data) {
-  return data.keys().hasOnly(['updatedAt', 'name', 'flowOrder', 'flows'])
+  return data.keys().hasOnly(['updatedAt', 'name', 'flowOrder', 'flows', 'shareId'])
     && data.updatedAt is timestamp
     && data.name is string
     && data.flowOrder is list
-    && data.flows is map;
+    && data.flows is map
+    && data.shareId is string;
 }

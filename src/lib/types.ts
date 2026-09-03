@@ -31,4 +31,10 @@ export interface Board {
 	name: string;
 	flowOrder: string[];
 	flows: Record<string, Flow>;
+	// Read-only share link id (/s/[shareId]) - resolved server-side via the
+	// shareLinks/{shareId} mapping, never the board's own id. Present on
+	// every board (generated alongside boardId at creation), not just
+	// boards someone chose to share - see DESIGN.md's read-only sharing
+	// notes.
+	shareId: string;
 }

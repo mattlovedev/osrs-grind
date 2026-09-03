@@ -13,7 +13,8 @@ export const load: PageServerLoad = async ({ params }) => {
 	const board: Board = {
 		name: data.name ?? '',
 		flowOrder: data.flowOrder ?? [],
-		flows: data.flows ?? {}
+		flows: data.flows ?? {},
+		shareId: data.shareId
 	};
 
 	return { boardId: params.boardId, board };

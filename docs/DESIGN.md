@@ -297,6 +297,61 @@ the catalog grows/changes (not a one-time throwaway) — distinct from the
 one-off manual verification during feature testing, which get deleted
 after use.
 
+## Read-only sharing (added 2026-09-03)
+
+Every board has a read-only link at `/s/[shareId]` — a friend can watch
+progress (including done/not-done state) without being able to edit
+anything. Distinct from the still-deferred "shareable templates" idea
+below (publish + fork into a fresh editable board) - this is purely
+"watch my existing board," nothing forkable.
+
+**The security problem this had to solve first.** There's no auth in
+this app at all - every write today is authorized purely by "does the
+request know the board's exact ID," which Firestore Security Rules can
+check (document path + write content), but rules have zero visibility
+into *which URL the browser is on*. So a naive "read-only page that just
+hides the edit buttons" is not a real boundary: if that page's client
+ever learns the real `boardId` (e.g. to `onSnapshot` it for live
+updates), a technically-inclined viewer opens devtools and calls
+`updateDoc()` directly with that same ID - it would succeed, since
+`boards/{boardId}`'s rules don't distinguish "read-only intent" from
+"edit intent," they only check the ID. The real `boardId` must never
+reach a read-only viewer's browser, full stop.
+
+**Chosen approach: server-rendered only, no client Firestore access on
+the share route at all** (rejected the alternative - a live-synced
+`boardViews/{shareId}` mirror collection updated via either a Cloud
+Function or client-side batched dual-writes on every mutation - as a
+bigger lift, new infra either way, for realtime push this use case
+doesn't actually need). `/s/[shareId]/+page.server.ts` resolves
+`shareId -> boardId` via a `shareLinks/{shareId}` mapping doc (Admin
+SDK, bypasses rules entirely) and returns only the board's content - the
+real `boardId` never appears anywhere in the response. Tradeoff:
+genuinely no push-based live updates, just what's current as of page
+load/navigation - refresh to see changes. Acceptable for "check in on a
+friend's progress," not a live shared-cursor experience.
+
+**Every board is shareable from creation, not opt-in.** `shareId` is
+generated alongside `boardId` in the same `createBoard` action (same
+`customAlphabet` generator, called twice - independent randomness), and
+the `shareLinks/{shareId}` mapping is written in the same atomic batch.
+"Copy share link" on the edit page is purely cosmetic - it reads the
+already-existing `shareId` and builds the URL, no write involved. A
+board has at most one *working* share link at a time by design (single
+`shareId` field, not a list) - regenerating would be a replace (delete
+the old `shareLinks` doc, write a new one, update `board.shareId`), not
+an add, though the regenerate UI itself isn't built yet, just the
+one-link-per-board data shape it needs.
+
+**`shareLinks/{shareId}` is never read by the client**, only by the
+server via the Admin SDK - so its rules are an explicit `allow read,
+write: if false` rather than actually needing to permit anything. Adding
+`shareId` to the board document also required updating
+`isValidBoard()`'s key allowlist in `firestore.rules` (it uses
+`hasOnly([...])`, a strict allowlist) - forgotten, this would have
+silently broken every client-side board edit the moment boards started
+carrying the new field, not just sharing itself.
+
 ## Deferred (explicitly not v1)
 
 - Categories/grouping of flows on a board.

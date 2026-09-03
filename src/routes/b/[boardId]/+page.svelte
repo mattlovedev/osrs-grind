@@ -12,6 +12,7 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { db } from '$lib/firebase';
+	import { iconUrl } from '$lib/icon-url';
 	import type { Board } from '$lib/types';
 	import type { PageData } from './$types';
 	import EntryModal from '$lib/EntryModal.svelte';
@@ -25,6 +26,8 @@
 	let board = $derived(liveBoard ?? data.board);
 	let editingName = $state(false);
 	let nameDraft = $state('');
+	let editingFlowNameId = $state<string | null>(null);
+	let flowNameDraft = $state('');
 
 	type AddTarget = { flowId: string; nodeId: string; mode: 'append' | 'edge' } | null;
 	type EditTarget = { flowId: string; nodeId: string; entryId: string } | null;
@@ -65,7 +68,20 @@
 
 	function toggleEditMode() {
 		editMode = !editMode;
-		if (!editMode) closeModal();
+		if (!editMode) {
+			closeModal();
+			editingName = false;
+			editingFlowNameId = null;
+		}
+	}
+
+	let shareLinkCopied = $state(false);
+
+	async function copyShareLink() {
+		const url = `${location.origin}/s/${board.shareId}`;
+		await navigator.clipboard.writeText(url);
+		shareLinkCopied = true;
+		setTimeout(() => (shareLinkCopied = false), 1500);
 	}
 
 	$effect(() => {
@@ -77,7 +93,8 @@
 				liveBoard = {
 					name: snapData.name ?? '',
 					flowOrder: snapData.flowOrder ?? [],
-					flows: snapData.flows ?? {}
+					flows: snapData.flows ?? {},
+					shareId: snapData.shareId
 				};
 			}
 		});
@@ -98,6 +115,25 @@
 
 	function cancelEditingName() {
 		editingName = false;
+	}
+
+	function startEditingFlowName(flowId: string, currentName: string) {
+		flowNameDraft = currentName;
+		editingFlowNameId = flowId;
+	}
+
+	async function saveFlowName(e: SubmitEvent, flowId: string) {
+		e.preventDefault();
+		const ref = doc(db, 'boards', data.boardId);
+		await updateDoc(ref, {
+			updatedAt: serverTimestamp(),
+			[`flows.${flowId}.name`]: flowNameDraft.trim()
+		});
+		editingFlowNameId = null;
+	}
+
+	function cancelEditingFlowName() {
+		editingFlowNameId = null;
 	}
 
 	type ConfirmData = {
@@ -129,6 +165,20 @@
 			updatedAt: serverTimestamp(),
 			flowOrder: arrayRemove(flowId),
 			[`flows.${flowId}`]: deleteField()
+		});
+	}
+
+	async function moveFlow(flowId: string, direction: -1 | 1) {
+		const order = board.flowOrder;
+		const index = order.indexOf(flowId);
+		const newIndex = index + direction;
+		if (index === -1 || newIndex < 0 || newIndex >= order.length) return;
+		const newOrder = [...order];
+		[newOrder[index], newOrder[newIndex]] = [newOrder[newIndex], newOrder[index]];
+		const ref = doc(db, 'boards', data.boardId);
+		await updateDoc(ref, {
+			updatedAt: serverTimestamp(),
+			flowOrder: newOrder
 		});
 	}
 
@@ -165,34 +215,37 @@
 		};
 	}
 
+	// Only called for the node-delete button, which itself only renders
+	// when the flow has more than one node (see nodeCount in the template) -
+	// a flow's only node is deleted via "Delete grind" instead, since
+	// they're the same operation.
 	function askDeleteNode(flowId: string, nodeId: string) {
-		const isLastNode = (board.flows[flowId]?.nodeOrder ?? []).length <= 1;
-		confirmData = isLastNode
-			? {
-					title: 'Delete grind',
-					message:
-						'This is the last node - deleting it removes the whole grind. This cannot be undone.',
-					perform: () => doDeleteFlow(flowId)
-				}
-			: {
-					title: 'Delete node',
-					message: 'This node and everything in it will be gone. This cannot be undone.',
-					perform: () => doDeleteNode(flowId, nodeId)
-				};
+		confirmData = {
+			title: 'Delete node',
+			message: 'This node and everything in it will be gone. This cannot be undone.',
+			perform: () => doDeleteNode(flowId, nodeId)
+		};
 	}
 
-	async function deleteEntry(flowId: string, nodeId: string, entryId: string) {
-		const isLastEntry = (board.flows[flowId]?.nodes[nodeId]?.entryOrder ?? []).length <= 1;
-		if (isLastEntry) {
-			askDeleteNode(flowId, nodeId);
-			return;
-		}
+	async function doDeleteEntry(flowId: string, nodeId: string, entryId: string) {
 		const ref = doc(db, 'boards', data.boardId);
 		await updateDoc(ref, {
 			updatedAt: serverTimestamp(),
 			[`flows.${flowId}.nodes.${nodeId}.entryOrder`]: arrayRemove(entryId),
 			[`flows.${flowId}.nodes.${nodeId}.entries.${entryId}`]: deleteField()
 		});
+	}
+
+	// Only called for the entry-delete button, which itself only renders
+	// when the node has more than one entry (see entryCount in the
+	// template) - a node's only entry is deleted via "Delete node" instead,
+	// since they're the same operation.
+	function askDeleteEntry(flowId: string, nodeId: string, entryId: string) {
+		confirmData = {
+			title: 'Delete entry',
+			message: 'This entry will be gone. This cannot be undone.',
+			perform: () => doDeleteEntry(flowId, nodeId, entryId)
+		};
 	}
 
 	async function toggleDone(flowId: string, nodeId: string, entryId: string, done: boolean) {
@@ -204,7 +257,7 @@
 		});
 	}
 
-	async function createEntry(draft: EntryDraft) {
+	async function createEntry(draft: EntryDraft, flowName?: string) {
 		const ref = doc(db, 'boards', data.boardId);
 		const entryId = crypto.randomUUID().slice(0, 8);
 		const entry = { ...draft, done: false };
@@ -236,7 +289,7 @@
 				updatedAt: serverTimestamp(),
 				flowOrder: [...board.flowOrder, flowId],
 				[`flows.${flowId}`]: {
-					name: '',
+					name: flowName?.trim() ?? '',
 					nodes: {
 						[nodeId]: {
 							entries: { [entryId]: entry },
@@ -265,14 +318,23 @@
 		closeModal();
 	}
 
-	function handleModalSubmit(draft: EntryDraft) {
+	function handleModalSubmit(draft: EntryDraft, flowName?: string) {
 		if (editTarget) updateEntry(editTarget, draft);
-		else createEntry(draft);
+		else createEntry(draft, flowName);
 	}
 </script>
 
+<svelte:head>
+	<title>{board.name || `Board ${data.boardId}`}</title>
+</svelte:head>
+
 {#if modalOpen}
-	<EntryModal initial={editInitial} onsubmit={handleModalSubmit} oncancel={closeModal} />
+	<EntryModal
+		initial={editInitial}
+		isNewFlow={addTarget === null && editTarget === null}
+		onsubmit={handleModalSubmit}
+		oncancel={closeModal}
+	/>
 {/if}
 
 {#if confirmData}
@@ -297,7 +359,7 @@
 				autofocus
 			/>
 		</form>
-	{:else}
+	{:else if editMode}
 		<span
 			role="button"
 			tabindex="0"
@@ -308,25 +370,87 @@
 		>
 			{board.name || `Board ${data.boardId}`}
 		</span>
+	{:else}
+		{board.name || `Board ${data.boardId}`}
 	{/if}
 </h1>
 
 <div class="top-right-actions">
+	{#if !editMode}
+		<button class="share-board" onclick={copyShareLink}>
+			{shareLinkCopied ? 'Copied!' : 'Share'}
+		</button>
+	{/if}
 	<button class="edit-board" onclick={toggleEditMode}
-		>{editMode ? 'Exit edit' : 'Edit board'}</button
+		>{editMode ? 'Exit' : 'Edit'}</button
 	>
-	<button class="delete-board" onclick={askDeleteBoard}>Delete board</button>
+	{#if editMode}
+		<button class="delete-board" onclick={askDeleteBoard}>Delete</button>
+	{/if}
 </div>
 
-{#each board.flowOrder as flowId (flowId)}
+{#each board.flowOrder as flowId, flowIndex (flowId)}
 	{@const flow = board.flows[flowId]}
+	{@const nodeCount = (flow?.nodeOrder ?? Object.keys(flow?.nodes ?? {})).length}
 	<div class="flow" class:editing={editMode}>
-		<button class="flow-delete-button" title="Delete grind" onclick={() => askDeleteFlow(flowId)}>
-			&times;
-		</button>
+		<div class="flow-controls">
+			{#if flowIndex > 0}
+				<button
+					class="flow-move-button"
+					title="Move up"
+					onclick={() => moveFlow(flowId, -1)}
+				>
+					&uarr;
+				</button>
+			{/if}
+			<button class="flow-delete-button" title="Delete grind" onclick={() => askDeleteFlow(flowId)}>
+				&times;
+			</button>
+			{#if flowIndex < board.flowOrder.length - 1}
+				<button
+					class="flow-move-button"
+					title="Move down"
+					onclick={() => moveFlow(flowId, 1)}
+				>
+					&darr;
+				</button>
+			{/if}
+		</div>
+		{#if editMode}
+			{#if editingFlowNameId === flowId}
+				<form onsubmit={(e) => saveFlowName(e, flowId)} class="flow-name-form">
+					<!-- svelte-ignore a11y_autofocus -->
+					<input
+						bind:value={flowNameDraft}
+						onblur={cancelEditingFlowName}
+						onkeydown={(e) => {
+							if (e.key === 'Escape') cancelEditingFlowName();
+						}}
+						onfocus={(e) => e.currentTarget.select()}
+						autofocus
+					/>
+				</form>
+			{:else}
+				<span
+					class="flow-name"
+					role="button"
+					tabindex="0"
+					onclick={() => startEditingFlowName(flowId, flow?.name ?? '')}
+					onkeydown={(e) => {
+						if (e.key === 'Enter' || e.key === ' ')
+							startEditingFlowName(flowId, flow?.name ?? '');
+					}}
+				>
+					{flow?.name || 'Edit name'}
+				</span>
+			{/if}
+		{:else if flow?.name}
+			<span class="flow-name">{flow.name}</span>
+		{/if}
 		{#each flow?.nodeOrder ?? Object.keys(flow?.nodes ?? {}) as nodeId, i (nodeId)}
 			{@const node = flow.nodes[nodeId]}
 			{@const isTailNode = !Object.values(flow.edges ?? {}).some((e) => e.from === nodeId)}
+			{@const entryCount = (node.entryOrder ?? Object.keys(node.entries)).length}
 			{#if i > 0}
 				<span class="edge-arrow">&rarr;</span>
 			{/if}
@@ -352,23 +476,25 @@
 							}}
 						>
 							{#if entry.icon}
-								<img src={entry.icon} alt={entry.label} />
+								<img src={iconUrl(entry.icon)} alt={entry.label} />
 							{:else}
 								<span class="icon-placeholder">?</span>
 							{/if}
 							{#if entry.bottomText}
 								<span class="level-badge">{entry.bottomText}</span>
 							{/if}
-							<button
-								class="entry-delete-button"
-								title="Delete entry"
-								onclick={(e) => {
-									e.stopPropagation();
-									deleteEntry(flowId, nodeId, entryId);
-								}}
-							>
-								&times;
-							</button>
+							{#if entryCount > 1}
+								<button
+									class="entry-delete-button"
+									title="Delete entry"
+									onclick={(e) => {
+										e.stopPropagation();
+										askDeleteEntry(flowId, nodeId, entryId);
+									}}
+								>
+									&times;
+								</button>
+							{/if}
 						</div>
 					{/each}
 				</div>
@@ -388,13 +514,15 @@
 						&rarr;
 					</button>
 				{/if}
-				<button
-					class="node-delete-button"
-					title="Delete node"
-					onclick={() => askDeleteNode(flowId, nodeId)}
-				>
-					&times;
-				</button>
+				{#if nodeCount > 1}
+					<button
+						class="node-delete-button"
+						title="Delete node"
+						onclick={() => askDeleteNode(flowId, nodeId)}
+					>
+						&times;
+					</button>
+				{/if}
 			</div>
 		{/each}
 	</div>
@@ -452,28 +580,58 @@
 		margin: 2rem auto;
 	}
 
+	.flow-name {
+		flex-shrink: 0;
+		max-width: 6rem;
+		font-size: 0.9rem;
+		font-weight: 600;
+		text-align: right;
+		overflow-wrap: break-word;
+		margin-right: 0.75rem;
+	}
+
+	.flow-name-form {
+		flex-shrink: 0;
+		margin-right: 0.75rem;
+	}
+
+	.flow-name-form input {
+		width: 6rem;
+		font-size: 0.9rem;
+		font-weight: 600;
+		text-align: right;
+	}
+
 	.flow.editing {
 		padding: 0.75rem;
 		border: 1px solid #999;
 	}
 
-	.flow-delete-button {
+	.flow-controls {
 		position: absolute;
 		top: 50%;
 		left: -1rem;
 		transform: translateY(-50%);
 		z-index: 1;
-		width: 2rem;
-		height: 2rem;
-		font-size: 1.25rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.25rem;
 		opacity: 0;
 		pointer-events: none;
 	}
 
-	.flow.editing:hover .flow-delete-button,
-	.flow.editing:focus-within .flow-delete-button {
+	.flow.editing:hover .flow-controls,
+	.flow.editing:focus-within .flow-controls {
 		opacity: 1;
 		pointer-events: auto;
+	}
+
+	.flow-delete-button,
+	.flow-move-button {
+		width: 2rem;
+		height: 2rem;
+		font-size: 1.25rem;
 	}
 
 	.edge-arrow {
