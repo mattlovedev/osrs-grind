@@ -756,9 +756,11 @@ service:
    `roles/datastore.user` explicitly (on top of its existing
    `roles/firebase.sdkAdminServiceAgent`, which likely already covered
    this - added anyway to remove doubt, IAM roles stack additively).
-7. Create an Artifact Registry repository in the `osrs-grind` project —
-   the built image needs somewhere to live. GitHub never stores or serves
-   it; git only ever holds the `Dockerfile` recipe, not the built image.
+7. ~~Create an Artifact Registry repository~~ — `grind-app`, Docker format,
+   `us-central1`, in the `osrs-grind` project (the Artifact Registry API
+   needed enabling first, one-time per-project). This is where the built
+   image lives; GitHub never stores or serves it — git only ever holds the
+   `Dockerfile` recipe, not the built image.
 8. First deploy by hand (build, push to that Artifact Registry repo,
    `gcloud run deploy`) to prove the whole thing end-to-end before
    automating.
