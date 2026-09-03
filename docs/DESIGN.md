@@ -776,20 +776,34 @@ service:
    scraper scripts. They'll likely fold into or get superseded by the
    GitHub Actions workflow (next), but stay useful as a manual escape
    hatch if CI's ever down.
-9. Set up Workload Identity Federation between the GitHub repo and the
-   GCP project — GitHub Actions authenticates via short-lived OIDC
-   tokens, no stored service-account key.
-10. Write the GitHub Actions workflow: `on: push: branches: [main]` →
-    build (on the runner, or via a triggered Cloud Build job) → push to
-    Artifact Registry → `gcloud run deploy`. (A merged PR is a push to
-    `main`, so this covers both without a separate trigger.)
-11. Test the workflow with a trivial push.
+9. ~~Set up Workload Identity Federation~~ between the GitHub repo and the
+   GCP project. A dedicated `github-deployer` service account (not
+   `firebase-adminsdk-fbsvc`, which Cloud Run runs *as* with Firestore
+   access) was created specifically for this, with only `roles/run.admin`,
+   `roles/artifactregistry.writer`, and `roles/iam.serviceAccountUser`
+   scoped to just `firebase-adminsdk-fbsvc` (needed so it can deploy a
+   revision that runs as that account) - narrower blast radius than
+   reusing the Firestore-capable account for CI. The WIF pool/provider's
+   `--attribute-condition` restricts trust to tokens asserting they came
+   from exactly `mattlovedev/osrs-grind`, so no other repo could use it
+   even if they knew the pool existed. No stored key anywhere.
+10. ~~Write the GitHub Actions workflow~~ (`.github/workflows/deploy.yml`):
+    `on: push: branches: [main]` → build on the runner → push to Artifact
+    Registry, tagged with `${{ github.sha }}` (not `:latest`, unlike the
+    manual scripts - every deployed revision traces back to an exact
+    commit, and rollback is just redeploying an older SHA-tagged image) →
+    `gcloud run deploy`. Team decided against PRs entirely for this
+    project (local merge + push to `main` is the workflow) - still covered
+    the same way, since that's a push to `main` regardless of how the
+    merge happened.
+11. Test the workflow with a trivial push — the push that adds this
+    workflow file is itself that test.
 
 **Deferred, not blocking any of the above:** making the repo public (a
 git-history sanity check for anything sensitive is worth doing right
-before that specific step, not before the rest of this list), and branch
-protection / collaborator merge-access rules on `main` (only needed
-before actually inviting others to contribute — WIF itself is safe under
-a public repo already, since it only trusts `push`-triggered workflow
-runs, not fork-originated `pull_request` runs, so a public repo alone
-doesn't grant deploy access to anyone who can't already merge to `main`).
+before that specific step, not before the rest of this list), and locking
+`main` to just the account holder once others might get involved (not
+needed for a while - WIF itself is already safe under a public repo, since
+it only trusts `push`-triggered workflow runs, not fork-originated
+`pull_request` runs, so a public repo alone doesn't grant deploy access to
+anyone who can't already push to `main`).
