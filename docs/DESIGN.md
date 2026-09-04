@@ -126,6 +126,11 @@ tables including:
   filename instead of guessing a naming pattern, which already burned us
   once: `Inventory_tab.png` turned out to be a 204×275 screenshot of the
   whole panel, not the 25×27 backpack icon we wanted).
+- `Bucket:Infobox_activity` — the `{{Infobox Activity}}` table backing
+  minigame/activity pages (found 2026-09-04, missed in the original survey
+  — not every infobox template's bucket was checked up front). Its `image`
+  field is a full gameplay screenshot, not an icon — see "Minigames" below
+  for how icon resolution actually works for this category.
 - `Bucket:Recipe` — the source for skill-derivable items (spiked
   2026-09-01). Its `production_json` blob per row carries
   `output {name, image, cost}` + `skills [{name, level, experience}]` +
@@ -296,6 +301,125 @@ the catalog grows/changes (not a one-time throwaway) — distinct from the
 `scripts/tmp-*.mjs` pattern used elsewhere in this doc's history for
 one-off manual verification during feature testing, which get deleted
 after use.
+
+**Minigames (added 2026-09-04, `scripts/05-fetch-minigames.mjs`).**
+`Category:Minigames` (namespace 0) is 50 pages — small enough to discover
+and fetch in one script rather than the bosses/monsters split, which only
+earns its keep at thousand-page scale (see that script's header comment).
+The "Minigames" overview article itself needs no special-casing to skip —
+it has no `Infobox Activity` row, so it's dropped the same way any other
+non-activity page is.
+
+Icon sourcing needed real research: there's a Bucket table for this after
+all (`infobox_activity`, undocumented at the top of this doc since it
+wasn't known when the Bucket vs. Cargo question was first settled — found
+by probing candidate names against the API's "does not exist" vs. "must
+select a field" error, which distinguishes a missing bucket from a real
+one with an unrecognized field name), but its `image` field is a full
+gameplay screenshot (verified: Barbarian Assault's is "Barbarian Assault
+gameplay.png" at 300px), not a small icon — `{{Infobox Activity}}` has no
+dedicated icon parameter at all. What most (not all) minigame articles do
+instead, informally, is place a `[[File:<Name> logo.png]]` reference on
+its own line immediately after the infobox closes. `Category:Minigame
+icons` documents some of these but not all (21 of ~50 checked) — not a
+reliable enumeration source on its own — so the script reads each page's
+own wikitext (`action=parse&prop=wikitext`) and regex-matches that
+convention directly. Verified against 5 sample pages (Barbarian Assault,
+Guardians of the Rift, Tithe Farm, Inferno, Castle Wars): 4 had the logo
+line, 1 (Volcanic Mine) didn't. Preference order per page, recall over
+precision like the rest of the catalog: the logo file if the convention
+matched, else the infobox screenshot, else null.
+
+**Icon coverage fixes (2026-09-04).** Prompted by "why doesn't this boss
+have an icon" for a handful of catalog entries after the first real runs —
+two distinct bugs, both fixed:
+
+- **Stage 3 was silently dropping icons on a name-slug collision.**
+  `dedupeEntries` groups entries by `slugify(name)` before downloading (so
+  two entries don't fight over the same `/icons/<category>/<slug>.<ext>`
+  path) — but when two genuinely different pages collided onto the same
+  slug because they differ only in casing or punctuation (`slugify` strips
+  both), the loser was dropped outright with just a console warning, never
+  making it into the icon manifest at all. Root cause: two pages can be
+  the same monster in spirit but different wiki articles — e.g. "Giant
+  Lobster" (the real Slayer-task monster) vs. "Giant lobster" (a
+  lower-level quest-instance version from Ghosts Ahoy) — and stage 0's own
+  slug-disambiguation (see "Slug collisions" above) only applies to raw
+  *filenames*, not to this separate icon-download dedup keyed by *name*.
+  Fixed by aliasing instead of dropping: the losing name now gets the same
+  local icon path as whichever name won the slug once that download
+  resolves, rather than no entry at all. Verified locally against the
+  existing `scripts/.data/raw/` and `items.json` (no scrape re-run): fixed
+  all 4 of the then-icon-less monsters (Giant Lobster, Monstrous basilisk,
+  Moss giant, Thrower Troll — each a casing collision against a
+  quest-instance variant) and 36 of the 146 icon-less items (mostly
+  potion-dose variants like "Antidote++" vs "Antidote+", where `slugify`
+  collapses the `+`/`-` that was the only real difference).
+- **Stage 1 only ever checked `infobox_monster`.** Not every page in
+  `Category:Bosses` uses `{{Infobox monster}}` — see the boss-icon fallback
+  chain covered in its own section above stage 1's `fetchMonsterInfo` in
+  `scripts/01-fetch-raw.mjs`: skilling bosses modeled as NPCs (Tempoross),
+  interactive scenery rather than a creature (Wintertodt's snow-storm
+  vortex), or multi-phase/grouped fights and umbrella pages modeled as an
+  Activity like a minigame (Grotesque Guardians, Royal Titans, Moons of
+  Peril, Barrows, Dagannoth Kings). Fixed with a fallback chain -
+  `infobox_npc` → `infobox_activity` → `infobox_scenery` - tried only when
+  `infobox_monster` comes back empty. A page with *no* row in any of the
+  four is treated the same as always (not a real page, skipped) - this is
+  what correctly excludes pure overview/meta articles that happen to sit
+  in Category:Bosses ("Boss", "Boss kill count", "Barrows brothers") and a
+  never-released concept boss killed by a failed community poll
+  ("Wrathmaw"), with no name-hardcoding needed to tell them apart from the
+  real pages. None of the fallback buckets carry a `combat_level` field,
+  which is correct rather than a gap - these are exactly the "not a
+  traditional monster" cases. Multi-version infoboxes (Tempoross's
+  Surfaced/Submerged/Enraged, Grotesque Guardians' Dawn/Dusk) return one
+  Bucket row per version in an order that doesn't reliably match the
+  page's own declared order (verified for Tempoross), so picking "the"
+  image reads the page's wikitext for the first declared version's
+  `image1` instead of trusting row order - the same technique the
+  minigame logo lookup above already established. Verified end-to-end
+  against the real wiki (read-only GETs, no scraper run) for all 12
+  previously icon-less bosses: 8 now resolve correctly, 4 correctly
+  excluded.
+- Two umbrella pages (Barrows, Dagannoth Kings) now get an icon via this
+  chain despite their real content already being separately catalogued as
+  the six brothers / three kings - a little redundant, but left as-is:
+  the catalog doesn't gate on this kind of judgment call anywhere else
+  either (see "Notability" above), and detecting "is this page secretly
+  just a disambiguation hub" robustly isn't worth the fragility.
+
+**Staleness caching has no concept of "the scraper's own logic changed"
+(also 2026-09-04).** The fallback-chain fix above didn't take effect on
+the first `npm run scrape` re-run after landing it - Tempoross's raw file
+was still 3 days old with a null icon. Stage 0's staleness check (and
+stage 1's own separate "reclaim from disk" shortcut, meant for resuming a
+run that died partway) both compare only the *wiki page's* revision
+timestamp against what's cached - they have no way to know the *code*
+that processes that page changed, not the page itself. So a page fetched
+under old, buggy logic stays cached as "correct" forever, as long as its
+wiki content doesn't change - which is exactly what happened here (and
+"Arzinian Being of Bordanzan" had been sitting on a stale null-icon raw
+file since 2026-04-07, five months, for the same reason). Fixed by adding
+a `--refresh` flag to both stage 0 and stage 1 (matching the convention
+stage 3 already had), which bypasses staleness/reclaim entirely rather
+than trusting the cache - pair it with `--only="Title1,Title2"` to target
+specific pages instead of a full re-fetch:
+```
+node scripts/00-discover.mjs --refresh --only="Tempoross,Wintertodt"
+node scripts/01-fetch-raw.mjs --refresh
+```
+
+One more piece of the same bug: refreshing a title that *used* to resolve
+(e.g. "Boss", written back when stage 1 wrote a stub for any page at all)
+but now correctly resolves to "not a real page" wasn't enough on its own
+either - stage 1 only ever writes/updates a raw file, it never deleted
+one, so the stale file stayed on disk and stage 4 (which reads every file
+physically in `raw/`, not just what the manifest tracks) kept serving it
+regardless. Stage 1 now deletes a title's raw file (and its manifest
+entry) when a refresh finds no infobox row anywhere for it, so a title
+that's been reclassified as "not real" actually disappears from the
+catalog instead of lingering as a phantom entry.
 
 ## Read-only sharing (added 2026-09-03, live in production)
 
@@ -505,10 +629,10 @@ step is validated before the next depends on it.
      committed, so the downloaded files get checked in.
    - ~~Stage 4 — assemble the catalog~~ (`04-assemble-catalog.mjs`, done).
      Combines the static skill list, boss name/combat-level from
-     `raw/*.json`, `items.json`, and the stage-3 icon manifest into
-     `src/lib/data/catalog.json` — `{generatedAt, source, counts, skills,
-bosses, items, minigames}`, each entry `{name, wikiLink, icon}` with
-     icon a local path or null. `minigames` empty (source TBD). Committed.
+     `raw/*.json`, `items.json`, `raw-minigames/*.json`, and the stage-3
+     icon manifest into `src/lib/data/catalog.json` — `{generatedAt,
+     source, counts, skills, bosses, items, minigames}`, each entry
+     `{name, wikiLink, icon}` with icon a local path or null. Committed.
 2. **Pull real data** — not at full 341-boss scale yet; get the actual
    shape of the output (JSON catalog + downloaded/normalized icon files)
    proven out first, small scale, before committing to running it against
@@ -523,16 +647,13 @@ bosses, items, minigames}`, each entry `{name, wikiLink, icon}` with
    (`EntryModal.svelte`, `ConfirmModal.svelte`) — see the Entry bullet in
    Domain model for the creation/override flow. Native `confirm()` popups
    replaced too, for one consistent modal UX.
-5. Further out, not yet scoped in detail: result ranking (marquee-item
-   signal from collection-log / recipe membership), minigames (the
-   remaining coverage gap below), actual Cloud Run deployment (see
-   "Deployment status" above).
+5. ~~**Minigames**~~ (done 2026-09-04, `05-fetch-minigames.mjs` — see
+   below). Further out, not yet scoped in detail: result ranking
+   (marquee-item signal from collection-log / recipe membership), actual
+   Cloud Run deployment (see "Deployment status" above).
 
 **Known catalog gaps (tabled 2026-09-01, item-coverage half closed
-2026-09-02):**
-
-- **Minigames** — `catalog.json`'s `minigames` array is empty; no source
-  decided yet.
+2026-09-02, minigames closed 2026-09-04):**
 - ~~Real things missing from all three scrape sources~~ — closed by
   unioning the full `Infobox_item` table into stage 2c as a fourth source
   (see the stage 2c bullet above); both examples that motivated this

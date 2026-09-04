@@ -11,6 +11,9 @@
 //                treated as "boss", matching how it was actually discovered)
 //   - skills   : the static 24-skill list; icon URL is "<Skill>_icon.png" on
 //                the wiki (verified pattern for all 24)
+//   - minigames: scripts/.data/raw-minigames/*.json (iconUrl per page, from
+//                stage 5 - a logo file if the page has one, else a gameplay
+//                screenshot, else null)
 //
 // Files already on disk are left alone unless --refresh. Writes a manifest
 // (scripts/.data/icons.json) mapping each entry name to its local
@@ -38,6 +41,7 @@ import { SKILLS } from './lib/skills.mjs';
 const CWD = process.cwd();
 const DATA_DIR = path.join(CWD, 'scripts', '.data');
 const RAW_DIR = path.join(DATA_DIR, 'raw');
+const RAW_MINIGAMES_DIR = path.join(DATA_DIR, 'raw-minigames');
 const ITEMS_PATH = path.join(DATA_DIR, 'items.json');
 const ICONS_MANIFEST = path.join(DATA_DIR, 'icons.json');
 const STATIC_ICONS = path.join(CWD, 'static', 'icons');
@@ -116,24 +120,35 @@ async function mapPool(items, concurrency, fn) {
 	return results;
 }
 
-// Dedupe a category's entries by slug, dropping ones with no icon URL, and
-// apply the dev --limit. Returns [{ category, name, url }].
+// Dedupe a category's entries by slug (so e.g. a quest-instance page and
+// the regular monster page - "Giant lobster" vs "Giant Lobster", casing
+// the only difference - don't try to write two different files to the
+// same /icons/monsters/giant-lobster.png path), and apply the dev --limit.
+// A name that loses its slug to an earlier entry isn't dropped outright -
+// it's recorded in `aliases` so main() can still give it a manifest entry
+// once the canonical one has a resolved local path (same icon, no second
+// download). Returns { list: [{category,name,url,slug}], aliases:
+// [{category,name,canonicalName}] }.
 function dedupeEntries(category, entries, limit) {
 	const bySlug = new Map();
+	const aliases = [];
 	for (const { name, url } of entries) {
 		if (!url) continue;
 		const slug = slugify(name);
 		if (!slug) continue;
 		const existing = bySlug.get(slug);
 		if (existing && existing.name !== name) {
-			console.warn(`  slug collision in ${category}: "${existing.name}" and "${name}" -> ${slug}`);
+			console.warn(
+				`  slug collision in ${category}: "${existing.name}" and "${name}" -> ${slug} (aliasing "${name}" to "${existing.name}"'s icon)`
+			);
+			aliases.push({ category, name, canonicalName: existing.name });
 			continue;
 		}
 		if (existing) continue;
 		bySlug.set(slug, { category, name, url, slug });
 	}
 	const list = [...bySlug.values()];
-	return limit ? list.slice(0, limit) : list;
+	return { list: limit ? list.slice(0, limit) : list, aliases };
 }
 
 // Turn a deduped entry into a download task, naming the file from its
@@ -177,14 +192,25 @@ async function main() {
 		url: `https://oldschool.runescape.wiki/images/${name}_icon.png`
 	}));
 
+	const minigameEntries = [];
+	if (existsSync(RAW_MINIGAMES_DIR)) {
+		for (const f of readdirSync(RAW_MINIGAMES_DIR).filter((f) => f.endsWith('.json'))) {
+			const raw = readJson(path.join(RAW_MINIGAMES_DIR, f));
+			minigameEntries.push({ name: raw.name ?? raw.title, url: raw.iconUrl });
+		}
+	}
+
 	// Dedupe + apply --limit first, so a dev run only resolves/downloads
 	// what it will actually use.
-	const entries = [
-		...dedupeEntries('items', itemEntries, limit),
-		...dedupeEntries('bosses', bossEntries, limit),
-		...dedupeEntries('monsters', monsterEntries, limit),
-		...dedupeEntries('skills', skillEntries, limit)
+	const deduped = [
+		dedupeEntries('items', itemEntries, limit),
+		dedupeEntries('bosses', bossEntries, limit),
+		dedupeEntries('monsters', monsterEntries, limit),
+		dedupeEntries('skills', skillEntries, limit),
+		dedupeEntries('minigames', minigameEntries, limit)
 	];
+	const entries = deduped.flatMap((d) => d.list);
+	const aliases = deduped.flatMap((d) => d.aliases);
 
 	// Resolve the string-munged URLs to real ones (follows file redirects).
 	const rawUrls = [...new Set(entries.map((e) => e.url))];
@@ -196,7 +222,7 @@ async function main() {
 
 	const tasks = entries.map(toTask);
 
-	for (const c of ['items', 'bosses', 'monsters', 'skills']) {
+	for (const c of ['items', 'bosses', 'monsters', 'skills', 'minigames']) {
 		mkdirSync(path.join(STATIC_ICONS, c), { recursive: true });
 	}
 
@@ -204,7 +230,7 @@ async function main() {
 	let downloaded = 0;
 	let skipped = 0;
 	const failed = [];
-	const manifest = { items: {}, bosses: {}, monsters: {}, skills: {} };
+	const manifest = { items: {}, bosses: {}, monsters: {}, skills: {}, minigames: {} };
 
 	await mapPool(tasks, CONCURRENCY, async (task) => {
 		if (!refresh && existsSync(task.dest)) {
@@ -224,13 +250,25 @@ async function main() {
 		}
 	});
 
+	// Give every name that lost a slug collision (see dedupeEntries) the
+	// same manifest entry as the one that won it, so stage 4 can still find
+	// an icon for it - no second download, since it's the same file on disk.
+	let aliased = 0;
+	for (const { category, name, canonicalName } of aliases) {
+		const canonicalPath = manifest[category][canonicalName];
+		if (canonicalPath) {
+			manifest[category][name] = canonicalPath;
+			aliased++;
+		}
+	}
+
 	mkdirSync(DATA_DIR, { recursive: true });
 	writeFileSync(
 		ICONS_MANIFEST,
 		JSON.stringify(
 			{
 				generatedAt: new Date().toISOString(),
-				counts: { downloaded, skipped, failed: failed.length, noIcon: noIconItems.length },
+				counts: { downloaded, skipped, failed: failed.length, aliased, noIcon: noIconItems.length },
 				icons: manifest,
 				failed,
 				noIcon: noIconItems
@@ -242,6 +280,7 @@ async function main() {
 
 	console.log(
 		`\n${downloaded} downloaded, ${skipped} already present, ${failed.length} failed, ` +
+			`${aliased} aliased onto another entry's icon (slug collision), ` +
 			`${noIconItems.length} item(s) had no iconUrl.`
 	);
 	console.log(`Manifest -> ${ICONS_MANIFEST}`);

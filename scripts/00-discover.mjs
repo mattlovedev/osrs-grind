@@ -16,6 +16,18 @@
 //   node scripts/00-discover.mjs                                  # everything
 //   node scripts/00-discover.mjs --limit=5                        # first 5
 //   node scripts/00-discover.mjs --only="Dagannoth Rex,Dagannoth Prime"
+//   node scripts/00-discover.mjs --refresh --only="Tempoross"      # force even if current
+//
+// --refresh forces every considered title (after --only/--limit) into
+// to-fetch.json regardless of what the manifest says, and stage 1 needs
+// its own --refresh too (see that stage) - staleness here is purely about
+// whether the *wiki page* changed, so it has no way to know the
+// *scraper's own logic* changed instead. That gap is exactly what let
+// Tempoross/Wintertodt/etc. sit with a stale, wrong-at-the-time
+// null-icon raw file for months even after the icon-fallback fix landed
+// (2026-09-04) - their wiki revision hadn't changed, so they kept
+// reporting "already current" and were never re-fetched with the new
+// logic. --refresh is the escape hatch for exactly that situation.
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -36,7 +48,8 @@ function parseArgs(argv) {
 					.split(',')
 					.map((s) => s.trim())
 			: null,
-		limit: limitArg ? Number(limitArg.slice('--limit='.length)) : null
+		limit: limitArg ? Number(limitArg.slice('--limit='.length)) : null,
+		refresh: argv.includes('--refresh')
 	};
 }
 
@@ -50,7 +63,7 @@ function loadManifest() {
 }
 
 async function main() {
-	const { only, limit } = parseArgs(process.argv.slice(2));
+	const { only, limit, refresh } = parseArgs(process.argv.slice(2));
 
 	// title -> Set of source keys ('boss', 'slayer', ...) it matched.
 	const sourcesByTitle = new Map();
@@ -122,7 +135,10 @@ async function main() {
 		// re-fetch even if the revision is unchanged, since the file at its
 		// old path may hold a different page's data entirely (see stage 0's
 		// slug-collision comment above).
-		if (!known) {
+		if (refresh) {
+			staleCount++;
+			toFetch.push({ title, wikiRevisionTimestamp: currentTs, sources, slug });
+		} else if (!known) {
 			newCount++;
 			toFetch.push({ title, wikiRevisionTimestamp: currentTs, sources, slug });
 		} else if (known.wikiRevisionTimestamp !== currentTs || known.rawFile !== rawFile) {
