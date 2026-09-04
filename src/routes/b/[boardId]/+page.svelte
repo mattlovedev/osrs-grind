@@ -120,7 +120,7 @@
 				};
 			})
 			.filter((g) => g !== null);
-		return { name: board.name ?? '', grinds };
+		return { name: board.name ?? '', icon: board.icon, grinds };
 	}
 
 	let exportCopied = $state(false);
@@ -152,7 +152,7 @@
 		) {
 			return 'Expected an exported board: an object with a "grinds" array.';
 		}
-		const source = parsed as { name?: unknown; grinds: unknown[] };
+		const source = parsed as { name?: unknown; icon?: unknown; grinds: unknown[] };
 
 		const id = () => crypto.randomUUID().slice(0, 8);
 		const flows: Record<string, unknown> = {};
@@ -212,8 +212,11 @@
 		const ref = doc(db, 'boards', data.boardId);
 		await updateDoc(ref, {
 			updatedAt: serverTimestamp(),
-			// only adopt the imported name if this board hasn't been named yet
+			// only adopt the imported name/icon if this board doesn't already
+			// have one - importing is only ever done on a blank (contentless)
+			// board, but it may already have been named/iconed before import
 			...(board.name ? {} : { name: typeof source.name === 'string' ? source.name : '' }),
+			...(board.icon ? {} : { icon: typeof source.icon === 'string' ? source.icon : null }),
 			flowOrder,
 			flows
 		});
