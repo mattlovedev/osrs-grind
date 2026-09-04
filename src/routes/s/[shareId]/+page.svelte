@@ -167,8 +167,10 @@
 	}
 
 	.entry-cell img {
-		max-width: 85%;
-		max-height: 85%;
+		/* object-fit, not max-width/max-height - percentage max-height on a flex-child img overflows tall sprites on iOS Safari. */
+		width: 85%;
+		height: 85%;
+		object-fit: contain;
 	}
 
 	.icon-placeholder {
