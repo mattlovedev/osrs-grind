@@ -832,9 +832,11 @@ live — an accepted tradeoff for zero runtime wiki dependency and no
 per-request I/O cost.
 
 **Deployment status: live** as of 2026-09-03, at
-`https://grind-app-549755295105.us-central1.run.app` — see "Roadmap -
-deployment" further down for the full plan, what got found only by
-actually building it, and the punch list this replaced. Short version:
+`https://grind-app-549755295105.us-central1.run.app`; also reachable at the
+custom domain `https://grind.mattlove.dev` as of 2026-09-04 (both resolve
+to the same Cloud Run service) — see "Roadmap - deployment" further down
+for the full plan, what got found only by actually building it, the punch
+list this replaced, and the domain mapping. Short version:
 Cloud Run (`adapter-node` in a Dockerfile), icons served straight from a
 public GCS bucket rather than baked into the image, and GitHub Actions
 (via Workload Identity Federation, no stored key) auto-deploying on every
@@ -987,6 +989,11 @@ service:
    as long as they never use `--set-env-vars` (replaces the whole set)
    instead of `--update-env-vars` (merges), and as long as the URL itself
    doesn't change (e.g. a future custom domain would need this redone).
+   ~~Superseded 2026-09-04~~ — the custom domain did in fact happen (see
+   "Custom domain mapped" below), and a static `ORIGIN` can only match one
+   hostname, so it broke `createBoard` from the new domain while the old
+   `.run.app` URL still worked. Replaced with adapter-node's dynamic origin
+   detection instead, which needs no update per domain going forward.
 6. ~~Verify the Cloud Run service's attached service account has Firestore
    permissions~~ — no default compute service account exists yet (this
    project's never used Compute Engine or Cloud Run), so the plan changed
@@ -1060,3 +1067,26 @@ pattern only, so feature branches stay fully open for push. WIF itself
 was already safe under a public repo regardless, since it only trusts
 `push`-triggered workflow runs, not fork-originated `pull_request` runs -
 this just closes the direct-push gap on top of that.
+
+**Custom domain mapped, 2026-09-04.** `grind.mattlove.dev` now points at
+`grind-app`, following a pattern already established across other GCP
+projects on the same `mattlove.dev` domain (not this one): the apex
+`mattlove.dev` and `app.mattlove.dev` are served by App Engine in project
+`adept-cascade-313520`, and `score.mattlove.dev` by Cloud Run in project
+`score-470000`. `grind.mattlove.dev` is the first subdomain hosted from
+`osrs-grind` itself.
+
+Mechanics: `gcloud beta run domain-mappings create --service=grind-app
+--domain=grind.mattlove.dev --region=us-central1 --project=osrs-grind`,
+then a `CNAME grind → ghs.googlehosted.com.` record added in DNS (same
+target the `app` and `score` CNAMEs already use) — DNS for `mattlove.dev`
+is managed at GoDaddy, not Cloud DNS, so that step is manual outside
+`gcloud` entirely. Google auto-issues the managed TLS cert once DNS
+resolves; took about 15-20 minutes end to end here, including a few
+minutes of edge-propagation lag after the cert's control-plane status
+already showed provisioned.
+
+Surfaced a real bug: see the `ORIGIN` bullet in the punch list above —
+fixed by switching to adapter-node's dynamic origin detection so the app
+works correctly at both the `.run.app` URL and the custom domain (and any
+future one) without needing a redeploy per domain.
