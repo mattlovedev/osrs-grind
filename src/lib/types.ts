@@ -37,4 +37,9 @@ export interface Board {
 	// boards someone chose to share - see DESIGN.md's read-only sharing
 	// notes.
 	shareId: string;
+	// Favicon shown next to the title and used as the browser tab icon.
+	// User-picked via the icon picker, not derived from board content -
+	// null/absent (older boards predate this field) falls back to the
+	// default pestle and mortar.
+	icon: string | null;
 }
