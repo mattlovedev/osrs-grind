@@ -11,7 +11,11 @@
 //                once, as a boss. A raw file with no `source` field at all
 //                predates that field and is treated as "boss" (see stage 1).
 //   - items    : the merged list from stage 2c (scripts/.data/items.json)
-//   - minigames : empty for now (source TBD)
+//   - minigames : name + icon from stage 5's raw files
+//                 (scripts/.data/raw-minigames/*.json)
+//   - quests   : name + wikiLink from stage 6 (scripts/.data/quests.json),
+//                every entry sharing the same one icon (see stage 3's
+//                QUEST_ICON_NAME)
 //
 // Each entry gets { name, wikiLink, icon }, where `icon` is the local
 // /icons/<category>/<file> path from stage 3's manifest
@@ -39,7 +43,13 @@ import { SKILLS } from './lib/skills.mjs';
 const CWD = process.cwd();
 const DATA_DIR = path.join(CWD, 'scripts', '.data');
 const RAW_DIR = path.join(DATA_DIR, 'raw');
+const RAW_MINIGAMES_DIR = path.join(DATA_DIR, 'raw-minigames');
+const QUESTS_PATH = path.join(DATA_DIR, 'quests.json');
 const ITEMS_PATH = path.join(DATA_DIR, 'items.json');
+
+// Must match stage 3's QUEST_ICON_NAME - the one manifest entry every
+// quest's icon is looked up as, since quests don't have individual icons.
+const QUEST_ICON_NAME = 'Quests';
 const ICONS_MANIFEST = path.join(DATA_DIR, 'icons.json');
 const OUT_PATH = path.join(CWD, 'src', 'lib', 'data', 'catalog.json');
 
@@ -61,7 +71,7 @@ function main() {
 
 	const iconMap = existsSync(ICONS_MANIFEST)
 		? readJson(ICONS_MANIFEST).icons
-		: { skills: {}, bosses: {}, items: {} };
+		: { skills: {}, bosses: {}, items: {}, minigames: {}, quests: {} };
 	if (!existsSync(ICONS_MANIFEST)) {
 		console.warn(`  ${ICONS_MANIFEST} missing - every icon will be null (run stage 3).`);
 	}
@@ -104,6 +114,31 @@ function main() {
 		.sort(byName);
 
 	const minigames = [];
+	if (existsSync(RAW_MINIGAMES_DIR)) {
+		for (const f of readdirSync(RAW_MINIGAMES_DIR).filter((f) => f.endsWith('.json'))) {
+			const raw = readJson(path.join(RAW_MINIGAMES_DIR, f));
+			const name = raw.name ?? raw.title;
+			minigames.push({
+				name,
+				wikiLink: wikiPageUrl(raw.title ?? name),
+				icon: iconFor('minigames', name)
+			});
+		}
+		minigames.sort(byName);
+	} else {
+		console.warn(`  ${RAW_MINIGAMES_DIR} missing - no minigames in the catalog (run stage 5).`);
+	}
+
+	const quests = [];
+	if (existsSync(QUESTS_PATH)) {
+		const questIcon = iconFor('quests', QUEST_ICON_NAME);
+		for (const { title } of readJson(QUESTS_PATH).quests) {
+			quests.push({ name: title, wikiLink: wikiPageUrl(title), icon: questIcon });
+		}
+		quests.sort(byName);
+	} else {
+		console.warn(`  ${QUESTS_PATH} missing - no quests in the catalog (run stage 6).`);
+	}
 
 	const catalog = {
 		generatedAt: new Date().toISOString(),
@@ -113,13 +148,15 @@ function main() {
 			bosses: bosses.length,
 			monsters: monsters.length,
 			items: items.length,
-			minigames: minigames.length
+			minigames: minigames.length,
+			quests: quests.length
 		},
 		skills,
 		bosses,
 		monsters,
 		items,
-		minigames
+		minigames,
+		quests
 	};
 
 	mkdirSync(path.dirname(OUT_PATH), { recursive: true });
@@ -132,7 +169,8 @@ function main() {
 			`  bosses:   ${bosses.length} (${nullIcons(bosses)} no icon)\n` +
 			`  monsters: ${monsters.length} (${nullIcons(monsters)} no icon)\n` +
 			`  items:    ${items.length} (${nullIcons(items)} no icon)\n` +
-			`  minigames: ${minigames.length}`
+			`  minigames: ${minigames.length} (${nullIcons(minigames)} no icon)\n` +
+			`  quests:   ${quests.length} (${nullIcons(quests)} no icon)`
 	);
 }
 

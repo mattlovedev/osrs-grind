@@ -1,12 +1,13 @@
 {
-  "generatedAt": "2026-09-03T17:28:24.452Z",
+  "generatedAt": "2026-09-04T16:57:47.430Z",
   "source": "https://oldschool.runescape.wiki (Bucket API)",
   "counts": {
     "skills": 24,
-    "bosses": 173,
+    "bosses": 169,
     "monsters": 609,
     "items": 13470,
-    "minigames": 0
+    "minigames": 50,
+    "quests": 196
   },
   "skills": [
     {
@@ -212,7 +213,7 @@
     {
       "name": "Arzinian Being of Bordanzan",
       "wikiLink": "https://oldschool.runescape.wiki/w/Arzinian_Being_of_Bordanzan",
-      "icon": null,
+      "icon": "/icons/bosses/arzinian-being-of-bordanzan.png",
       "combatLevel": null
     },
     {
@@ -230,13 +231,7 @@
     {
       "name": "Barrows",
       "wikiLink": "https://oldschool.runescape.wiki/w/Barrows",
-      "icon": null,
-      "combatLevel": null
-    },
-    {
-      "name": "Barrows brothers",
-      "wikiLink": "https://oldschool.runescape.wiki/w/Barrows_brothers",
-      "icon": null,
+      "icon": "/icons/bosses/barrows.png",
       "combatLevel": null
     },
     {
@@ -268,18 +263,6 @@
       "wikiLink": "https://oldschool.runescape.wiki/w/Blue_Moon",
       "icon": "/icons/bosses/blue-moon.png",
       "combatLevel": 329
-    },
-    {
-      "name": "Boss",
-      "wikiLink": "https://oldschool.runescape.wiki/w/Boss",
-      "icon": null,
-      "combatLevel": null
-    },
-    {
-      "name": "Boss kill count",
-      "wikiLink": "https://oldschool.runescape.wiki/w/Boss_kill_count",
-      "icon": null,
-      "combatLevel": null
     },
     {
       "name": "Bouncer",
@@ -398,7 +381,7 @@
     {
       "name": "Dagannoth Kings",
       "wikiLink": "https://oldschool.runescape.wiki/w/Dagannoth_Kings",
-      "icon": null,
+      "icon": "/icons/bosses/dagannoth-kings.png",
       "combatLevel": null
     },
     {
@@ -620,7 +603,7 @@
     {
       "name": "Grotesque Guardians",
       "wikiLink": "https://oldschool.runescape.wiki/w/Grotesque_Guardians",
-      "icon": null,
+      "icon": "/icons/bosses/grotesque-guardians.png",
       "combatLevel": null
     },
     {
@@ -752,7 +735,7 @@
     {
       "name": "Moons of Peril",
       "wikiLink": "https://oldschool.runescape.wiki/w/Moons_of_Peril",
-      "icon": null,
+      "icon": "/icons/bosses/moons-of-peril.png",
       "combatLevel": null
     },
     {
@@ -830,7 +813,7 @@
     {
       "name": "Royal Titans",
       "wikiLink": "https://oldschool.runescape.wiki/w/Royal_Titans",
-      "icon": null,
+      "icon": "/icons/bosses/royal-titans.png",
       "combatLevel": null
     },
     {
@@ -938,7 +921,7 @@
     {
       "name": "Tempoross",
       "wikiLink": "https://oldschool.runescape.wiki/w/Tempoross",
-      "icon": null,
+      "icon": "/icons/bosses/tempoross.png",
       "combatLevel": null
     },
     {
@@ -1124,13 +1107,7 @@
     {
       "name": "Wintertodt",
       "wikiLink": "https://oldschool.runescape.wiki/w/Wintertodt",
-      "icon": null,
-      "combatLevel": null
-    },
-    {
-      "name": "Wrathmaw",
-      "wikiLink": "https://oldschool.runescape.wiki/w/Wrathmaw",
-      "icon": null,
+      "icon": "/icons/bosses/wintertodt.gif",
       "combatLevel": null
     },
     {
@@ -2512,7 +2489,7 @@
     {
       "name": "Giant Lobster",
       "wikiLink": "https://oldschool.runescape.wiki/w/Giant_lobster",
-      "icon": null,
+      "icon": "/icons/monsters/giant-lobster.png",
       "combatLevel": 45
     },
     {
@@ -3334,7 +3311,7 @@
     {
       "name": "Monstrous basilisk",
       "wikiLink": "https://oldschool.runescape.wiki/w/Monstrous_basilisk",
-      "icon": null,
+      "icon": "/icons/monsters/monstrous-basilisk.png",
       "combatLevel": 135
     },
     {
@@ -3352,7 +3329,7 @@
     {
       "name": "Moss giant",
       "wikiLink": "https://oldschool.runescape.wiki/w/Moss_giant",
-      "icon": null,
+      "icon": "/icons/monsters/moss-giant.png",
       "combatLevel": 42
     },
     {
@@ -4390,7 +4367,7 @@
     {
       "name": "Thrower Troll",
       "wikiLink": "https://oldschool.runescape.wiki/w/Thrower_Troll",
-      "icon": null,
+      "icon": "/icons/monsters/thrower-troll.png",
       "combatLevel": 67
     },
     {
@@ -7690,12 +7667,12 @@
     {
       "name": "Anti-venom+",
       "wikiLink": "https://oldschool.runescape.wiki/w/Anti-venom%2B",
-      "icon": null
+      "icon": "/icons/items/anti-venom.png"
     },
     {
       "name": "Anti-venom+(4)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Anti-venom%2B(4)",
-      "icon": null
+      "icon": "/icons/items/anti-venom-4.png"
     },
     {
       "name": "Antidote+",
@@ -7725,12 +7702,12 @@
     {
       "name": "Antidote++",
       "wikiLink": "https://oldschool.runescape.wiki/w/Antidote%2B%2B",
-      "icon": null
+      "icon": "/icons/items/antidote.png"
     },
     {
       "name": "Antidote++ (unf)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Antidote%2B%2B_(unf)",
-      "icon": null
+      "icon": "/icons/items/antidote-unf.png"
     },
     {
       "name": "Antidote++(3)",
@@ -7740,7 +7717,7 @@
     {
       "name": "Antidote++(4)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Antidote%2B%2B(4)",
-      "icon": null
+      "icon": "/icons/items/antidote-4.png"
     },
     {
       "name": "Antifire mix",
@@ -7775,7 +7752,7 @@
     {
       "name": "Antipoison (-)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Antipoison_(-)",
-      "icon": null
+      "icon": "/icons/items/antipoison.png"
     },
     {
       "name": "Antipoison (-)(4)",
@@ -7785,12 +7762,12 @@
     {
       "name": "Antipoison (+)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Antipoison_(%2B)",
-      "icon": null
+      "icon": "/icons/items/antipoison.png"
     },
     {
       "name": "Antipoison (+)(4)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Antipoison_(%2B)(4)",
-      "icon": null
+      "icon": "/icons/items/antipoison-4.png"
     },
     {
       "name": "Antipoison mix",
@@ -29095,12 +29072,12 @@
     {
       "name": "Elder (+)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Elder_(%2B)",
-      "icon": null
+      "icon": "/icons/items/elder.png"
     },
     {
       "name": "Elder (+)(4)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Elder_(%2B)(4)",
-      "icon": null
+      "icon": "/icons/items/elder-4.png"
     },
     {
       "name": "Elder cadantine",
@@ -29310,7 +29287,7 @@
     {
       "name": "Elena portrait",
       "wikiLink": "https://oldschool.runescape.wiki/w/Elena_portrait",
-      "icon": null
+      "icon": "/icons/items/elena-portrait.png"
     },
     {
       "name": "Elf (interface item)",
@@ -35735,7 +35712,7 @@
     {
       "name": "Guam in a box?",
       "wikiLink": "https://oldschool.runescape.wiki/w/Guam_in_a_box%3F",
-      "icon": null
+      "icon": "/icons/items/guam-in-a-box.png"
     },
     {
       "name": "Guam leaf",
@@ -39115,7 +39092,7 @@
     {
       "name": "Isafdar painting",
       "wikiLink": "https://oldschool.runescape.wiki/w/Isafdar_painting",
-      "icon": null
+      "icon": "/icons/items/isafdar-painting.png"
     },
     {
       "name": "Item list",
@@ -39760,7 +39737,7 @@
     {
       "name": "Karamja painting",
       "wikiLink": "https://oldschool.runescape.wiki/w/Karamja_painting",
-      "icon": null
+      "icon": "/icons/items/karamja-painting.png"
     },
     {
       "name": "Karamjan monkey (item)",
@@ -40325,12 +40302,12 @@
     {
       "name": "Kodai (+)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Kodai_(%2B)",
-      "icon": null
+      "icon": "/icons/items/kodai.png"
     },
     {
       "name": "Kodai (+)(4)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Kodai_(%2B)(4)",
-      "icon": null
+      "icon": "/icons/items/kodai-4.png"
     },
     {
       "name": "Kodai insignia",
@@ -42120,7 +42097,7 @@
     {
       "name": "Lumbridge painting",
       "wikiLink": "https://oldschool.runescape.wiki/w/Lumbridge_painting",
-      "icon": null
+      "icon": "/icons/items/lumbridge-painting.png"
     },
     {
       "name": "Lumbridge task list",
@@ -45770,7 +45747,7 @@
     {
       "name": "Morytania painting",
       "wikiLink": "https://oldschool.runescape.wiki/w/Morytania_painting",
-      "icon": null
+      "icon": "/icons/items/morytania-painting.png"
     },
     {
       "name": "Mos le'harmless teleport",
@@ -49070,12 +49047,12 @@
     {
       "name": "Overload (+)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Overload_(%2B)",
-      "icon": null
+      "icon": "/icons/items/overload.png"
     },
     {
       "name": "Overload (+)(4)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Overload_(%2B)(4)",
-      "icon": null
+      "icon": "/icons/items/overload-4.png"
     },
     {
       "name": "Overload (Chambers of Xeric)",
@@ -50875,7 +50852,7 @@
     {
       "name": "Prayer enhance (-)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Prayer_enhance_(-)",
-      "icon": null
+      "icon": "/icons/items/prayer-enhance.png"
     },
     {
       "name": "Prayer enhance (-)(4)",
@@ -50885,17 +50862,17 @@
     {
       "name": "Prayer enhance (+)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Prayer_enhance_(%2B)",
-      "icon": null
+      "icon": "/icons/items/prayer-enhance.png"
     },
     {
       "name": "Prayer enhance (+)(4)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Prayer_enhance_(%2B)(4)",
-      "icon": null
+      "icon": "/icons/items/prayer-enhance-4.png"
     },
     {
       "name": "Prayer enhance (4)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Prayer_enhance_(4)",
-      "icon": null
+      "icon": "/icons/items/prayer-enhance-4.png"
     },
     {
       "name": "Prayer hood",
@@ -53785,12 +53762,12 @@
     {
       "name": "Revitalisation (+)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Revitalisation_(%2B)",
-      "icon": null
+      "icon": "/icons/items/revitalisation.png"
     },
     {
       "name": "Revitalisation (+)(4)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Revitalisation_(%2B)(4)",
-      "icon": null
+      "icon": "/icons/items/revitalisation-4.png"
     },
     {
       "name": "Revitalisation pool",
@@ -57140,7 +57117,7 @@
     {
       "name": "Seaweed in a box?",
       "wikiLink": "https://oldschool.runescape.wiki/w/Seaweed_in_a_box%3F",
-      "icon": null
+      "icon": "/icons/items/seaweed-in-a-box.png"
     },
     {
       "name": "Seaweed sandwich",
@@ -67175,12 +67152,12 @@
     {
       "name": "Twisted (+)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Twisted_(%2B)",
-      "icon": null
+      "icon": "/icons/items/twisted.png"
     },
     {
       "name": "Twisted (+)(4)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Twisted_(%2B)(4)",
-      "icon": null
+      "icon": "/icons/items/twisted-4.png"
     },
     {
       "name": "Twisted adamant trophy",
@@ -69735,12 +69712,12 @@
     {
       "name": "Weapon poison(+)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Weapon_poison(%2B)",
-      "icon": null
+      "icon": "/icons/items/weapon-poison.png"
     },
     {
       "name": "Weapon poison(++)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Weapon_poison(%2B%2B)",
-      "icon": null
+      "icon": "/icons/items/weapon-poison.png"
     },
     {
       "name": "Weapon poison+ (unf)",
@@ -69750,7 +69727,7 @@
     {
       "name": "Weapon poison++ (unf)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Weapon_poison%2B%2B_(unf)",
-      "icon": null
+      "icon": "/icons/items/weapon-poison-unf.png"
     },
     {
       "name": "Weapon store key",
@@ -71180,7 +71157,7 @@
     {
       "name": "Xeric's aid (-)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Xeric's_aid_(-)",
-      "icon": null
+      "icon": "/icons/items/xeric-s-aid.png"
     },
     {
       "name": "Xeric's aid (-)(4)",
@@ -71190,17 +71167,17 @@
     {
       "name": "Xeric's aid (+)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Xeric's_aid_(%2B)",
-      "icon": null
+      "icon": "/icons/items/xeric-s-aid.png"
     },
     {
       "name": "Xeric's aid (+)(4)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Xeric's_aid_(%2B)(4)",
-      "icon": null
+      "icon": "/icons/items/xeric-s-aid-4.png"
     },
     {
       "name": "Xeric's aid (4)",
       "wikiLink": "https://oldschool.runescape.wiki/w/Xeric's_aid_(4)",
-      "icon": null
+      "icon": "/icons/items/xeric-s-aid-4.png"
     },
     {
       "name": "Xeric's champion",
@@ -72178,5 +72155,1238 @@
       "icon": "/icons/items/zuriel-s-staff-last-man-standing.png"
     }
   ],
-  "minigames": []
+  "minigames": [
+    {
+      "name": "Barbarian Assault",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Barbarian_Assault",
+      "icon": "/icons/minigames/barbarian-assault.png"
+    },
+    {
+      "name": "Blast Furnace",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Blast_Furnace",
+      "icon": "/icons/minigames/blast-furnace.png"
+    },
+    {
+      "name": "Bounty Hunter",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bounty_Hunter",
+      "icon": "/icons/minigames/bounty-hunter.png"
+    },
+    {
+      "name": "Brimhaven Agility Arena",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Brimhaven_Agility_Arena",
+      "icon": "/icons/minigames/brimhaven-agility-arena.jpg"
+    },
+    {
+      "name": "Burthorpe Games Room",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Burthorpe_Games_Room",
+      "icon": "/icons/minigames/burthorpe-games-room.png"
+    },
+    {
+      "name": "Castle Wars",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Castle_Wars",
+      "icon": "/icons/minigames/castle-wars.png"
+    },
+    {
+      "name": "Chompy bird hunting",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Chompy_bird_hunting",
+      "icon": "/icons/minigames/chompy-bird-hunting.png"
+    },
+    {
+      "name": "Clan Wars",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Clan_Wars",
+      "icon": "/icons/minigames/clan-wars.png"
+    },
+    {
+      "name": "Dorgesh-Kaan market trading",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dorgesh-Kaan_market_trading",
+      "icon": "/icons/minigames/dorgesh-kaan-market-trading.png"
+    },
+    {
+      "name": "Duel Arena",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Duel_Arena",
+      "icon": "/icons/minigames/duel-arena.png"
+    },
+    {
+      "name": "Emir's Arena",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Emir's_Arena",
+      "icon": "/icons/minigames/emir-s-arena.png"
+    },
+    {
+      "name": "Farming contracts",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Farming_contracts",
+      "icon": "/icons/minigames/farming-contracts.png"
+    },
+    {
+      "name": "Fishing Trawler",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Fishing_Trawler",
+      "icon": "/icons/minigames/fishing-trawler.png"
+    },
+    {
+      "name": "Fortis Colosseum",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Fortis_Colosseum",
+      "icon": "/icons/minigames/fortis-colosseum.png"
+    },
+    {
+      "name": "Giants' Foundry",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Giants'_Foundry",
+      "icon": "/icons/minigames/giants-foundry.png"
+    },
+    {
+      "name": "Gnome Ball",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Gnome_Ball",
+      "icon": "/icons/minigames/gnome-ball.png"
+    },
+    {
+      "name": "Gnome Restaurant",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Gnome_Restaurant",
+      "icon": "/icons/minigames/gnome-restaurant.jpg"
+    },
+    {
+      "name": "Golem crafting",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Golem_crafting",
+      "icon": "/icons/minigames/golem-crafting.png"
+    },
+    {
+      "name": "Guardians of the Rift",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Guardians_of_the_Rift",
+      "icon": "/icons/minigames/guardians-of-the-rift.png"
+    },
+    {
+      "name": "Hallowed Sepulchre",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Hallowed_Sepulchre",
+      "icon": "/icons/minigames/hallowed-sepulchre.png"
+    },
+    {
+      "name": "Impetuous Impulses",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Impetuous_Impulses",
+      "icon": "/icons/minigames/impetuous-impulses.png"
+    },
+    {
+      "name": "Inferno",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Inferno",
+      "icon": "/icons/minigames/inferno.png"
+    },
+    {
+      "name": "Intelligence Gathering",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Intelligence_Gathering",
+      "icon": "/icons/minigames/intelligence-gathering.png"
+    },
+    {
+      "name": "Keldagrim tasks",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Keldagrim_tasks",
+      "icon": "/icons/minigames/keldagrim-tasks.png"
+    },
+    {
+      "name": "Last Man Standing",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Last_Man_Standing",
+      "icon": "/icons/minigames/last-man-standing.png"
+    },
+    {
+      "name": "Mage Arena",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mage_Arena",
+      "icon": "/icons/minigames/mage-arena.jpg"
+    },
+    {
+      "name": "Mage Training Arena",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mage_Training_Arena",
+      "icon": "/icons/minigames/mage-training-arena.png"
+    },
+    {
+      "name": "Mahogany Homes",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mahogany_Homes",
+      "icon": "/icons/minigames/mahogany-homes.png"
+    },
+    {
+      "name": "Mastering Mixology",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mastering_Mixology",
+      "icon": "/icons/minigames/mastering-mixology.png"
+    },
+    {
+      "name": "Nightmare Zone",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Nightmare_Zone",
+      "icon": "/icons/minigames/nightmare-zone.png"
+    },
+    {
+      "name": "Pest Control",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Pest_Control",
+      "icon": "/icons/minigames/pest-control.png"
+    },
+    {
+      "name": "Pyramid Plunder",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Pyramid_Plunder",
+      "icon": "/icons/minigames/pyramid-plunder.jpg"
+    },
+    {
+      "name": "Rat Pits",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Rat_Pits",
+      "icon": "/icons/minigames/rat-pits.png"
+    },
+    {
+      "name": "Rogues' Den",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Rogues'_Den",
+      "icon": "/icons/minigames/rogues-den.jpg"
+    },
+    {
+      "name": "Shades of Mort'ton (minigame)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Shades_of_Mort'ton_(minigame)",
+      "icon": "/icons/minigames/shades-of-mort-ton-minigame.png"
+    },
+    {
+      "name": "Sorceress's Garden",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sorceress's_Garden",
+      "icon": "/icons/minigames/sorceress-s-garden.png"
+    },
+    {
+      "name": "Soul Wars",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Soul_Wars",
+      "icon": "/icons/minigames/soul-wars.png"
+    },
+    {
+      "name": "Stealing artefacts",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Stealing_artefacts",
+      "icon": "/icons/minigames/stealing-artefacts.png"
+    },
+    {
+      "name": "Stealing valuables",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Stealing_valuables",
+      "icon": "/icons/minigames/stealing-valuables.png"
+    },
+    {
+      "name": "Tai Bwo Wannai Cleanup",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Tai_Bwo_Wannai_Cleanup",
+      "icon": "/icons/minigames/tai-bwo-wannai-cleanup.jpg"
+    },
+    {
+      "name": "Tears of Guthix (minigame)",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Tears_of_Guthix_(minigame)",
+      "icon": "/icons/minigames/tears-of-guthix-minigame.png"
+    },
+    {
+      "name": "Temple Trekking",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Temple_Trekking",
+      "icon": "/icons/minigames/temple-trekking.jpg"
+    },
+    {
+      "name": "The Gauntlet",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Gauntlet",
+      "icon": "/icons/minigames/the-gauntlet.png"
+    },
+    {
+      "name": "Tithe Farm",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Tithe_Farm",
+      "icon": "/icons/minigames/tithe-farm.png"
+    },
+    {
+      "name": "Trouble Brewing",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Trouble_Brewing",
+      "icon": "/icons/minigames/trouble-brewing.png"
+    },
+    {
+      "name": "TzHaar Fight Cave",
+      "wikiLink": "https://oldschool.runescape.wiki/w/TzHaar_Fight_Cave",
+      "icon": "/icons/minigames/tzhaar-fight-cave.png"
+    },
+    {
+      "name": "TzHaar Fight Pit",
+      "wikiLink": "https://oldschool.runescape.wiki/w/TzHaar_Fight_Pit",
+      "icon": "/icons/minigames/tzhaar-fight-pit.png"
+    },
+    {
+      "name": "TzHaar-Ket-Rak's Challenges",
+      "wikiLink": "https://oldschool.runescape.wiki/w/TzHaar-Ket-Rak's_Challenges",
+      "icon": "/icons/minigames/tzhaar-ket-rak-s-challenges.png"
+    },
+    {
+      "name": "Vale Totems",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Vale_Totems",
+      "icon": "/icons/minigames/vale-totems.png"
+    },
+    {
+      "name": "Volcanic Mine",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Volcanic_Mine",
+      "icon": "/icons/minigames/volcanic-mine.png"
+    }
+  ],
+  "quests": [
+    {
+      "name": "A Kingdom Divided",
+      "wikiLink": "https://oldschool.runescape.wiki/w/A_Kingdom_Divided",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "A Night at the Theatre",
+      "wikiLink": "https://oldschool.runescape.wiki/w/A_Night_at_the_Theatre",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "A Porcine of Interest",
+      "wikiLink": "https://oldschool.runescape.wiki/w/A_Porcine_of_Interest",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "A Ruff Situation",
+      "wikiLink": "https://oldschool.runescape.wiki/w/A_Ruff_Situation",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "A Soul's Bane",
+      "wikiLink": "https://oldschool.runescape.wiki/w/A_Soul's_Bane",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "A Tail of Two Cats",
+      "wikiLink": "https://oldschool.runescape.wiki/w/A_Tail_of_Two_Cats",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "A Taste of Hope",
+      "wikiLink": "https://oldschool.runescape.wiki/w/A_Taste_of_Hope",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Animal Magnetism",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Animal_Magnetism",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Another Slice of H.A.M.",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Another_Slice_of_H.A.M.",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "At First Light",
+      "wikiLink": "https://oldschool.runescape.wiki/w/At_First_Light",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Below Ice Mountain",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Below_Ice_Mountain",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Beneath Cursed Sands",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Beneath_Cursed_Sands",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Between a Rock...",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Between_a_Rock...",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Big Chompy Bird Hunting",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Big_Chompy_Bird_Hunting",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Biohazard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Biohazard",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Black Knights' Fortress",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Black_Knights'_Fortress",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Bone Voyage",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Bone_Voyage",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Cabin Fever",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cabin_Fever",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Children of the Sun",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Children_of_the_Sun",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Client of Kourend",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Client_of_Kourend",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Clock Tower",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Clock_Tower",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Cold War",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cold_War",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Contact!",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Contact!",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Cook's Assistant",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Cook's_Assistant",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Crab Quest",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Crab_Quest",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Creature of Fenkenstrain",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Creature_of_Fenkenstrain",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Current Affairs",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Current_Affairs",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Darkness of Hallowvale",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Darkness_of_Hallowvale",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Death on the Isle",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Death_on_the_Isle",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Death Plateau",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Death_Plateau",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Death to the Dorgeshuun",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Death_to_the_Dorgeshuun",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Defender of Varrock",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Defender_of_Varrock",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Demon Slayer",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Demon_Slayer",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Desert Treasure I",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Desert_Treasure_I",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Desert Treasure II - The Fallen Empire",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Desert_Treasure_II_-_The_Fallen_Empire",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Devious Minds",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Devious_Minds",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Doric's Quest",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Doric's_Quest",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Dragon Slayer I",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dragon_Slayer_I",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Dragon Slayer II",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dragon_Slayer_II",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Dream Mentor",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dream_Mentor",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Druidic Ritual",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Druidic_Ritual",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Dwarf Cannon",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Dwarf_Cannon",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Eadgar's Ruse",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Eadgar's_Ruse",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Eagles' Peak",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Eagles'_Peak",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Elemental Workshop I",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Elemental_Workshop_I",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Elemental Workshop II",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Elemental_Workshop_II",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Enakhra's Lament",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Enakhra's_Lament",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Enlightened Journey",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Enlightened_Journey",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Ernest the Chicken",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ernest_the_Chicken",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Ethically Acquired Antiquities",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ethically_Acquired_Antiquities",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Fairytale I - Growing Pains",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Fairytale_I_-_Growing_Pains",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Fairytale II - Cure a Queen",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Fairytale_II_-_Cure_a_Queen",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Fallen From Grace",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Fallen_From_Grace",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Family Crest",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Family_Crest",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Fight Arena",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Fight_Arena",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Fishing Contest",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Fishing_Contest",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Forgettable Tale...",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Forgettable_Tale...",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Garden of Tranquillity",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Garden_of_Tranquillity",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Gertrude's Cat",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Gertrude's_Cat",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Getting Ahead",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Getting_Ahead",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Ghosts Ahoy",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ghosts_Ahoy",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Goblin Diplomacy",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Goblin_Diplomacy",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Grim Tales",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Grim_Tales",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Haunted Mine",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Haunted_Mine",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Hazeel Cult",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Hazeel_Cult",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Heroes' Quest",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Heroes'_Quest",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Holy Grail",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Holy_Grail",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Horror from the Deep",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Horror_from_the_Deep",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Icthlarin's Little Helper",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Icthlarin's_Little_Helper",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Imp Catcher",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Imp_Catcher",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "In Aid of the Myreque",
+      "wikiLink": "https://oldschool.runescape.wiki/w/In_Aid_of_the_Myreque",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "In Search of the Myreque",
+      "wikiLink": "https://oldschool.runescape.wiki/w/In_Search_of_the_Myreque",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Jungle Potion",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Jungle_Potion",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "King's Ransom",
+      "wikiLink": "https://oldschool.runescape.wiki/w/King's_Ransom",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Land of the Goblins",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Land_of_the_Goblins",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Learning the Ropes",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Learning_the_Ropes",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Legends' Quest",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Legends'_Quest",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Lost City",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Lost_City",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Lunar Diplomacy",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Lunar_Diplomacy",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Making Friends with My Arm",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Making_Friends_with_My_Arm",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Making History",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Making_History",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Meat and Greet",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Meat_and_Greet",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Merlin's Crystal",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Merlin's_Crystal",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Misthalin Mystery",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Misthalin_Mystery",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Monk's Friend",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Monk's_Friend",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Monkey Madness I",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Monkey_Madness_I",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Monkey Madness II",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Monkey_Madness_II",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Mountain Daughter",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mountain_Daughter",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Mourning's End Part I",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mourning's_End_Part_I",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Mourning's End Part II",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Mourning's_End_Part_II",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Murder Mystery",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Murder_Mystery",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "My Arm's Big Adventure",
+      "wikiLink": "https://oldschool.runescape.wiki/w/My_Arm's_Big_Adventure",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Nature Spirit",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Nature_Spirit",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Observatory Quest",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Observatory_Quest",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Olaf's Quest",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Olaf's_Quest",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "One Small Favour",
+      "wikiLink": "https://oldschool.runescape.wiki/w/One_Small_Favour",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Pandemonium",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Pandemonium",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Perilous Moons",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Perilous_Moons",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Pirate's Treasure",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Pirate's_Treasure",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Plague City",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Plague_City",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Priest in Peril",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Priest_in_Peril",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Prince Ali Rescue",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Prince_Ali_Rescue",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Prying Times",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Prying_Times",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Rag and Bone Man I",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Rag_and_Bone_Man_I",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Rag and Bone Man II",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Rag_and_Bone_Man_II",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Ratcatchers",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Ratcatchers",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Recipe for Disaster",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Recipe_for_Disaster",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Recipe for Disaster/Another Cook's Quest",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Recipe_for_Disaster/Another_Cook's_Quest",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Recipe for Disaster/Defeating the Culinaromancer",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Recipe_for_Disaster/Defeating_the_Culinaromancer",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Recipe for Disaster/Freeing Evil Dave",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Recipe_for_Disaster/Freeing_Evil_Dave",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Recipe for Disaster/Freeing King Awowogei",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Recipe_for_Disaster/Freeing_King_Awowogei",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Recipe for Disaster/Freeing Pirate Pete",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Recipe_for_Disaster/Freeing_Pirate_Pete",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Recipe for Disaster/Freeing Sir Amik Varze",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Recipe_for_Disaster/Freeing_Sir_Amik_Varze",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Recipe for Disaster/Freeing Skrach Uglogwee",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Recipe_for_Disaster/Freeing_Skrach_Uglogwee",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Recipe for Disaster/Freeing the Goblin generals",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Recipe_for_Disaster/Freeing_the_Goblin_generals",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Recipe for Disaster/Freeing the Lumbridge Guide",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Recipe_for_Disaster/Freeing_the_Lumbridge_Guide",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Recipe for Disaster/Freeing the Mountain Dwarf",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Recipe_for_Disaster/Freeing_the_Mountain_Dwarf",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Recipe for Disaster/Full guide",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Recipe_for_Disaster/Full_guide",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Recruitment Drive",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Recruitment_Drive",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Regicide",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Regicide",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Romeo & Juliet",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Romeo_%26_Juliet",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Roving Elves",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Roving_Elves",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Royal Trouble",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Royal_Trouble",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Rum Deal",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Rum_Deal",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Rune Mysteries",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Rune_Mysteries",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Scorpion Catcher",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Scorpion_Catcher",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Scrambled!",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Scrambled!",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Sea Slug",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sea_Slug",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Secrets of the North",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Secrets_of_the_North",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Shades of Mort'ton",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Shades_of_Mort'ton",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Shadow of the Storm",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Shadow_of_the_Storm",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Shadows of Custodia",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Shadows_of_Custodia",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Sheep Herder",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sheep_Herder",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Sheep Shearer",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sheep_Shearer",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Shield of Arrav",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Shield_of_Arrav",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Shilo Village",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Shilo_Village",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Sins of the Father",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sins_of_the_Father",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Sleeping Giants",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Sleeping_Giants",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Song of the Elves",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Song_of_the_Elves",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Spirits of the Elid",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Spirits_of_the_Elid",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Swan Song",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Swan_Song",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Tai Bwo Wannai Trio",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Tai_Bwo_Wannai_Trio",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Tale of the Righteous",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Tale_of_the_Righteous",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Tears of Guthix",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Tears_of_Guthix",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Temple of Ikov",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Temple_of_Ikov",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Temple of the Eye",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Temple_of_the_Eye",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Ascent of Arceuus",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Ascent_of_Arceuus",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Blood Moon Rises",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Blood_Moon_Rises",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Corsair Curse",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Corsair_Curse",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Curse of Arrav",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Curse_of_Arrav",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Depths of Despair",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Depths_of_Despair",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Dig Site",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Dig_Site",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Eyes of Glouphrie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Eyes_of_Glouphrie",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Feud",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Feud",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Final Dawn",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Final_Dawn",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Forsaken Tower",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Forsaken_Tower",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Fremennik Exiles",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Fremennik_Exiles",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Fremennik Isles",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Fremennik_Isles",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Fremennik Trials",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Fremennik_Trials",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Garden of Death",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Garden_of_Death",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Giant Dwarf",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Giant_Dwarf",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Golem",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Golem",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Grand Tree",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Grand_Tree",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Graveyard",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Graveyard",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Great Brain Robbery",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Great_Brain_Robbery",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Hand in the Sand",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Hand_in_the_Sand",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Heart of Darkness",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Heart_of_Darkness",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Ides of Milk",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Ides_of_Milk",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Knight's Sword",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Knight's_Sword",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Lost Tribe",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Lost_Tribe",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Path of Glouphrie",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Path_of_Glouphrie",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Queen of Thieves",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Queen_of_Thieves",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Red Reef",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Red_Reef",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Restless Ghost",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Restless_Ghost",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Ribbiting Tale of a Lily Pad Labour Dispute",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Ribbiting_Tale_of_a_Lily_Pad_Labour_Dispute",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Slug Menace",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Slug_Menace",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "The Tourist Trap",
+      "wikiLink": "https://oldschool.runescape.wiki/w/The_Tourist_Trap",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Throne of Miscellania",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Throne_of_Miscellania",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Tower of Life",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Tower_of_Life",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Tree Gnome Village",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Tree_Gnome_Village",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Tribal Totem",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Tribal_Totem",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Troll Romance",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Troll_Romance",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Troll Stronghold",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Troll_Stronghold",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Troubled Tortugans",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Troubled_Tortugans",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Twilight's Promise",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Twilight's_Promise",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Underground Pass",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Underground_Pass",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Vampyre Slayer",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Vampyre_Slayer",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Wanted!",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Wanted!",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Watchtower",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Watchtower",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Waterfall Quest",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Waterfall_Quest",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "What Lies Below",
+      "wikiLink": "https://oldschool.runescape.wiki/w/What_Lies_Below",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "While Guthix Sleeps",
+      "wikiLink": "https://oldschool.runescape.wiki/w/While_Guthix_Sleeps",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Witch's House",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Witch's_House",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Witch's Potion",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Witch's_Potion",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "X Marks the Spot",
+      "wikiLink": "https://oldschool.runescape.wiki/w/X_Marks_the_Spot",
+      "icon": "/icons/quests/quests.png"
+    },
+    {
+      "name": "Zogre Flesh Eaters",
+      "wikiLink": "https://oldschool.runescape.wiki/w/Zogre_Flesh_Eaters",
+      "icon": "/icons/quests/quests.png"
+    }
+  ]
 }
