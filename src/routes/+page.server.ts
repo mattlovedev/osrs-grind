@@ -2,7 +2,7 @@ import { redirect } from '@sveltejs/kit';
 import { customAlphabet } from 'nanoid';
 import { FieldValue } from 'firebase-admin/firestore';
 import { adminDb } from '$lib/server/firebase-admin';
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 
 // Letters only (upper + lower), no digits or symbols - 52^16 possible IDs,
 // far beyond any realistic collision risk at this app's scale.
@@ -10,6 +10,33 @@ const generateBoardId = customAlphabet(
 	'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
 	16
 );
+
+// Public recents list - see docs/home-recents-spike.md for the reasoning.
+// Deliberately a global feed of every board's activity, not per-viewer
+// history. A projection query (.select) keeps the (potentially large)
+// flows/flowOrder fields from ever leaving Firestore, and only name +
+// shareId reach the client - never boardId, which would hand out edit
+// access to a board nobody linked here.
+export const load: PageServerLoad = async () => {
+	const snap = await adminDb
+		.collection('boards')
+		.orderBy('updatedAt', 'desc')
+		.limit(5)
+		.select('name', 'shareId', 'updatedAt')
+		.get();
+
+	const recentBoards = snap.docs
+		.map((doc) => doc.data())
+		.filter(
+			(d): d is { name?: string; shareId: string; updatedAt?: FirebaseFirestore.Timestamp } =>
+				typeof d.shareId === 'string'
+		)
+		// Timestamp isn't serializable across the server/client load boundary -
+		// send millis instead.
+		.map((d) => ({ name: d.name ?? '', shareId: d.shareId, updatedAt: d.updatedAt?.toMillis() }));
+
+	return { recentBoards };
+};
 
 export const actions: Actions = {
 	createBoard: async () => {
