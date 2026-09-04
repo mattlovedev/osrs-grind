@@ -665,78 +665,80 @@
 			{@const node = flow.nodes[nodeId]}
 			{@const isTailNode = !Object.values(flow.edges ?? {}).some((e) => e.from === nodeId)}
 			{@const entryCount = (node.entryOrder ?? Object.keys(node.entries)).length}
-			{#if i > 0}
-				<span class="edge-arrow">&rarr;</span>
-			{/if}
-			<div class="node" class:editing={editMode}>
-				<div class="node-entries">
-					{#each node.entryOrder ?? Object.keys(node.entries) as entryId (entryId)}
-						{@const entry = node.entries[entryId]}
-						<div
-							class="entry-cell"
-							class:editing={editMode}
-							class:done={entry.done}
-							title={editMode ? undefined : entry.label}
-							role="button"
-							tabindex="0"
-							onclick={() =>
-								editMode
-									? openEdit(flowId, nodeId, entryId)
-									: toggleDone(flowId, nodeId, entryId, entry.done)}
-							onkeydown={(e) => {
-								if (e.key !== 'Enter' && e.key !== ' ') return;
-								if (editMode) openEdit(flowId, nodeId, entryId);
-								else toggleDone(flowId, nodeId, entryId, entry.done);
-							}}
-							oncontextmenu={(e) => !editMode && openWikiMenu(e, entry.label, entry.wikiLink)}
+			<div class="node-unit">
+				<div class="node" class:editing={editMode}>
+					<div class="node-entries">
+						{#each node.entryOrder ?? Object.keys(node.entries) as entryId (entryId)}
+							{@const entry = node.entries[entryId]}
+							<div
+								class="entry-cell"
+								class:editing={editMode}
+								class:done={entry.done}
+								title={editMode ? undefined : entry.label}
+								role="button"
+								tabindex="0"
+								onclick={() =>
+									editMode
+										? openEdit(flowId, nodeId, entryId)
+										: toggleDone(flowId, nodeId, entryId, entry.done)}
+								onkeydown={(e) => {
+									if (e.key !== 'Enter' && e.key !== ' ') return;
+									if (editMode) openEdit(flowId, nodeId, entryId);
+									else toggleDone(flowId, nodeId, entryId, entry.done);
+								}}
+								oncontextmenu={(e) => !editMode && openWikiMenu(e, entry.label, entry.wikiLink)}
+							>
+								{#if entry.icon}
+									<img src={iconUrl(entry.icon)} alt={entry.label} />
+								{:else}
+									<span class="icon-placeholder">?</span>
+								{/if}
+								{#if entry.bottomText}
+									<span class="level-badge">{entry.bottomText}</span>
+								{/if}
+								{#if entryCount > 1}
+									<button
+										class="entry-delete-button"
+										title="Delete entry"
+										onclick={(e) => {
+											e.stopPropagation();
+											askDeleteEntry(flowId, nodeId, entryId);
+										}}
+									>
+										&times;
+									</button>
+								{/if}
+							</div>
+						{/each}
+					</div>
+					<button
+						class="node-add-button"
+						title="Add to this node"
+						onclick={() => openAdd({ flowId, nodeId, mode: 'append' })}
+					>
+						+
+					</button>
+					{#if isTailNode}
+						<button
+							class="node-edge-button"
+							title="Add connected grind"
+							onclick={() => openAdd({ flowId, nodeId, mode: 'edge' })}
 						>
-							{#if entry.icon}
-								<img src={iconUrl(entry.icon)} alt={entry.label} />
-							{:else}
-								<span class="icon-placeholder">?</span>
-							{/if}
-							{#if entry.bottomText}
-								<span class="level-badge">{entry.bottomText}</span>
-							{/if}
-							{#if entryCount > 1}
-								<button
-									class="entry-delete-button"
-									title="Delete entry"
-									onclick={(e) => {
-										e.stopPropagation();
-										askDeleteEntry(flowId, nodeId, entryId);
-									}}
-								>
-									&times;
-								</button>
-							{/if}
-						</div>
-					{/each}
+							&rarr;
+						</button>
+					{/if}
+					{#if nodeCount > 1}
+						<button
+							class="node-delete-button"
+							title="Delete node"
+							onclick={() => askDeleteNode(flowId, nodeId)}
+						>
+							&times;
+						</button>
+					{/if}
 				</div>
-				<button
-					class="node-add-button"
-					title="Add to this node"
-					onclick={() => openAdd({ flowId, nodeId, mode: 'append' })}
-				>
-					+
-				</button>
-				{#if isTailNode}
-					<button
-						class="node-edge-button"
-						title="Add connected grind"
-						onclick={() => openAdd({ flowId, nodeId, mode: 'edge' })}
-					>
-						&rarr;
-					</button>
-				{/if}
-				{#if nodeCount > 1}
-					<button
-						class="node-delete-button"
-						title="Delete node"
-						onclick={() => askDeleteNode(flowId, nodeId)}
-					>
-						&times;
-					</button>
+				{#if i < nodeCount - 1}
+					<span class="edge-arrow">&rarr;</span>
 				{/if}
 			</div>
 		{/each}
@@ -823,6 +825,7 @@
 		display: flex;
 		align-items: center;
 		flex-wrap: wrap;
+		row-gap: 1.25rem;
 		justify-content: center;
 		width: fit-content;
 		margin: 2rem auto;
@@ -893,6 +896,11 @@
 		font-size: 1.5rem;
 		margin: 0 0.5rem;
 		color: var(--osrs-brown);
+	}
+
+	.node-unit {
+		display: flex;
+		align-items: center;
 	}
 
 	.node {
