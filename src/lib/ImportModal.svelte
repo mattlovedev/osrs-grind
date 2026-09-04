@@ -11,6 +11,11 @@
 	let text = $state('');
 	let error = $state<string | null>(null);
 	let busy = $state(false);
+	let textareaEl = $state<HTMLTextAreaElement | undefined>();
+
+	$effect(() => {
+		textareaEl?.focus();
+	});
 
 	async function submit() {
 		if (busy) return;
@@ -37,8 +42,7 @@
 		<button class="close" type="button" onclick={oncancel} aria-label="Close">&times;</button>
 		<h2>Import board</h2>
 		<p>Paste exported board JSON.</p>
-		<!-- svelte-ignore a11y_autofocus -->
-		<textarea bind:value={text} rows="12" autofocus spellcheck="false"></textarea>
+		<textarea bind:this={textareaEl} bind:value={text} rows="12" spellcheck="false"></textarea>
 		{#if error}
 			<p class="error">{error}</p>
 		{/if}

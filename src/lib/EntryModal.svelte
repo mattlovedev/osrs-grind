@@ -109,6 +109,20 @@
 	function onKeydown(e: KeyboardEvent) {
 		if (e.key === 'Escape') oncancel();
 	}
+
+	// Autofocus the field that matters for whichever view is showing -
+	// re-runs on every view change (search <-> icon-search <-> form). Using
+	// the HTML `autofocus` attribute here was unreliable once the modal is
+	// mounted from a click handler rather than on initial page load.
+	let flowNameInputEl = $state<HTMLInputElement>();
+	let searchInputEl = $state<HTMLInputElement>();
+	let nameInputEl = $state<HTMLInputElement>();
+
+	$effect(() => {
+		if (view === 'form') nameInputEl?.focus();
+		else if (view === 'search' && isNewFlow) flowNameInputEl?.focus();
+		else searchInputEl?.focus();
+	});
 </script>
 
 <svelte:window onkeydown={onKeydown} />
@@ -118,17 +132,16 @@
 	{#if isNewFlow && view === 'search'}
 		<label class="flow-name-field">
 			Grind name (optional)
-			<input type="text" bind:value={flowName} placeholder="Acquire blank" />
+			<input type="text" bind:this={flowNameInputEl} bind:value={flowName} placeholder="Acquire blank" />
 		</label>
 	{/if}
-	<!-- svelte-ignore a11y_autofocus -->
 	<input
 		class="search-input"
 		type="text"
 		placeholder="Search skills, bosses, items…"
+		bind:this={searchInputEl}
 		bind:value={q}
 		oninput={onSearchInput}
-		autofocus
 	/>
 	<ul class="results">
 		{#each results as r (r.type + '/' + r.wikiLink)}
@@ -170,8 +183,7 @@
 			<form onsubmit={submit}>
 				<label>
 					Name
-					<!-- svelte-ignore a11y_autofocus -->
-					<input type="text" bind:value={label} autofocus />
+					<input type="text" bind:this={nameInputEl} bind:value={label} />
 				</label>
 				<label>
 					Wiki link
