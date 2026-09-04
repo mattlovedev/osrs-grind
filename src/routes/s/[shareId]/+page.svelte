@@ -36,36 +36,39 @@
 
 {#each board.flowOrder as flowId (flowId)}
 	{@const flow = board.flows[flowId]}
+	{@const nodeCount = (flow?.nodeOrder ?? Object.keys(flow?.nodes ?? {})).length}
 	<div class="flow">
 		{#if flow?.name}
 			<span class="flow-name">{flow.name}</span>
 		{/if}
 		{#each flow?.nodeOrder ?? Object.keys(flow?.nodes ?? {}) as nodeId, i (nodeId)}
 			{@const node = flow.nodes[nodeId]}
-			{#if i > 0}
-				<span class="edge-arrow">&rarr;</span>
-			{/if}
-			<div class="node">
-				<div class="node-entries">
-					{#each node.entryOrder ?? Object.keys(node.entries) as entryId (entryId)}
-						{@const entry = node.entries[entryId]}
-						<div
-							class="entry-cell"
-							class:done={entry.done}
-							title={entry.label}
-							oncontextmenu={(e) => openWikiMenu(e, entry.label, entry.wikiLink)}
-						>
-							{#if entry.icon}
-								<img src={iconUrl(entry.icon)} alt={entry.label} />
-							{:else}
-								<span class="icon-placeholder">?</span>
-							{/if}
-							{#if entry.bottomText}
-								<span class="level-badge">{entry.bottomText}</span>
-							{/if}
-						</div>
-					{/each}
+			<div class="node-unit">
+				<div class="node">
+					<div class="node-entries">
+						{#each node.entryOrder ?? Object.keys(node.entries) as entryId (entryId)}
+							{@const entry = node.entries[entryId]}
+							<div
+								class="entry-cell"
+								class:done={entry.done}
+								title={entry.label}
+								oncontextmenu={(e) => openWikiMenu(e, entry.label, entry.wikiLink)}
+							>
+								{#if entry.icon}
+									<img src={iconUrl(entry.icon)} alt={entry.label} />
+								{:else}
+									<span class="icon-placeholder">?</span>
+								{/if}
+								{#if entry.bottomText}
+									<span class="level-badge">{entry.bottomText}</span>
+								{/if}
+							</div>
+						{/each}
+					</div>
 				</div>
+				{#if i < nodeCount - 1}
+					<span class="edge-arrow">&rarr;</span>
+				{/if}
 			</div>
 		{/each}
 	</div>
@@ -106,6 +109,7 @@
 		display: flex;
 		align-items: center;
 		flex-wrap: wrap;
+		row-gap: 1.25rem;
 		justify-content: center;
 		width: fit-content;
 		margin: 2rem auto;
@@ -129,6 +133,11 @@
 		font-size: 1.5rem;
 		margin: 0 0.5rem;
 		color: var(--osrs-brown);
+	}
+
+	.node-unit {
+		display: flex;
+		align-items: center;
 	}
 
 	.node {
