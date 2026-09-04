@@ -1,10 +1,31 @@
 <script lang="ts">
 	import { iconUrl } from '$lib/icon-url';
+	import { favicon } from '$lib/favicon.svelte';
 	import EntryContextMenu from '$lib/EntryContextMenu.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 	let board = $derived(data.board);
+
+	// First entity of the first node of the first grind, for the favicon -
+	// flowOrder/nodeOrder/entryOrder are explicit ordering arrays (not
+	// object insertion order), so reading index 0 off each already accounts
+	// for grinds/nodes/entries being reordered.
+	let firstEntityIcon = $derived.by(() => {
+		const flow = board.flows[(board.flowOrder ?? [])[0]];
+		if (!flow) return null;
+		const node = flow.nodes[(flow.nodeOrder ?? Object.keys(flow.nodes ?? {}))[0]];
+		if (!node) return null;
+		const entry = node.entries[(node.entryOrder ?? Object.keys(node.entries ?? {}))[0]];
+		return entry?.icon ? iconUrl(entry.icon) : null;
+	});
+
+	$effect(() => {
+		favicon.href = firstEntityIcon;
+		return () => {
+			favicon.href = null;
+		};
+	});
 
 	type WikiMenuData = { label: string; wikiLink: string; x: number; y: number };
 	let wikiMenu = $state<WikiMenuData | null>(null);

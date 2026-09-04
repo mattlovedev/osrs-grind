@@ -12,6 +12,7 @@
 	import { resolve } from '$app/paths';
 	import { db } from '$lib/firebase';
 	import { iconUrl } from '$lib/icon-url';
+	import { favicon } from '$lib/favicon.svelte';
 	import type { Board } from '$lib/types';
 	import type { PageData } from './$types';
 	import EntryModal from '$lib/EntryModal.svelte';
@@ -28,6 +29,19 @@
 	let liveBoard = $state<Board | null>(null);
 	let board = $derived(liveBoard ?? data.board);
 	let isBlank = $derived((board.flowOrder ?? []).length === 0);
+
+	// First entity of the first node of the first grind, for the favicon -
+	// flowOrder/nodeOrder/entryOrder are explicit ordering arrays (not
+	// object insertion order), so reading index 0 off each already accounts
+	// for grinds/nodes/entries being reordered.
+	let firstEntityIcon = $derived.by(() => {
+		const flow = board.flows[(board.flowOrder ?? [])[0]];
+		if (!flow) return null;
+		const node = flow.nodes[(flow.nodeOrder ?? Object.keys(flow.nodes ?? {}))[0]];
+		if (!node) return null;
+		const entry = node.entries[(node.entryOrder ?? Object.keys(node.entries ?? {}))[0]];
+		return entry?.icon ? iconUrl(entry.icon) : null;
+	});
 	let editingName = $state(false);
 	let nameDraft = $state('');
 	let editingFlowNameId = $state<string | null>(null);
@@ -234,6 +248,13 @@
 			}
 		});
 		return unsubscribe;
+	});
+
+	$effect(() => {
+		favicon.href = firstEntityIcon;
+		return () => {
+			favicon.href = null;
+		};
 	});
 
 	function startEditingName() {
