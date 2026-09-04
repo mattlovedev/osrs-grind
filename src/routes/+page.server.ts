@@ -22,13 +22,18 @@ export const load: PageServerLoad = async () => {
 		.collection('boards')
 		.orderBy('updatedAt', 'desc')
 		.limit(5)
-		.select('name', 'shareId')
+		.select('name', 'shareId', 'updatedAt')
 		.get();
 
 	const recentBoards = snap.docs
 		.map((doc) => doc.data())
-		.filter((d): d is { name?: string; shareId: string } => typeof d.shareId === 'string')
-		.map((d) => ({ name: d.name ?? '', shareId: d.shareId }));
+		.filter(
+			(d): d is { name?: string; shareId: string; updatedAt?: FirebaseFirestore.Timestamp } =>
+				typeof d.shareId === 'string'
+		)
+		// Timestamp isn't serializable across the server/client load boundary -
+		// send millis instead.
+		.map((d) => ({ name: d.name ?? '', shareId: d.shareId, updatedAt: d.updatedAt?.toMillis() }));
 
 	return { recentBoards };
 };
