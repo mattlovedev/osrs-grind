@@ -1,6 +1,28 @@
 # Spike: recently-saved grinds on the home page
 
-Status: **tabled 2026-09-03**, revisit soon. Not started. No code written yet.
+Status: **decided 2026-09-04**, ready to build. No code written yet.
+
+## Decided
+
+- **B1** - server-query the existing `boards` collection, no new
+  collection/field. Public feed (see "the design tension" below).
+- **Count: 5**, not 10.
+- **No filtering** - blank / never-named boards are listed too.
+- **Query is a projection**: `.select('name', 'shareId', 'updatedAt')` so
+  the (potentially large) `flows`/`flowOrder` fields never leave Firestore
+  for a query that only needs three fields. Doesn't change Firestore's
+  billed read count (still one read per result doc), just cuts payload
+  size/server memory.
+- **Unnamed-board fallback uses `shareId`, not `boardId`.** Everywhere
+  else, `board.name || \`Board ${boardId}\`` is safe because it only
+  renders for someone who already holds the edit URL. On the home page it
+  would render for the entire public *before* they have any link - an
+  unnamed board's fallback text would otherwise hand out its edit
+  capability. Fallback here is `board.name || \`Board ${shareId}\`` -
+  same look, only grants the read-only access the row's link already
+  grants anyway.
+
+See "Options" below for the full B1/B2/B3/A comparison this came out of.
 
 ## What's being asked
 
@@ -56,10 +78,11 @@ Home page reads it client-side and renders the links.
 ### B1 - server-query the existing `boards` collection (minimal server option)
 
 Home `+page.server.ts` gains a `load` using the Admin SDK:
-`boards.orderBy('updatedAt', 'desc').limit(~30).get()`, filter out blank /
-unnamed boards, take 10, return `[{ name, shareId }]`. The client never
-queries Firestore; `boards` rules (`allow list: if false`) stay as-is (the
-Admin SDK bypasses them); `boardId` never leaves the server.
+`boards.orderBy('updatedAt', 'desc').limit(5).select('name', 'shareId', 'updatedAt').get()`,
+return `[{ name, shareId }]` (fallback to `Board ${shareId}` when unnamed -
+see "Decided"). The client never queries Firestore; `boards` rules
+(`allow list: if false`) stay as-is (the Admin SDK bypasses them);
+`boardId` never leaves the server.
 
 - **No schema change** - `updatedAt` + `shareId` already suffice. The
   "new field or collection" instinct isn't actually required for this path.
@@ -98,24 +121,13 @@ removed on toggle.
 - Most new UI. Probably over-scoped for a first iteration unless the
   public-feed concern is an actual blocker.
 
-## Recommendation
+## Remaining open question
 
-- If this is **my history** -> **A**. Near-zero cost, honest about the
-  model, ship it.
-- If this is **a public feed** -> **B1** to start (no schema change), move
-  to **B2** only if the list needs curation (filter blanks, cut churn), or
-  **B3** if per-board opt-in matters. Either way add a line to `DESIGN.md`
-  "Access model" recording that the home page is now a public listing.
-
-## Open questions
-
-1. My-history or public feed? Everything else follows from this.
-2. "Recently saved" = every mutation (churny) or just create + rename
-   (stable, much simpler to maintain)?
-3. Show blank / never-named boards? (Recommend no - filter them out.)
-4. Count: 5 or 10?
-5. If public: every board, or opt-in (B3)?
-6. Delete cleanup: a deleted board's `/s/[shareId]` already 404s
-   (shareLinks cleanup, commit `86b9b4a`). B2/B3 also need their
-   `recentBoards` doc removed on delete - fold it into the same
-   `deleteBoard` server action.
+- "Recently saved" = every mutation, so the list churns with every toggle
+  (this is what B1 gives you, since it orders by the existing `updatedAt`
+  which every mutation bumps). Accepted as-is per "Decided" - not worth
+  the extra plumbing of B2/B3 just to stabilize the ordering.
+- Delete cleanup: a deleted board's `/s/[shareId]` already 404s
+  (shareLinks cleanup, commit `86b9b4a`), and since B1 queries `boards`
+  directly rather than a denormalized copy, a deleted board simply stops
+  appearing in the next query - no extra cleanup needed.
