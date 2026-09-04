@@ -18,6 +18,7 @@
 	import ConfirmModal from '$lib/ConfirmModal.svelte';
 	import ImportModal from '$lib/ImportModal.svelte';
 	import EntryContextMenu from '$lib/EntryContextMenu.svelte';
+	import SaveInfoModal from '$lib/SaveInfoModal.svelte';
 
 	type EntryDraft = { label: string; wikiLink: string; icon: string; bottomText: string };
 
@@ -286,6 +287,8 @@
 	type WikiMenuData = { label: string; wikiLink: string; x: number; y: number };
 	let wikiMenu = $state<WikiMenuData | null>(null);
 
+	let saveModalOpen = $state(false);
+
 	function openWikiMenu(e: MouseEvent, label: string, wikiLink: string) {
 		if (!wikiLink) return;
 		e.preventDefault();
@@ -514,6 +517,10 @@
 	/>
 {/if}
 
+{#if saveModalOpen}
+	<SaveInfoModal onclose={() => (saveModalOpen = false)} />
+{/if}
+
 <h1>
 	{#if editingName}
 		<form onsubmit={saveName} style="display: contents;">
@@ -545,6 +552,7 @@
 
 <div class="top-right-actions">
 	{#if !editMode}
+		<button class="save-board" onclick={() => (saveModalOpen = true)}>Save</button>
 		<button class="share-board" onclick={copyShareLink}>
 			{shareLinkCopied ? 'Copied!' : 'Share'}
 		</button>
