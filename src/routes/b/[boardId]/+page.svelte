@@ -19,6 +19,7 @@
 	import ImportModal from '$lib/ImportModal.svelte';
 	import EntryContextMenu from '$lib/EntryContextMenu.svelte';
 	import SaveInfoModal from '$lib/SaveInfoModal.svelte';
+	import ShareInfoModal from '$lib/ShareInfoModal.svelte';
 
 	type EntryDraft = { label: string; wikiLink: string; icon: string; bottomText: string };
 
@@ -79,14 +80,7 @@
 		}
 	}
 
-	let shareLinkCopied = $state(false);
-
-	async function copyShareLink() {
-		const url = `${location.origin}/s/${board.shareId}`;
-		await navigator.clipboard.writeText(url);
-		shareLinkCopied = true;
-		setTimeout(() => (shareLinkCopied = false), 1500);
-	}
+	let shareModalOpen = $state(false);
 
 	// Plain-data snapshot of the board: ordered arrays instead of the
 	// id-keyed maps, no ids at all. Edges keep the structure as
@@ -521,6 +515,10 @@
 	<SaveInfoModal onclose={() => (saveModalOpen = false)} />
 {/if}
 
+{#if shareModalOpen}
+	<ShareInfoModal shareId={board.shareId} onclose={() => (shareModalOpen = false)} />
+{/if}
+
 <h1>
 	{#if editingName}
 		<form onsubmit={saveName} style="display: contents;">
@@ -553,9 +551,7 @@
 <div class="top-right-actions">
 	{#if !editMode}
 		<button class="save-board" onclick={() => (saveModalOpen = true)}>Save</button>
-		<button class="share-board" onclick={copyShareLink}>
-			{shareLinkCopied ? 'Copied!' : 'Share'}
-		</button>
+		<button class="share-board" onclick={() => (shareModalOpen = true)}>Share</button>
 	{/if}
 	<button class="edit-board" onclick={toggleEditMode}
 		>{editMode ? 'Exit' : 'Edit'}</button
