@@ -21,6 +21,8 @@
 	import EntryContextMenu from '$lib/EntryContextMenu.svelte';
 	import SaveInfoModal from '$lib/SaveInfoModal.svelte';
 	import ShareInfoModal from '$lib/ShareInfoModal.svelte';
+	import IconPickerModal from '$lib/IconPickerModal.svelte';
+	import defaultFavicon from '$lib/assets/favicon.png';
 
 	type EntryDraft = { label: string; wikiLink: string; icon: string; bottomText: string };
 
@@ -29,19 +31,7 @@
 	let liveBoard = $state<Board | null>(null);
 	let board = $derived(liveBoard ?? data.board);
 	let isBlank = $derived((board.flowOrder ?? []).length === 0);
-
-	// First entity of the first node of the first grind, for the favicon -
-	// flowOrder/nodeOrder/entryOrder are explicit ordering arrays (not
-	// object insertion order), so reading index 0 off each already accounts
-	// for grinds/nodes/entries being reordered.
-	let firstEntityIcon = $derived.by(() => {
-		const flow = board.flows[(board.flowOrder ?? [])[0]];
-		if (!flow) return null;
-		const node = flow.nodes[(flow.nodeOrder ?? Object.keys(flow.nodes ?? {}))[0]];
-		if (!node) return null;
-		const entry = node.entries[(node.entryOrder ?? Object.keys(node.entries ?? {}))[0]];
-		return entry?.icon ? iconUrl(entry.icon) : null;
-	});
+	let iconPickerOpen = $state(false);
 	let editingName = $state(false);
 	let nameDraft = $state('');
 	let editingFlowNameId = $state<string | null>(null);
@@ -243,7 +233,8 @@
 					name: snapData.name ?? '',
 					flowOrder: snapData.flowOrder ?? [],
 					flows: snapData.flows ?? {},
-					shareId: snapData.shareId
+					shareId: snapData.shareId,
+					icon: snapData.icon ?? null
 				};
 			}
 		});
@@ -251,11 +242,17 @@
 	});
 
 	$effect(() => {
-		favicon.href = firstEntityIcon;
+		favicon.href = board.icon ? iconUrl(board.icon) : null;
 		return () => {
 			favicon.href = null;
 		};
 	});
+
+	async function setBoardIcon(icon: string) {
+		const ref = doc(db, 'boards', data.boardId);
+		await updateDoc(ref, { updatedAt: serverTimestamp(), icon });
+		iconPickerOpen = false;
+	}
 
 	function startEditingName() {
 		nameDraft = board.name || `Board ${data.boardId}`;
@@ -540,34 +537,49 @@
 	<ShareInfoModal shareId={board.shareId} onclose={() => (shareModalOpen = false)} />
 {/if}
 
-<h1>
-	{#if editingName}
-		<form onsubmit={saveName} style="display: contents;">
-			<input
-				bind:value={nameDraft}
-				onblur={cancelEditingName}
+{#if iconPickerOpen}
+	<IconPickerModal onselect={setBoardIcon} oncancel={() => (iconPickerOpen = false)} />
+{/if}
+
+<div class="title-row">
+	<button
+		class="board-icon"
+		type="button"
+		disabled={!editMode}
+		onclick={() => (iconPickerOpen = true)}
+		title={editMode ? 'Change favicon' : undefined}
+	>
+		<img src={board.icon ? iconUrl(board.icon) : defaultFavicon} alt="" />
+	</button>
+	<h1>
+		{#if editingName}
+			<form onsubmit={saveName} style="display: contents;">
+				<input
+					bind:value={nameDraft}
+					onblur={cancelEditingName}
+					onkeydown={(e) => {
+						if (e.key === 'Escape') cancelEditingName();
+					}}
+					onfocus={(e) => e.currentTarget.select()}
+					autofocus
+				/>
+			</form>
+		{:else if editMode}
+			<span
+				role="button"
+				tabindex="0"
+				onclick={startEditingName}
 				onkeydown={(e) => {
-					if (e.key === 'Escape') cancelEditingName();
+					if (e.key === 'Enter' || e.key === ' ') startEditingName();
 				}}
-				onfocus={(e) => e.currentTarget.select()}
-				autofocus
-			/>
-		</form>
-	{:else if editMode}
-		<span
-			role="button"
-			tabindex="0"
-			onclick={startEditingName}
-			onkeydown={(e) => {
-				if (e.key === 'Enter' || e.key === ' ') startEditingName();
-			}}
-		>
+			>
+				{board.name || `Board ${data.boardId}`}
+			</span>
+		{:else}
 			{board.name || `Board ${data.boardId}`}
-		</span>
-	{:else}
-		{board.name || `Board ${data.boardId}`}
-	{/if}
-</h1>
+		{/if}
+	</h1>
+</div>
 
 <div class="top-right-actions">
 	{#if !editMode}
@@ -736,6 +748,39 @@
 {/if}
 
 <style>
+	.title-row {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+	}
+
+	.board-icon {
+		flex-shrink: 0;
+		width: 2.5rem;
+		height: 2.5rem;
+		padding: 0;
+		border: none;
+		background: none;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		/* Browsers dim disabled buttons by default (e.g. Safari's opacity
+		   drop) - this button is disabled outside edit mode, but it's not
+		   meant to look "greyed out" there, just non-interactive. */
+		opacity: 1;
+	}
+
+	.board-icon:not(:disabled) {
+		cursor: pointer;
+	}
+
+	.board-icon img {
+		max-width: 100%;
+		max-height: 100%;
+		object-fit: contain;
+	}
+
 	h1 {
 		text-align: center;
 		font-size: 3rem;

@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { iconUrl } from '$lib/icon-url';
+	import defaultFavicon from '$lib/assets/favicon.png';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -39,7 +41,14 @@
 		<ul>
 			{#each data.recentBoards as recent (recent.shareId)}
 				<li>
-					<a href="/s/{recent.shareId}">{recent.name || `Board ${recent.shareId}`}</a>
+					<a href="/s/{recent.shareId}">
+						<img
+							class="recent-icon"
+							src={recent.icon ? iconUrl(recent.icon) : defaultFavicon}
+							alt=""
+						/>
+						{recent.name || `Board ${recent.shareId}`}
+					</a>
 					{#if recent.updatedAt}
 						<span class="edited">{timeAgo(recent.updatedAt)}</span>
 					{/if}
@@ -87,11 +96,21 @@
 	}
 
 	.recent-boards a {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
 		color: var(--osrs-brown);
 	}
 
 	.recent-boards a:hover {
 		color: var(--osrs-brown-light);
+	}
+
+	.recent-icon {
+		flex-shrink: 0;
+		width: 1.25rem;
+		height: 1.25rem;
+		object-fit: contain;
 	}
 
 	.edited {

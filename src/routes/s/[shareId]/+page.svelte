@@ -1,27 +1,15 @@
 <script lang="ts">
 	import { iconUrl } from '$lib/icon-url';
 	import { favicon } from '$lib/favicon.svelte';
+	import defaultFavicon from '$lib/assets/favicon.png';
 	import EntryContextMenu from '$lib/EntryContextMenu.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 	let board = $derived(data.board);
 
-	// First entity of the first node of the first grind, for the favicon -
-	// flowOrder/nodeOrder/entryOrder are explicit ordering arrays (not
-	// object insertion order), so reading index 0 off each already accounts
-	// for grinds/nodes/entries being reordered.
-	let firstEntityIcon = $derived.by(() => {
-		const flow = board.flows[(board.flowOrder ?? [])[0]];
-		if (!flow) return null;
-		const node = flow.nodes[(flow.nodeOrder ?? Object.keys(flow.nodes ?? {}))[0]];
-		if (!node) return null;
-		const entry = node.entries[(node.entryOrder ?? Object.keys(node.entries ?? {}))[0]];
-		return entry?.icon ? iconUrl(entry.icon) : null;
-	});
-
 	$effect(() => {
-		favicon.href = firstEntityIcon;
+		favicon.href = board.icon ? iconUrl(board.icon) : null;
 		return () => {
 			favicon.href = null;
 		};
@@ -41,7 +29,10 @@
 	<title>{board.name || `Board ${board.shareId}`}</title>
 </svelte:head>
 
-<h1>{board.name || `Board ${board.shareId}`}</h1>
+<div class="title-row">
+	<img class="board-icon" src={board.icon ? iconUrl(board.icon) : defaultFavicon} alt="" />
+	<h1>{board.name || `Board ${board.shareId}`}</h1>
+</div>
 
 {#each board.flowOrder as flowId (flowId)}
 	{@const flow = board.flows[flowId]}
@@ -91,6 +82,20 @@
 {/if}
 
 <style>
+	.title-row {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+	}
+
+	.board-icon {
+		flex-shrink: 0;
+		width: 2.5rem;
+		height: 2.5rem;
+		object-fit: contain;
+	}
+
 	h1 {
 		text-align: center;
 		font-size: 3rem;
