@@ -230,9 +230,10 @@
 
 	.modal {
 		position: relative;
-		background: #fff;
-		border: 1px solid #999;
-		border-radius: 0.25rem;
+		background: var(--osrs-parchment);
+		color: var(--osrs-text-dark);
+		border: 2px solid var(--osrs-brown-dark);
+		border-radius: 0;
 		padding: 1.25rem;
 		width: 22rem;
 		max-width: calc(100vw - 2rem);
@@ -246,6 +247,10 @@
 		right: 0.4rem;
 		width: 1.5rem;
 		height: 1.5rem;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		font-size: 1rem;
 		line-height: 1;
 	}
@@ -253,6 +258,7 @@
 	h2 {
 		margin: 0 0 0.75rem;
 		font-size: 1.1rem;
+		color: var(--osrs-brown);
 	}
 
 	.search-input,
@@ -285,7 +291,7 @@
 	}
 
 	.results button:hover {
-		background: #eee;
+		background: var(--osrs-parchment-dark);
 	}
 
 	.results img {
@@ -301,14 +307,14 @@
 	.results .badge {
 		font-size: 0.7rem;
 		text-transform: uppercase;
-		color: #666;
-		border: 1px solid #ccc;
+		color: var(--osrs-brown);
+		border: 1px solid var(--osrs-brown-dark);
 		border-radius: 0.2rem;
 		padding: 0 0.2rem;
 	}
 
 	.results .empty {
-		color: #999;
+		color: var(--osrs-brown);
 		padding: 0.3rem;
 	}
 
@@ -334,8 +340,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border: 1px solid #ccc;
-		background: #fff;
+		border: 1px solid var(--osrs-brown-dark);
+		background: var(--osrs-parchment-light);
 		cursor: pointer;
 	}
 
@@ -348,7 +354,7 @@
 	.icon-placeholder {
 		font-size: 1.2rem;
 		font-weight: bold;
-		color: #999;
+		color: var(--osrs-brown);
 	}
 
 	.actions {

@@ -51,9 +51,10 @@
 
 	.modal {
 		position: relative;
-		background: #fff;
-		border: 1px solid #999;
-		border-radius: 0.25rem;
+		background: var(--osrs-parchment);
+		color: var(--osrs-text-dark);
+		border: 2px solid var(--osrs-brown-dark);
+		border-radius: 0;
 		padding: 1.25rem;
 		width: 22rem;
 		max-width: calc(100vw - 2rem);
@@ -65,6 +66,10 @@
 		right: 0.4rem;
 		width: 1.5rem;
 		height: 1.5rem;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		font-size: 1rem;
 		line-height: 1;
 	}
@@ -72,6 +77,7 @@
 	h2 {
 		margin: 0 0 0.5rem;
 		font-size: 1.1rem;
+		color: var(--osrs-brown);
 	}
 
 	p {
@@ -85,6 +91,6 @@
 	}
 
 	.danger {
-		color: #a11;
+		background: linear-gradient(to bottom, var(--osrs-danger), var(--osrs-brown-darkest));
 	}
 </style>

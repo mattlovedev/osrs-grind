@@ -756,6 +756,9 @@
 		justify-content: center;
 		width: fit-content;
 		margin: 2rem auto;
+		padding: 0.75rem;
+		background: var(--osrs-parchment);
+		border: 2px solid var(--osrs-brown-dark);
 	}
 
 	.flow-name {
@@ -763,6 +766,7 @@
 		max-width: 6rem;
 		font-size: 0.9rem;
 		font-weight: 600;
+		color: var(--osrs-brown);
 		text-align: right;
 		overflow-wrap: break-word;
 		margin-right: 0.75rem;
@@ -781,8 +785,7 @@
 	}
 
 	.flow.editing {
-		padding: 0.75rem;
-		border: 1px solid #999;
+		border-color: var(--osrs-brown);
 	}
 
 	.flow-controls {
@@ -809,12 +812,17 @@
 	.flow-move-button {
 		width: 2rem;
 		height: 2rem;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		font-size: 1.25rem;
 	}
 
 	.edge-arrow {
 		font-size: 1.5rem;
 		margin: 0 0.5rem;
+		color: var(--osrs-brown);
 	}
 
 	.node {
@@ -836,7 +844,8 @@
 		justify-content: center;
 		width: 2.75rem;
 		height: 2.75rem;
-		border: 1px solid #999;
+		background: var(--osrs-parchment-light);
+		border: 1px solid var(--osrs-brown-dark);
 	}
 
 	.entry-cell:not(.editing) {
@@ -844,7 +853,7 @@
 	}
 
 	.entry-cell.done {
-		background: #b9eab0;
+		background: var(--osrs-done);
 	}
 
 	.entry-cell img {
@@ -855,7 +864,7 @@
 	.icon-placeholder {
 		font-size: 1.25rem;
 		font-weight: bold;
-		color: #999;
+		color: var(--osrs-brown);
 	}
 
 	.level-badge {
@@ -865,7 +874,8 @@
 		font-size: 0.65rem;
 		line-height: 1;
 		padding: 0.05rem 0.2rem;
-		background: rgba(255, 255, 255, 0.85);
+		background: rgba(0, 0, 0, 0.75);
+		color: var(--osrs-parchment-light);
 		border-radius: 0.2rem;
 	}
 
@@ -876,6 +886,10 @@
 		z-index: 1;
 		width: 1.25rem;
 		height: 1.25rem;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		font-size: 0.85rem;
 		line-height: 1;
 		opacity: 0;
@@ -893,6 +907,10 @@
 	.node-delete-button {
 		position: absolute;
 		z-index: 1;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		opacity: 0;
 		pointer-events: none;
 	}

@@ -37,9 +37,8 @@
 	.menu {
 		position: fixed;
 		z-index: 101;
-		background: #fff;
-		border: 1px solid #999;
-		border-radius: 0.25rem;
+		background: var(--osrs-parchment);
+		border: 2px solid var(--osrs-brown-dark);
 		padding: 0.5rem;
 		min-width: 8rem;
 	}
@@ -47,6 +46,7 @@
 	.label {
 		font-weight: 600;
 		font-size: 0.85rem;
+		color: var(--osrs-text-dark);
 		margin-bottom: 0.4rem;
 		white-space: nowrap;
 		overflow: hidden;
@@ -55,5 +55,11 @@
 
 	a {
 		display: block;
+		color: var(--osrs-brown);
+		font-weight: 700;
+	}
+
+	a:hover {
+		color: var(--osrs-brown-light);
 	}
 </style>
