@@ -221,7 +221,8 @@ src/lib/data/catalog.json          (imported as $lib/data/catalog.json)
   "bosses":    [{ "name": "Dagannoth Rex",  "wikiLink": "...", "icon": "/icons/bosses/dagannoth-rex.png", "combatLevel": 303 }],
   "monsters":  [{ "name": "Lizardman shaman", "wikiLink": "...", "icon": "/icons/monsters/lizardman-shaman.png", "combatLevel": 150 }],
   "items":     [{ "name": "Berserker ring", "wikiLink": "...", "icon": "/icons/items/berserker-ring.png" }],
-  "minigames": []
+  "minigames": [{ "name": "Barbarian Assault", "wikiLink": "...", "icon": "/icons/minigames/barbarian-assault.png" }],
+  "quests":    [{ "name": "Dragon Slayer II", "wikiLink": "...", "icon": "/icons/quests/quests.png" }]
 }
 ```
 
@@ -420,6 +421,45 @@ regardless. Stage 1 now deletes a title's raw file (and its manifest
 entry) when a refresh finds no infobox row anywhere for it, so a title
 that's been reclassified as "not real" actually disappears from the
 catalog instead of lingering as a phantom entry.
+
+**Quests (added 2026-09-04, `scripts/06-fetch-quests.mjs`) - last planned
+catalog category.** Every quest is a plain name + its own wiki link,
+sharing one fixed icon across all of them (`File:Quests.png`, the image
+on the wiki's own [[Quests]] overview page - not a per-quest icon; quests
+don't have individually meaningful ones worth downloading). No Bucket
+table for quests exists (`infobox_quest` doesn't exist), and there's
+nothing per-quest to fetch anyway once the icon is fixed, so this stage
+skips the raw-file-per-page/staleness-cache machinery entirely (unlike
+bosses/monsters/minigames) - a full re-scan every run is cheap and always
+safe.
+
+`Category:Quests` (namespace 0) is 224 pages, but 28 of those are
+overview/list/reward/meta articles sharing the category ("Quests/List",
+"Quest Difficulties", "Quest points", ...), leaving 196 real quests.
+Filtering checks each page's membership in `Template:Infobox Quest` via a
+batched `prop=templates` query (50 titles/call) rather than a title-shape
+heuristic - correctly keeps the ten separately-completable "Recipe for
+Disaster/Freeing X" sub-quest pages (which a "does the title contain a
+slash" rule would have wrongly dropped, since most other `/`-titled
+category members are the overview subpages) while dropping the real
+overview pages. Four category members that sound quest-like (Burial at
+Sea, An Existential Crisis, Impending Chaos, Rocking Out) end up excluded
+too - checked their wikitext directly, none have any infobox at all,
+so whatever they are, it's not what this catalog means by "quest."
+
+Found and fixed a real bug building this: `prop=templates` paginates
+*within* a single batched call once the batch's total results exceed the
+API's per-request budget, even with `tltemplates` already narrowed to one
+specific template - the first version dropped ~150 real quests (Dragon
+Slayer II, Cabin Fever, Fight Arena, Monkey Madness I, ...) as "excluded"
+purely because their titles fell past that budget within their batch and
+never got a `templates` field populated at all, nothing to do with
+whether they actually had the template. `tllimit=max` avoids needing the
+continuation loop in practice (verified against the live wiki: zero
+chunks needed a second call), but the loop stays in the code as a
+correctness guarantee, not a hopeful optimization - the same kind of
+"verify against the real API before trusting a single test case" lesson
+as the minigame-logo and boss-icon-fallback work above.
 
 ## Read-only sharing (added 2026-09-03, live in production)
 

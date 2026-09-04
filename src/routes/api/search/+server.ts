@@ -11,6 +11,7 @@ import catalog from '$lib/data/catalog.json';
 //   GET /api/search?q=ring&type=item&limit=10
 //   GET /api/search?q=dagannoth&type=boss,item
 //   GET /api/search?q=lizardman&type=monster
+//   GET /api/search?q=dragon+slayer&type=quest
 
 interface CatalogEntry {
 	name: string;
@@ -45,10 +46,11 @@ const ENTRIES: Indexed[] = [
 	...index(catalog.bosses, 'boss'),
 	...index(catalog.monsters, 'monster'),
 	...index(catalog.items, 'item'),
-	...index(catalog.minigames, 'minigame')
+	...index(catalog.minigames, 'minigame'),
+	...index(catalog.quests, 'quest')
 ];
 
-const ALL_TYPES: EntryType[] = ['skill', 'boss', 'monster', 'item', 'minigame'];
+const ALL_TYPES: EntryType[] = ['skill', 'boss', 'monster', 'item', 'minigame', 'quest'];
 const MAX_LIMIT = 100;
 const DEFAULT_LIMIT = 20;
 

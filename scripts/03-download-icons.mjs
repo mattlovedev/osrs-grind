@@ -14,6 +14,11 @@
 //   - minigames: scripts/.data/raw-minigames/*.json (iconUrl per page, from
 //                stage 5 - a logo file if the page has one, else a gameplay
 //                screenshot, else null)
+//   - quests   : one shared icon for every quest (File:Quests.png, the
+//                image on the wiki's own Quests overview page - not a
+//                per-quest icon, quests don't have individual ones worth
+//                downloading separately), only if scripts/.data/quests.json
+//                (stage 6) exists and isn't empty
 //
 // Files already on disk are left alone unless --refresh. Writes a manifest
 // (scripts/.data/icons.json) mapping each entry name to its local
@@ -35,14 +40,23 @@
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { apiGet, downloadBinary, slugify } from './lib/wiki.mjs';
+import { apiGet, downloadBinary, fileRefToImageUrl, slugify } from './lib/wiki.mjs';
 import { SKILLS } from './lib/skills.mjs';
 
 const CWD = process.cwd();
 const DATA_DIR = path.join(CWD, 'scripts', '.data');
 const RAW_DIR = path.join(DATA_DIR, 'raw');
 const RAW_MINIGAMES_DIR = path.join(DATA_DIR, 'raw-minigames');
+const QUESTS_PATH = path.join(DATA_DIR, 'quests.json');
 const ITEMS_PATH = path.join(DATA_DIR, 'items.json');
+
+// The one icon shared by every quest entry - see stage 6 and the header
+// comment above. Stage 4 looks this exact name back up in the manifest
+// (there's only ever this one entry in the "quests" icon category) and
+// applies its path to every quest, rather than looking anything up
+// per-quest.
+const QUEST_ICON_NAME = 'Quests';
+const QUEST_ICON_FILE_REF = 'File:Quests.png';
 const ICONS_MANIFEST = path.join(DATA_DIR, 'icons.json');
 const STATIC_ICONS = path.join(CWD, 'static', 'icons');
 
@@ -200,6 +214,13 @@ async function main() {
 		}
 	}
 
+	// Just the one shared icon, and only if there's at least one quest to
+	// use it - no point downloading it otherwise.
+	const questEntries =
+		existsSync(QUESTS_PATH) && readJson(QUESTS_PATH).quests.length > 0
+			? [{ name: QUEST_ICON_NAME, url: fileRefToImageUrl(QUEST_ICON_FILE_REF) }]
+			: [];
+
 	// Dedupe + apply --limit first, so a dev run only resolves/downloads
 	// what it will actually use.
 	const deduped = [
@@ -207,7 +228,8 @@ async function main() {
 		dedupeEntries('bosses', bossEntries, limit),
 		dedupeEntries('monsters', monsterEntries, limit),
 		dedupeEntries('skills', skillEntries, limit),
-		dedupeEntries('minigames', minigameEntries, limit)
+		dedupeEntries('minigames', minigameEntries, limit),
+		dedupeEntries('quests', questEntries, limit)
 	];
 	const entries = deduped.flatMap((d) => d.list);
 	const aliases = deduped.flatMap((d) => d.aliases);
@@ -222,7 +244,7 @@ async function main() {
 
 	const tasks = entries.map(toTask);
 
-	for (const c of ['items', 'bosses', 'monsters', 'skills', 'minigames']) {
+	for (const c of ['items', 'bosses', 'monsters', 'skills', 'minigames', 'quests']) {
 		mkdirSync(path.join(STATIC_ICONS, c), { recursive: true });
 	}
 
@@ -230,7 +252,7 @@ async function main() {
 	let downloaded = 0;
 	let skipped = 0;
 	const failed = [];
-	const manifest = { items: {}, bosses: {}, monsters: {}, skills: {}, minigames: {} };
+	const manifest = { items: {}, bosses: {}, monsters: {}, skills: {}, minigames: {}, quests: {} };
 
 	await mapPool(tasks, CONCURRENCY, async (task) => {
 		if (!refresh && existsSync(task.dest)) {

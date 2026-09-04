@@ -1,6 +1,6 @@
 // Kept for the catalog / search endpoint - entries themselves no longer
 // carry a type (creation is a single global search, not per-category).
-export type EntryType = 'skill' | 'boss' | 'monster' | 'item' | 'minigame';
+export type EntryType = 'skill' | 'boss' | 'monster' | 'item' | 'minigame' | 'quest';
 
 export interface Entry {
 	label: string;

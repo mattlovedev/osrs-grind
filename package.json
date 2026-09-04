@@ -13,7 +13,7 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"emulator": "firebase emulators:start --only firestore",
-		"scrape": "node scripts/00-discover.mjs && node scripts/01-fetch-raw.mjs && node scripts/02a-fetch-collection-log.mjs && node scripts/02b-fetch-recipes.mjs && node scripts/02c-flatten-items.mjs && node scripts/05-fetch-minigames.mjs && node scripts/03-download-icons.mjs && node scripts/04-assemble-catalog.mjs"
+		"scrape": "node scripts/00-discover.mjs && node scripts/01-fetch-raw.mjs && node scripts/02a-fetch-collection-log.mjs && node scripts/02b-fetch-recipes.mjs && node scripts/02c-flatten-items.mjs && node scripts/05-fetch-minigames.mjs && node scripts/06-fetch-quests.mjs && node scripts/03-download-icons.mjs && node scripts/04-assemble-catalog.mjs"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
