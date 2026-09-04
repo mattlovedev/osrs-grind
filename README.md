@@ -6,7 +6,7 @@ rarely a flat list: doing skill A and skill B unlocks boss C, which drops
 items D and E, and so on. This app visualizes and tracks those dependency
 chains as small, independent graphs rather than one master checklist.
 
-Live at **https://grind-app-549755295105.us-central1.run.app**.
+Live at **https://grind.mattlove.dev**.
 
 No accounts — each board is addressed by a random, unguessable URL
 (the same pattern as Excalidraw or Figma share links). Bookmark the link
