@@ -55,14 +55,22 @@
 		text-align: center;
 	}
 
+	h1 {
+		padding-top: 2rem;
+	}
+
 	.recent-boards {
 		max-width: 20rem;
 		margin: 2rem auto 0;
+		padding: 1rem 1.25rem;
 		text-align: center;
+		background: var(--osrs-parchment);
+		border: 2px solid var(--osrs-brown-dark);
 	}
 
 	.recent-boards h2 {
 		font-size: 1rem;
+		color: var(--osrs-brown);
 	}
 
 	.recent-boards ul {
@@ -78,8 +86,16 @@
 		margin: 0.5rem 0;
 	}
 
+	.recent-boards a {
+		color: var(--osrs-brown);
+	}
+
+	.recent-boards a:hover {
+		color: var(--osrs-brown-light);
+	}
+
 	.edited {
-		color: #888;
+		color: var(--osrs-brown);
 		font-size: 0.85rem;
 		white-space: nowrap;
 	}

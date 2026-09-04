@@ -1,0 +1,83 @@
+/* OSRS-inspired single theme (no dark/light variants) - loosely modeled on
+   oldschool.runescape.com: black chrome, brown borders, a tan parchment
+   panel for content, olive-green links, serif brown headings. First style
+   pass - not a pixel match, just the same family of colors/shapes. */
+
+:root {
+	--osrs-black: #0a0a0a;
+	--osrs-brown-darkest: #1b120a;
+	--osrs-brown-dark: #382418;
+	--osrs-brown: #6d4211;
+	--osrs-brown-light: #a9762f;
+	--osrs-parchment: #e8dcb0;
+	--osrs-parchment-light: #fbf3dc;
+	--osrs-parchment-dark: #d3bd8a;
+	--osrs-link: #90c040;
+	--osrs-link-hover: #b8e05a;
+	--osrs-white: #ffffff;
+	--osrs-text-dark: #2b1d0e;
+	--osrs-done: #5f8f3d;
+	--osrs-danger: #a92f2f;
+	--osrs-font: Arial, Helvetica, sans-serif;
+	--osrs-font-heading: Georgia, 'Times New Roman', Times, serif;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	background: var(--osrs-black);
+	color: var(--osrs-white);
+	font-family: var(--osrs-font);
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--osrs-font-heading);
+	color: var(--osrs-brown-light);
+}
+
+a {
+	color: var(--osrs-link);
+}
+
+a:hover {
+	color: var(--osrs-link-hover);
+}
+
+button {
+	font-family: var(--osrs-font);
+	font-weight: 700;
+	background: linear-gradient(to bottom, var(--osrs-brown-light), var(--osrs-brown-dark));
+	color: var(--osrs-white);
+	border: 1px solid var(--osrs-brown-darkest);
+	border-radius: 0;
+	padding: 0.4rem 0.8rem;
+	cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+	filter: brightness(1.15);
+}
+
+button:disabled {
+	opacity: 0.5;
+	cursor: default;
+	filter: none;
+}
+
+input,
+textarea {
+	font-family: var(--osrs-font);
+	background: var(--osrs-parchment-light);
+	color: var(--osrs-text-dark);
+	border: 1px solid var(--osrs-brown-dark);
+	border-radius: 0;
+	padding: 0.3rem;
+}

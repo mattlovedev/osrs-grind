@@ -109,6 +109,20 @@
 	function onKeydown(e: KeyboardEvent) {
 		if (e.key === 'Escape') oncancel();
 	}
+
+	// Autofocus the field that matters for whichever view is showing -
+	// re-runs on every view change (search <-> icon-search <-> form). Using
+	// the HTML `autofocus` attribute here was unreliable once the modal is
+	// mounted from a click handler rather than on initial page load.
+	let flowNameInputEl = $state<HTMLInputElement>();
+	let searchInputEl = $state<HTMLInputElement>();
+	let nameInputEl = $state<HTMLInputElement>();
+
+	$effect(() => {
+		if (view === 'form') nameInputEl?.focus();
+		else if (view === 'search' && isNewFlow) flowNameInputEl?.focus();
+		else searchInputEl?.focus();
+	});
 </script>
 
 <svelte:window onkeydown={onKeydown} />
@@ -118,17 +132,16 @@
 	{#if isNewFlow && view === 'search'}
 		<label class="flow-name-field">
 			Grind name (optional)
-			<input type="text" bind:value={flowName} placeholder="Acquire blank" />
+			<input type="text" bind:this={flowNameInputEl} bind:value={flowName} placeholder="Acquire blank" />
 		</label>
 	{/if}
-	<!-- svelte-ignore a11y_autofocus -->
 	<input
 		class="search-input"
 		type="text"
 		placeholder="Search skills, bosses, items…"
+		bind:this={searchInputEl}
 		bind:value={q}
 		oninput={onSearchInput}
-		autofocus
 	/>
 	<ul class="results">
 		{#each results as r (r.type + '/' + r.wikiLink)}
@@ -170,8 +183,7 @@
 			<form onsubmit={submit}>
 				<label>
 					Name
-					<!-- svelte-ignore a11y_autofocus -->
-					<input type="text" bind:value={label} autofocus />
+					<input type="text" bind:this={nameInputEl} bind:value={label} />
 				</label>
 				<label>
 					Wiki link
@@ -218,9 +230,10 @@
 
 	.modal {
 		position: relative;
-		background: #fff;
-		border: 1px solid #999;
-		border-radius: 0.25rem;
+		background: var(--osrs-parchment);
+		color: var(--osrs-text-dark);
+		border: 2px solid var(--osrs-brown-dark);
+		border-radius: 0;
 		padding: 1.25rem;
 		width: 22rem;
 		max-width: calc(100vw - 2rem);
@@ -234,6 +247,10 @@
 		right: 0.4rem;
 		width: 1.5rem;
 		height: 1.5rem;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		font-size: 1rem;
 		line-height: 1;
 	}
@@ -241,6 +258,7 @@
 	h2 {
 		margin: 0 0 0.75rem;
 		font-size: 1.1rem;
+		color: var(--osrs-brown);
 	}
 
 	.search-input,
@@ -273,7 +291,7 @@
 	}
 
 	.results button:hover {
-		background: #eee;
+		background: var(--osrs-parchment-dark);
 	}
 
 	.results img {
@@ -289,14 +307,14 @@
 	.results .badge {
 		font-size: 0.7rem;
 		text-transform: uppercase;
-		color: #666;
-		border: 1px solid #ccc;
+		color: var(--osrs-brown);
+		border: 1px solid var(--osrs-brown-dark);
 		border-radius: 0.2rem;
 		padding: 0 0.2rem;
 	}
 
 	.results .empty {
-		color: #999;
+		color: var(--osrs-brown);
 		padding: 0.3rem;
 	}
 
@@ -322,8 +340,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border: 1px solid #ccc;
-		background: #fff;
+		border: 1px solid var(--osrs-brown-dark);
+		background: var(--osrs-parchment-light);
 		cursor: pointer;
 	}
 
@@ -336,7 +354,7 @@
 	.icon-placeholder {
 		font-size: 1.2rem;
 		font-weight: bold;
-		color: #999;
+		color: var(--osrs-brown);
 	}
 
 	.actions {

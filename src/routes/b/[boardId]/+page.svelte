@@ -17,6 +17,9 @@
 	import EntryModal from '$lib/EntryModal.svelte';
 	import ConfirmModal from '$lib/ConfirmModal.svelte';
 	import ImportModal from '$lib/ImportModal.svelte';
+	import EntryContextMenu from '$lib/EntryContextMenu.svelte';
+	import SaveInfoModal from '$lib/SaveInfoModal.svelte';
+	import ShareInfoModal from '$lib/ShareInfoModal.svelte';
 
 	type EntryDraft = { label: string; wikiLink: string; icon: string; bottomText: string };
 
@@ -77,14 +80,7 @@
 		}
 	}
 
-	let shareLinkCopied = $state(false);
-
-	async function copyShareLink() {
-		const url = `${location.origin}/s/${board.shareId}`;
-		await navigator.clipboard.writeText(url);
-		shareLinkCopied = true;
-		setTimeout(() => (shareLinkCopied = false), 1500);
-	}
+	let shareModalOpen = $state(false);
 
 	// Plain-data snapshot of the board: ordered arrays instead of the
 	// id-keyed maps, no ids at all. Edges keep the structure as
@@ -281,6 +277,17 @@
 		perform: () => Promise<void> | void;
 	};
 	let confirmData = $state<ConfirmData | null>(null);
+
+	type WikiMenuData = { label: string; wikiLink: string; x: number; y: number };
+	let wikiMenu = $state<WikiMenuData | null>(null);
+
+	let saveModalOpen = $state(false);
+
+	function openWikiMenu(e: MouseEvent, label: string, wikiLink: string) {
+		if (!wikiLink) return;
+		e.preventDefault();
+		wikiMenu = { label, wikiLink, x: e.clientX, y: e.clientY };
+	}
 
 	function cancelConfirm() {
 		confirmData = null;
@@ -494,6 +501,24 @@
 	<ImportModal onsubmit={importBoard} oncancel={() => (importModalOpen = false)} />
 {/if}
 
+{#if wikiMenu}
+	<EntryContextMenu
+		label={wikiMenu.label}
+		wikiLink={wikiMenu.wikiLink}
+		x={wikiMenu.x}
+		y={wikiMenu.y}
+		onclose={() => (wikiMenu = null)}
+	/>
+{/if}
+
+{#if saveModalOpen}
+	<SaveInfoModal onclose={() => (saveModalOpen = false)} />
+{/if}
+
+{#if shareModalOpen}
+	<ShareInfoModal shareId={board.shareId} onclose={() => (shareModalOpen = false)} />
+{/if}
+
 <h1>
 	{#if editingName}
 		<form onsubmit={saveName} style="display: contents;">
@@ -525,9 +550,8 @@
 
 <div class="top-right-actions">
 	{#if !editMode}
-		<button class="share-board" onclick={copyShareLink}>
-			{shareLinkCopied ? 'Copied!' : 'Share'}
-		</button>
+		<button class="save-board" onclick={() => (saveModalOpen = true)}>Save</button>
+		<button class="share-board" onclick={() => (shareModalOpen = true)}>Share</button>
 	{/if}
 	<button class="edit-board" onclick={toggleEditMode}
 		>{editMode ? 'Exit' : 'Edit'}</button
@@ -631,6 +655,7 @@
 								if (editMode) openEdit(flowId, nodeId, entryId);
 								else toggleDone(flowId, nodeId, entryId, entry.done);
 							}}
+							oncontextmenu={(e) => !editMode && openWikiMenu(e, entry.label, entry.wikiLink)}
 						>
 							{#if entry.icon}
 								<img src={iconUrl(entry.icon)} alt={entry.label} />
@@ -735,6 +760,9 @@
 		justify-content: center;
 		width: fit-content;
 		margin: 2rem auto;
+		padding: 0.75rem;
+		background: var(--osrs-parchment);
+		border: 2px solid var(--osrs-brown-dark);
 	}
 
 	.flow-name {
@@ -742,6 +770,7 @@
 		max-width: 6rem;
 		font-size: 0.9rem;
 		font-weight: 600;
+		color: var(--osrs-brown);
 		text-align: right;
 		overflow-wrap: break-word;
 		margin-right: 0.75rem;
@@ -760,8 +789,7 @@
 	}
 
 	.flow.editing {
-		padding: 0.75rem;
-		border: 1px solid #999;
+		border-color: var(--osrs-brown);
 	}
 
 	.flow-controls {
@@ -788,12 +816,17 @@
 	.flow-move-button {
 		width: 2rem;
 		height: 2rem;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		font-size: 1.25rem;
 	}
 
 	.edge-arrow {
 		font-size: 1.5rem;
 		margin: 0 0.5rem;
+		color: var(--osrs-brown);
 	}
 
 	.node {
@@ -815,7 +848,8 @@
 		justify-content: center;
 		width: 2.75rem;
 		height: 2.75rem;
-		border: 1px solid #999;
+		background: var(--osrs-parchment-light);
+		border: 1px solid var(--osrs-brown-dark);
 	}
 
 	.entry-cell:not(.editing) {
@@ -823,7 +857,7 @@
 	}
 
 	.entry-cell.done {
-		background: #b9eab0;
+		background: var(--osrs-done);
 	}
 
 	.entry-cell img {
@@ -834,7 +868,7 @@
 	.icon-placeholder {
 		font-size: 1.25rem;
 		font-weight: bold;
-		color: #999;
+		color: var(--osrs-brown);
 	}
 
 	.level-badge {
@@ -844,7 +878,8 @@
 		font-size: 0.65rem;
 		line-height: 1;
 		padding: 0.05rem 0.2rem;
-		background: rgba(255, 255, 255, 0.85);
+		background: rgba(0, 0, 0, 0.75);
+		color: var(--osrs-parchment-light);
 		border-radius: 0.2rem;
 	}
 
@@ -855,6 +890,10 @@
 		z-index: 1;
 		width: 1.25rem;
 		height: 1.25rem;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		font-size: 0.85rem;
 		line-height: 1;
 		opacity: 0;
@@ -872,6 +911,10 @@
 	.node-delete-button {
 		position: absolute;
 		z-index: 1;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		opacity: 0;
 		pointer-events: none;
 	}
