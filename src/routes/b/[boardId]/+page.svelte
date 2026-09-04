@@ -17,6 +17,7 @@
 	import EntryModal from '$lib/EntryModal.svelte';
 	import ConfirmModal from '$lib/ConfirmModal.svelte';
 	import ImportModal from '$lib/ImportModal.svelte';
+	import EntryContextMenu from '$lib/EntryContextMenu.svelte';
 
 	type EntryDraft = { label: string; wikiLink: string; icon: string; bottomText: string };
 
@@ -282,6 +283,15 @@
 	};
 	let confirmData = $state<ConfirmData | null>(null);
 
+	type WikiMenuData = { label: string; wikiLink: string; x: number; y: number };
+	let wikiMenu = $state<WikiMenuData | null>(null);
+
+	function openWikiMenu(e: MouseEvent, label: string, wikiLink: string) {
+		if (!wikiLink) return;
+		e.preventDefault();
+		wikiMenu = { label, wikiLink, x: e.clientX, y: e.clientY };
+	}
+
 	function cancelConfirm() {
 		confirmData = null;
 	}
@@ -494,6 +504,16 @@
 	<ImportModal onsubmit={importBoard} oncancel={() => (importModalOpen = false)} />
 {/if}
 
+{#if wikiMenu}
+	<EntryContextMenu
+		label={wikiMenu.label}
+		wikiLink={wikiMenu.wikiLink}
+		x={wikiMenu.x}
+		y={wikiMenu.y}
+		onclose={() => (wikiMenu = null)}
+	/>
+{/if}
+
 <h1>
 	{#if editingName}
 		<form onsubmit={saveName} style="display: contents;">
@@ -631,6 +651,7 @@
 								if (editMode) openEdit(flowId, nodeId, entryId);
 								else toggleDone(flowId, nodeId, entryId, entry.done);
 							}}
+							oncontextmenu={(e) => !editMode && openWikiMenu(e, entry.label, entry.wikiLink)}
 						>
 							{#if entry.icon}
 								<img src={iconUrl(entry.icon)} alt={entry.label} />

@@ -1,9 +1,19 @@
 <script lang="ts">
 	import { iconUrl } from '$lib/icon-url';
+	import EntryContextMenu from '$lib/EntryContextMenu.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 	let board = $derived(data.board);
+
+	type WikiMenuData = { label: string; wikiLink: string; x: number; y: number };
+	let wikiMenu = $state<WikiMenuData | null>(null);
+
+	function openWikiMenu(e: MouseEvent, label: string, wikiLink: string) {
+		if (!wikiLink) return;
+		e.preventDefault();
+		wikiMenu = { label, wikiLink, x: e.clientX, y: e.clientY };
+	}
 </script>
 
 <svelte:head>
@@ -27,7 +37,12 @@
 				<div class="node-entries">
 					{#each node.entryOrder ?? Object.keys(node.entries) as entryId (entryId)}
 						{@const entry = node.entries[entryId]}
-						<div class="entry-cell" class:done={entry.done} title={entry.label}>
+						<div
+							class="entry-cell"
+							class:done={entry.done}
+							title={entry.label}
+							oncontextmenu={(e) => openWikiMenu(e, entry.label, entry.wikiLink)}
+						>
 							{#if entry.icon}
 								<img src={iconUrl(entry.icon)} alt={entry.label} />
 							{:else}
@@ -43,6 +58,16 @@
 		{/each}
 	</div>
 {/each}
+
+{#if wikiMenu}
+	<EntryContextMenu
+		label={wikiMenu.label}
+		wikiLink={wikiMenu.wikiLink}
+		x={wikiMenu.x}
+		y={wikiMenu.y}
+		onclose={() => (wikiMenu = null)}
+	/>
+{/if}
 
 <style>
 	h1 {
