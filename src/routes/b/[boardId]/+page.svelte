@@ -771,7 +771,7 @@
 									if (editMode) openEdit(flowId, nodeId, entryId);
 									else toggleDone(flowId, nodeId, entryId, entry.done);
 								}}
-								oncontextmenu={(e) => !editMode && openWikiMenu(e, entry.label, entry.wikiLink)}
+								oncontextmenu={(e) => openWikiMenu(e, entry.label, entry.wikiLink)}
 							>
 								{#if entry.icon}
 									<img src={iconUrl(entry.icon)} alt={entry.label} />
