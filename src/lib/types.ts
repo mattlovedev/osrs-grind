@@ -42,4 +42,7 @@ export interface Board {
 	// null/absent (older boards predate this field) falls back to the
 	// default pestle and mortar.
 	icon: string | null;
+	// Freeform scratchpad, edited only from the edit-mode notes textarea
+	// on /b/[boardId] - not shown on the read-only /s/[shareId] view.
+	notes: string;
 }

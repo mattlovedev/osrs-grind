@@ -43,6 +43,7 @@
 	let editTarget = $state<EditTarget>(null);
 	let modalOpen = $state(false);
 	let editMode = $state(false);
+	let notesDraft = $state('');
 
 	let editInitial = $derived.by(() => {
 		if (!editTarget) return null;
@@ -75,8 +76,15 @@
 	}
 
 	function toggleEditMode() {
+		if (editMode) {
+			// Leaving edit mode - flush any unsaved notes (blur may not have
+			// fired, e.g. clicking straight from the textarea to Exit).
+			saveNotes();
+		}
 		editMode = !editMode;
-		if (!editMode) {
+		if (editMode) {
+			notesDraft = board.notes ?? '';
+		} else {
 			closeModal();
 			importModalOpen = false;
 			editingName = false;
@@ -237,7 +245,8 @@
 					flowOrder: snapData.flowOrder ?? [],
 					flows: snapData.flows ?? {},
 					shareId: snapData.shareId,
-					icon: snapData.icon ?? null
+					icon: snapData.icon ?? null,
+					notes: snapData.notes ?? ''
 				};
 			}
 		});
@@ -290,6 +299,12 @@
 
 	function cancelEditingFlowName() {
 		editingFlowNameId = null;
+	}
+
+	async function saveNotes() {
+		if (notesDraft === (board.notes ?? '')) return;
+		const ref = doc(db, 'boards', data.boardId);
+		await updateDoc(ref, { updatedAt: serverTimestamp(), notes: notesDraft });
 	}
 
 	type ConfirmData = {
@@ -752,6 +767,22 @@
 	<button class="add-flow-button" title="Add grind" onclick={() => openAdd(null)}>+</button>
 {/if}
 
+{#if editMode}
+	<div class="notes-section">
+		<label for="board-notes">Notes</label>
+		<textarea
+			id="board-notes"
+			bind:value={notesDraft}
+			onblur={saveNotes}
+			placeholder="Jot down things to change later..."
+		></textarea>
+	</div>
+{:else if board.notes}
+	<div class="notes-section">
+		<p class="notes-readonly">{board.notes}</p>
+	</div>
+{/if}
+
 <style>
 	.title-row {
 		display: flex;
@@ -814,6 +845,25 @@
 		height: 6rem;
 		font-size: 3rem;
 		line-height: 1;
+	}
+
+	.notes-section {
+		display: block;
+		width: 100%;
+		max-width: 40rem;
+		margin: 2rem auto;
+	}
+
+	.notes-readonly {
+		white-space: pre-wrap;
+		overflow-wrap: break-word;
+	}
+
+	.notes-section textarea {
+		display: block;
+		width: 100%;
+		min-height: 8rem;
+		box-sizing: border-box;
 	}
 
 	h1 input {

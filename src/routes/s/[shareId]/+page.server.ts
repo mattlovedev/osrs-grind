@@ -27,7 +27,10 @@ export const load: PageServerLoad = async ({ params }) => {
 		flowOrder: data.flowOrder ?? [],
 		flows: data.flows ?? {},
 		shareId: params.shareId,
-		icon: data.icon ?? null
+		icon: data.icon ?? null,
+		// Private scratchpad - never sent to the public read-only share view,
+		// even though nothing here currently renders it.
+		notes: ''
 	};
 
 	return { board };

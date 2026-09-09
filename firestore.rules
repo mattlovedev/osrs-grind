@@ -22,11 +22,12 @@ service cloud.firestore {
 }
 
 function isValidBoard(data) {
-  return data.keys().hasOnly(['updatedAt', 'name', 'flowOrder', 'flows', 'shareId', 'icon'])
+  return data.keys().hasOnly(['updatedAt', 'name', 'flowOrder', 'flows', 'shareId', 'icon', 'notes'])
     && data.updatedAt is timestamp
     && data.name is string
     && data.flowOrder is list
     && data.flows is map
     && data.shareId is string
-    && (!('icon' in data) || data.icon == null || data.icon is string);
+    && (!('icon' in data) || data.icon == null || data.icon is string)
+    && (!('notes' in data) || data.notes is string);
 }
