@@ -37,7 +37,7 @@
 	let editingFlowNameId = $state<string | null>(null);
 	let flowNameDraft = $state('');
 
-	type AddTarget = { flowId: string; nodeId: string; mode: 'append' | 'edge' } | null;
+	type AddTarget = { flowId: string; nodeId: string; mode: 'append' | 'edge' | 'prepend' } | null;
 	type EditTarget = { flowId: string; nodeId: string; entryId: string } | null;
 	let addTarget = $state<AddTarget>(null);
 	let editTarget = $state<EditTarget>(null);
@@ -469,6 +469,22 @@
 				[`flows.${flowId}.nodeOrder`]: arrayUnion(newNodeId),
 				[`flows.${flowId}.edges.${edgeId}`]: { from: fromNodeId, to: newNodeId }
 			});
+		} else if (addTarget?.mode === 'prepend') {
+			const { flowId, nodeId: toNodeId } = addTarget;
+			const newNodeId = crypto.randomUUID().slice(0, 8);
+			const edgeId = crypto.randomUUID().slice(0, 8);
+			const flow = board.flows[flowId];
+			await updateDoc(ref, {
+				updatedAt: serverTimestamp(),
+				[`flows.${flowId}.nodes.${newNodeId}`]: {
+					entries: { [entryId]: entry },
+					entryOrder: [entryId]
+				},
+				// Prepend, not arrayUnion (which only appends) - the new node
+				// goes before the rest of the chain in render order.
+				[`flows.${flowId}.nodeOrder`]: [newNodeId, ...(flow?.nodeOrder ?? [])],
+				[`flows.${flowId}.edges.${edgeId}`]: { from: newNodeId, to: toNodeId }
+			});
 		} else {
 			const flowId = crypto.randomUUID().slice(0, 8);
 			const nodeId = crypto.randomUUID().slice(0, 8);
@@ -682,9 +698,19 @@
 		{#each flow?.nodeOrder ?? Object.keys(flow?.nodes ?? {}) as nodeId, i (nodeId)}
 			{@const node = flow.nodes[nodeId]}
 			{@const isTailNode = !Object.values(flow.edges ?? {}).some((e) => e.from === nodeId)}
+			{@const isHeadNode = !Object.values(flow.edges ?? {}).some((e) => e.to === nodeId)}
 			{@const entryCount = (node.entryOrder ?? Object.keys(node.entries)).length}
 			<div class="node-unit">
 				<div class="node" class:editing={editMode}>
+					{#if isHeadNode}
+						<button
+							class="node-prepend-button"
+							title="Add connected grind before"
+							onclick={() => openAdd({ flowId, nodeId, mode: 'prepend' })}
+						>
+							&rarr;
+						</button>
+					{/if}
 					<div class="node-entries">
 						{#each node.entryOrder ?? Object.keys(node.entries) as entryId (entryId)}
 							{@const entry = node.entries[entryId]}
@@ -1040,6 +1066,7 @@
 
 	.node-add-button,
 	.node-edge-button,
+	.node-prepend-button,
 	.node-delete-button {
 		position: absolute;
 		z-index: 1;
@@ -1052,7 +1079,8 @@
 	}
 
 	.node-add-button,
-	.node-edge-button {
+	.node-edge-button,
+	.node-prepend-button {
 		top: 0;
 		width: 2.75rem;
 		height: 2.75rem;
@@ -1067,6 +1095,10 @@
 		left: calc(100% + 2.75rem);
 	}
 
+	.node-prepend-button {
+		right: 100%;
+	}
+
 	.node-delete-button {
 		top: -0.75rem;
 		left: -0.75rem;
@@ -1077,9 +1109,11 @@
 
 	.node.editing:hover .node-add-button,
 	.node.editing:hover .node-edge-button,
+	.node.editing:hover .node-prepend-button,
 	.node.editing:hover .node-delete-button,
 	.node.editing:focus-within .node-add-button,
 	.node.editing:focus-within .node-edge-button,
+	.node.editing:focus-within .node-prepend-button,
 	.node.editing:focus-within .node-delete-button {
 		opacity: 1;
 		pointer-events: auto;
