@@ -21,10 +21,13 @@ setup). That changes what "just commit it" safely means in this repo:
 - **Merging that branch into `main`** is a separate, higher-bar action
   from committing — do it only when explicitly told to merge/deploy/ship,
   never inferred from a commit instruction or a "looks good." Merge with
-  a plain `git merge` (or `git merge --no-ff` for an explicit merge commit
-  even when a fast-forward would apply) — never `--squash` or anything
-  else that collapses a branch's commits into one. No PRs on this repo,
-  so there's no "squash and merge" button to worry about either.
+  a plain `git merge` (fast-forwards when possible, so a branch with no
+  divergence from `main` doesn't produce a redundant merge commit on top
+  of its real commit(s)) — never `--squash`, and never `--no-ff` either,
+  since forcing a merge commit when a fast-forward would apply just
+  duplicates the branch's own commit message in the history for no
+  benefit. No PRs on this repo, so there's no "squash and merge" button
+  to worry about either.
 - **After merging and pushing to `main`, delete the feature branch —
   local and remote — without asking.** Nothing does this automatically
   here: no PRs means no "delete branch" button, and a plain `git merge`
