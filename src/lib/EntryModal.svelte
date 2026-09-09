@@ -39,6 +39,17 @@
 	// 'icon-search' - pick a catalog entry for its icon only, then -> form
 	let view = $state<'search' | 'form' | 'icon-search'>(seed ? 'form' : 'search');
 
+	// Editing an existing entry but wants to swap it for a different catalog
+	// entry entirely, rather than tweaking its fields - jumps back to the
+	// search view; submit still overwrites this same entry in place.
+	let replacing = $state(false);
+
+	function startReplace() {
+		replacing = true;
+		resetSearch();
+		view = 'search';
+	}
+
 	let label = $state(seed?.label ?? '');
 	let wikiLink = $state(seed?.wikiLink ?? '');
 	let icon = $state(seed?.icon ?? '');
@@ -173,13 +184,18 @@
 		onclick={(e) => e.stopPropagation()}
 	>
 		<button class="close" type="button" onclick={oncancel} aria-label="Close">&times;</button>
+		{#if initial && !replacing && view === 'form'}
+			<button class="replace" type="button" onclick={startReplace} title="Replace entry">
+				&#8635;
+			</button>
+		{/if}
 
 		{#if view === 'search'}
-			{@render searchView('Add entry', false)}
+			{@render searchView(replacing ? 'Replace entry' : 'Add entry', false)}
 		{:else if view === 'icon-search'}
 			{@render searchView('Pick an icon', true)}
 		{:else}
-			<h2>{initial ? 'Edit entry' : 'New entry'}</h2>
+			<h2>{replacing ? 'Replace entry' : initial ? 'Edit entry' : 'New entry'}</h2>
 			<form onsubmit={submit}>
 				<label>
 					Name
@@ -210,7 +226,7 @@
 				</label>
 				<div class="actions">
 					<button type="button" onclick={oncancel}>Cancel</button>
-					<button type="submit">{initial ? 'Save' : 'Add'}</button>
+					<button type="submit">{replacing ? 'Replace' : initial ? 'Save' : 'Add'}</button>
 				</div>
 			</form>
 		{/if}
@@ -241,10 +257,10 @@
 		overflow-y: auto;
 	}
 
-	.close {
+	.close,
+	.replace {
 		position: absolute;
 		top: 0.4rem;
-		right: 0.4rem;
 		width: 1.5rem;
 		height: 1.5rem;
 		padding: 0;
@@ -253,6 +269,14 @@
 		justify-content: center;
 		font-size: 1rem;
 		line-height: 1;
+	}
+
+	.close {
+		right: 0.4rem;
+	}
+
+	.replace {
+		right: 2.1rem;
 	}
 
 	h2 {
