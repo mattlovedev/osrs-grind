@@ -37,7 +37,14 @@
 	let editingFlowNameId = $state<string | null>(null);
 	let flowNameDraft = $state('');
 
-	type AddTarget = { flowId: string; nodeId: string; mode: 'append' | 'edge' | 'prepend' } | null;
+	type AddTarget = {
+		flowId: string;
+		nodeId: string;
+		mode: 'append' | 'edge' | 'prepend' | 'insert';
+		// 'insert' only: the node right after `nodeId` in render order - the
+		// new node goes between the two.
+		toNodeId?: string;
+	} | null;
 	type EditTarget = { flowId: string; nodeId: string; entryId: string } | null;
 	let addTarget = $state<AddTarget>(null);
 	let editTarget = $state<EditTarget>(null);
@@ -485,6 +492,40 @@
 				[`flows.${flowId}.nodeOrder`]: [newNodeId, ...(flow?.nodeOrder ?? [])],
 				[`flows.${flowId}.edges.${edgeId}`]: { from: newNodeId, to: toNodeId }
 			});
+		} else if (addTarget?.mode === 'insert' && addTarget.toNodeId) {
+			const { flowId, nodeId: fromNodeId, toNodeId } = addTarget;
+			const newNodeId = crypto.randomUUID().slice(0, 8);
+			const flow = board.flows[flowId];
+			const order = flow?.nodeOrder ?? [];
+			const insertAt = order.indexOf(fromNodeId) + 1;
+			const newOrder = [...order.slice(0, insertAt), newNodeId, ...order.slice(insertAt)];
+			// Deleting a node between two others leaves a gap with no real edge
+			// (see doDeleteNode) even though the arrow still renders between
+			// them positionally - so the old edge may not exist. Only remove it
+			// if it does; either way the new node always gets wired in.
+			const oldEdgeId = Object.entries(flow?.edges ?? {}).find(
+				([, e]) => e.from === fromNodeId && e.to === toNodeId
+			)?.[0];
+			const updates: Record<string, unknown> = {
+				updatedAt: serverTimestamp(),
+				[`flows.${flowId}.nodes.${newNodeId}`]: {
+					entries: { [entryId]: entry },
+					entryOrder: [entryId]
+				},
+				[`flows.${flowId}.nodeOrder`]: newOrder,
+				[`flows.${flowId}.edges.${crypto.randomUUID().slice(0, 8)}`]: {
+					from: fromNodeId,
+					to: newNodeId
+				},
+				[`flows.${flowId}.edges.${crypto.randomUUID().slice(0, 8)}`]: {
+					from: newNodeId,
+					to: toNodeId
+				}
+			};
+			if (oldEdgeId) {
+				updates[`flows.${flowId}.edges.${oldEdgeId}`] = deleteField();
+			}
+			await updateDoc(ref, updates);
 		} else {
 			const flowId = crypto.randomUUID().slice(0, 8);
 			const nodeId = crypto.randomUUID().slice(0, 8);
@@ -782,7 +823,19 @@
 					{/if}
 				</div>
 				{#if i < nodeCount - 1}
-					<span class="edge-arrow">&rarr;</span>
+					{@const nextNodeId = (flow?.nodeOrder ?? Object.keys(flow?.nodes ?? {}))[i + 1]}
+					<span class="edge-arrow" class:editing={editMode}>
+						&rarr;
+						{#if editMode}
+							<button
+								class="edge-insert-button"
+								title="Insert node here"
+								onclick={() => openAdd({ flowId, nodeId, mode: 'insert', toNodeId: nextNodeId })}
+							>
+								&uarr;
+							</button>
+						{/if}
+					</span>
 				{/if}
 			</div>
 		{/each}
@@ -972,9 +1025,33 @@
 	}
 
 	.edge-arrow {
+		position: relative;
 		font-size: 1.5rem;
 		margin: 0 0.5rem;
 		color: var(--osrs-brown);
+	}
+
+	.edge-insert-button {
+		position: absolute;
+		bottom: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 1;
+		width: 1.75rem;
+		height: 1.75rem;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 1.1rem;
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.edge-arrow.editing:hover .edge-insert-button,
+	.edge-arrow.editing:focus-within .edge-insert-button {
+		opacity: 1;
+		pointer-events: auto;
 	}
 
 	.node-unit {
