@@ -12,6 +12,9 @@ node_modules
 .DS_Store
 Thumbs.db
 
+# JetBrains IDEs (GoLand, WebStorm, etc.)
+.idea/
+
 # Env
 .env
 .env.*
