@@ -938,9 +938,12 @@
 	}
 
 	.entry-cell img {
-		/* object-fit, not max-width/max-height - percentage max-height on a flex-child img overflows tall sprites on iOS Safari. */
-		width: 85%;
-		height: 85%;
+		/* Fixed rem (85% of the cell's fixed 2.75rem), not a percentage - percentage
+		   max-width/max-height on a flex-child img fails to constrain tall sprites on
+		   iOS Safari. Using max- (not width/height) so small icons keep their natural
+		   size instead of being upscaled to fill the cell. */
+		max-width: 2.3375rem;
+		max-height: 2.3375rem;
 		object-fit: contain;
 	}
 
