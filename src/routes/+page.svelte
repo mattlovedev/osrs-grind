@@ -49,9 +49,15 @@
 						/>
 						{recent.name || `Board ${recent.shareId}`}
 					</a>
-					{#if recent.updatedAt}
-						<span class="edited">{timeAgo(recent.updatedAt)}</span>
-					{/if}
+					<span class="meta">
+						{#if recent.updatedAt}
+							<span>{timeAgo(recent.updatedAt)}</span>
+						{/if}
+						<span>
+							{recent.viewCount}
+							{recent.viewCount === 1 ? 'view' : 'views'}
+						</span>
+					</span>
 				</li>
 			{/each}
 		</ul>
@@ -69,7 +75,9 @@
 	}
 
 	.recent-boards {
-		max-width: 20rem;
+		width: fit-content;
+		min-width: 20rem;
+		max-width: 28rem;
 		margin: 2rem auto 0;
 		padding: 1rem 1.25rem;
 		text-align: center;
@@ -98,6 +106,7 @@
 	.recent-boards a {
 		display: flex;
 		align-items: center;
+		min-width: 0;
 		gap: 0.4rem;
 		color: var(--osrs-brown);
 	}
@@ -113,7 +122,9 @@
 		object-fit: contain;
 	}
 
-	.edited {
+	.meta {
+		display: flex;
+		gap: 0.75rem;
 		color: var(--osrs-brown);
 		font-size: 0.85rem;
 		white-space: nowrap;

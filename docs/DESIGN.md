@@ -537,6 +537,38 @@ missing a key still satisfies `hasOnly`. Narrower blast radius, so
 code-first is the right default whenever a future change needs both
 updated together.
 
+## Share view counts (added 2026-09-23)
+
+Each share link counts its views, shown as "N views" in the home page's
+Recent Grinds list. Stored as `viewCount` on `shareLinks/{shareId}`, not
+on the board doc, even though "views of a board" reads more naturally as
+a board field:
+
+- **Tamper-proof for free.** `shareLinks` is server-only (`allow read,
+  write: if false`). On the board, `isValidBoard()` would have to allow
+  `viewCount`, and with no auth anyone holding the edit link could set
+  it to anything - rules can't express "only ever +1".
+- **Doesn't churn the editor.** The edit page `onSnapshot`s the board
+  doc; incrementing there would push a snapshot to every open editor on
+  every view.
+- **No rules deploy** - code-only change.
+- Costs: the home page needs one extra batched `getAll` over the 5
+  recents' `shareLinks` docs, and if share-link regeneration is ever
+  built it must copy `viewCount` across or the count resets. Considered
+  a separate server-only `boardStats/{boardId}` doc (survives
+  regeneration) but chose the lower-commitment option, since the
+  feature may be removed.
+
+**What counts as a view:** one per browser per share link - a one-year
+`viewed` cookie scoped to path `/s/{shareId}` suppresses repeat
+increments (refreshes, return visits). Obvious bot/link-preview
+user-agents (Discord, Slack, iMessage unfurls, crawlers) don't count.
+The owner's own visits via the share link do count (no auth, so no way
+to tell them apart); the edit page `/b/[boardId]` never counts.
+Increment is `FieldValue.increment(1)` (atomic), awaited in the load
+rather than fire-and-forget so Cloud Run doesn't throttle CPU before it
+lands. Missing `viewCount` (boards predating this) reads as 0.
+
 ## Deferred (explicitly not v1)
 
 - Categories/grouping of flows on a board.

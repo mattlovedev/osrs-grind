@@ -6,10 +6,7 @@ import type { Actions, PageServerLoad } from './$types';
 
 // Letters only (upper + lower), no digits or symbols - 52^16 possible IDs,
 // far beyond any realistic collision risk at this app's scale.
-const generateBoardId = customAlphabet(
-	'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-	16
-);
+const generateBoardId = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 16);
 
 // Public recents list - see docs/home-recents-spike.md for the reasoning.
 // Deliberately a global feed of every board's activity, not per-viewer
@@ -46,7 +43,18 @@ export const load: PageServerLoad = async () => {
 			icon: d.icon ?? null
 		}));
 
-	return { recentBoards };
+	// View counts live on shareLinks (server-only), not the board doc - one
+	// batched read for all of them. Boards that predate view counting have
+	// no viewCount field yet and read as 0.
+	const linkSnaps = recentBoards.length
+		? await adminDb.getAll(...recentBoards.map((b) => adminDb.doc(`shareLinks/${b.shareId}`)))
+		: [];
+	const recentWithViews = recentBoards.map((b, i) => ({
+		...b,
+		viewCount: (linkSnaps[i]?.get('viewCount') as number | undefined) ?? 0
+	}));
+
+	return { recentBoards: recentWithViews };
 };
 
 export const actions: Actions = {
