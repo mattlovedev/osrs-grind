@@ -19,6 +19,7 @@
 	import ConfirmModal from '$lib/ConfirmModal.svelte';
 	import ImportModal from '$lib/ImportModal.svelte';
 	import EntryContextMenu from '$lib/EntryContextMenu.svelte';
+	import { longpress } from '$lib/longpress';
 	import SaveInfoModal from '$lib/SaveInfoModal.svelte';
 	import ShareInfoModal from '$lib/ShareInfoModal.svelte';
 	import IconPickerModal from '$lib/IconPickerModal.svelte';
@@ -329,7 +330,12 @@
 	function openWikiMenu(e: MouseEvent, label: string, wikiLink: string) {
 		if (!wikiLink) return;
 		e.preventDefault();
-		wikiMenu = { label, wikiLink, x: e.clientX, y: e.clientY };
+		openWikiMenuAt(e.clientX, e.clientY, label, wikiLink);
+	}
+
+	function openWikiMenuAt(x: number, y: number, label: string, wikiLink: string) {
+		if (!wikiLink) return;
+		wikiMenu = { label, wikiLink, x, y };
 	}
 
 	function cancelConfirm() {
@@ -772,6 +778,7 @@
 									else toggleDone(flowId, nodeId, entryId, entry.done);
 								}}
 								oncontextmenu={(e) => openWikiMenu(e, entry.label, entry.wikiLink)}
+								use:longpress={(x, y) => openWikiMenuAt(x, y, entry.label, entry.wikiLink)}
 							>
 								{#if entry.icon}
 									<img src={iconUrl(entry.icon)} alt={entry.label} />
@@ -1080,6 +1087,11 @@
 		height: 2.75rem;
 		background: var(--osrs-parchment-light);
 		border: 1px solid var(--osrs-brown-dark);
+		/* Long press opens the wiki menu (see longpress.ts) - stop iOS from also
+		   selecting text or showing its image callout/preview on the icon. */
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		user-select: none;
 	}
 
 	.entry-cell:not(.editing) {
